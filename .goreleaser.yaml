@@ -1,0 +1,57 @@
+# Release build for the Terraform Registry. Asset names follow the Registry's
+# rules: terraform-provider-streamtime_<version>_<os>_<arch>.zip, a SHA256SUMS
+# file with the registry manifest in it, and a detached GPG signature of it.
+# The version is the git tag without its "v" (lockstep with Streamtime).
+# Build and sign only: publish-terraform-provider.yaml verifies the signature
+# and checksums, then creates the GitHub Release itself.
+version: 2
+project_name: terraform-provider-streamtime
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    ldflags:
+      - "-s -w -X main.version={{ .Version }}"
+    goos: [linux, darwin, windows, freebsd]
+    goarch: [amd64, arm64, arm, "386"]
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+    binary: "{{ .ProjectName }}_v{{ .Version }}"
+
+archives:
+  - formats: [zip]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
+  algorithm: sha256
+  extra_files:
+    - glob: terraform-registry-manifest.json
+      name_template: "{{ .ProjectName }}_{{ .Version }}_manifest.json"
+
+signs:
+  - artifacts: checksum
+    # The key is imported into a throwaway keyring by the publish workflow;
+    # the passphrase goes in on stdin, never on the command line.
+    stdin: "{{ .Env.GPG_PASSPHRASE }}"
+    args:
+      - --batch
+      - --pinentry-mode
+      - loopback
+      - --passphrase-fd
+      - "0"
+      - --local-user
+      - "{{ .Env.GPG_FINGERPRINT }}"
+      - --output
+      - "${signature}"
+      - --detach-sign
+      - "${artifact}"
+
+changelog:
+  disable: true
