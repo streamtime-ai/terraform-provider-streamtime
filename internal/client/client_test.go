@@ -107,3 +107,20 @@ func TestWaitForStatus(t *testing.T) {
 		t.Fatal("must time out with the context")
 	}
 }
+
+// TestDoWithHeaders_CannotOverrideAuth: extra headers (an Idempotency-Key) reach the
+// server, but never replace the credentials or the organization the client is scoped to.
+func TestDoWithHeaders_CannotOverrideAuth(t *testing.T) {
+	var got http.Header
+	c := newTest(t, config.Settings{Organization: "acme", APIKey: "k"}, func(w http.ResponseWriter, r *http.Request) {
+		got = r.Header.Clone()
+		w.Write([]byte(`{}`))
+	})
+	h := map[string]string{"Idempotency-Key": "op-1", "X-Streamtime-Key": "other", "X-Streamtime-Org": "other-org"}
+	if err := c.DoWithHeaders(context.Background(), "POST", "fleet/x/reconcile/", h, map[string]any{"generation": 1}, nil); err != nil {
+		t.Fatal(err)
+	}
+	if got.Get("Idempotency-Key") != "op-1" || got.Get("X-Streamtime-Key") != "k" || got.Get("X-Streamtime-Org") != "acme" {
+		t.Fatalf("headers sent: key=%q org=%q idempotency=%q", got.Get("X-Streamtime-Key"), got.Get("X-Streamtime-Org"), got.Get("Idempotency-Key"))
+	}
+}

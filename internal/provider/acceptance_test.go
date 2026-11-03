@@ -222,3 +222,172 @@ resource "streamtime_base_domain" "t" {
 		},
 	})
 }
+
+// TestAcc_CloudAccountAndNetwork: a cloud account and a bring-your-own network in it
+// (network_id set, so nothing is created in a cloud). Create, empty plan, in-place
+// update of each, import by identifier, destroy. Credentials are never read back,
+// so the import step ignores them. Fleets are asynchronous and are verified by hand
+// (#1801 human row 3).
+func TestAcc_CloudAccountAndNetwork(t *testing.T) {
+	id := "tfacc-" + strings.ToLower(acctest.RandStringFromCharSet(8, acctest.CharSetAlpha))
+	cfg := func(secret, name string) string {
+		return fmt.Sprintf(`
+provider "streamtime" {}
+
+resource "streamtime_cloud_account" "t" {
+  identifier     = %[1]q
+  cloud_provider = "aws"
+  configuration = jsonencode({
+    aws_access_key    = "AKIATFACCEXAMPLE0000"
+    aws_access_secret = %[2]q
+  })
+}
+
+resource "streamtime_network" "t" {
+  identifier    = %[1]q
+  name          = %[3]q
+  cloud_account = streamtime_cloud_account.t.identifier
+  network_id    = "vpc-0123456789abcdef0"
+}
+`, id, secret, name)
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { preCheck(t) },
+		ProtoV6ProviderFactories: protoV6Factories,
+		CheckDestroy: resource.ComposeAggregateTestCheckFunc(
+			destroyed("streamtime_network", "networks/", "identifier"),
+			destroyed("streamtime_cloud_account", "bootstrap-providers/", "identifier"),
+		),
+		Steps: []resource.TestStep{
+			{
+				Config: cfg("tfacc-secret-tfacc-secret-tfacc-secret-1", "first"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("streamtime_cloud_account.t", "id", id),
+					resource.TestCheckResourceAttr("streamtime_network.t", "network_id", "vpc-0123456789abcdef0"),
+					resource.TestCheckResourceAttr("streamtime_network.t", "provisioned_by_streamtime", "false"),
+				),
+			},
+			{
+				Config: cfg("tfacc-secret-tfacc-secret-tfacc-secret-2", "second"),
+				Check:  resource.TestCheckResourceAttr("streamtime_network.t", "name", "second"),
+			},
+			{
+				ResourceName:            "streamtime_cloud_account.t",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"configuration"},
+			},
+			{
+				ResourceName:      "streamtime_network.t",
+				ImportState:       true,
+				ImportStateVerify: true,
+				// Whether Streamtime created the network is known only to the run that created it.
+				ImportStateVerifyIgnore: []string{"provisioned_by_streamtime", "timeouts"},
+			},
+		},
+	})
+}
+
+// TestAcc_KafkaTopic: create, empty plan, more partitions and a changed setting in
+// place, import by <kafka>/<name>, destroy. Topics need a running cluster, so it
+// runs only when STREAMTIME_ACC_KAFKA names one (a disposable cluster: the test
+// creates and deletes a tfacc topic on it). The cluster itself is asynchronous and
+// is verified by hand (plan #1801, human row 3).
+func TestAcc_KafkaTopic(t *testing.T) {
+	kafka := os.Getenv("STREAMTIME_ACC_KAFKA")
+	if kafka == "" {
+		t.Skip("set STREAMTIME_ACC_KAFKA to the identifier of a running Kafka cluster to run this test")
+	}
+	name := "tfacc-" + strings.ToLower(acctest.RandStringFromCharSet(8, acctest.CharSetAlpha))
+	cfg := func(partitions int, retention string) string {
+		return fmt.Sprintf(`
+provider "streamtime" {}
+
+resource "streamtime_kafka_topic" "t" {
+  kafka              = %[1]q
+  name               = %[2]q
+  partitions         = %[3]d
+  replication_factor = 1
+  config = {
+    "retention.ms" = %[4]q
+  }
+}
+`, kafka, name, partitions, retention)
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { preCheck(t) },
+		ProtoV6ProviderFactories: protoV6Factories,
+		CheckDestroy:             destroyed("streamtime_kafka_topic", "kafka/"+kafka+"/topics/", "name"),
+		Steps: []resource.TestStep{
+			{
+				Config: cfg(1, "3600000"),
+				Check:  resource.TestCheckResourceAttr("streamtime_kafka_topic.t", "id", kafka+"/"+name),
+			},
+			{
+				Config: cfg(2, "7200000"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("streamtime_kafka_topic.t", "partitions", "2"),
+					resource.TestCheckResourceAttr("streamtime_kafka_topic.t", "config.retention.ms", "7200000"),
+				),
+			},
+			{
+				ResourceName:      "streamtime_kafka_topic.t",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+// TestAcc_FlinkProject: create with a token-authenticated store, empty plan, an
+// in-place change of the name and the store's address, import by identifier,
+// destroy. The CI key and the store token are never returned again, so the import
+// cannot verify them.
+func TestAcc_FlinkProject(t *testing.T) {
+	id := "tfacc-" + strings.ToLower(acctest.RandStringFromCharSet(10, acctest.CharSetAlpha))
+	cfg := func(name, storeURL string) string {
+		return fmt.Sprintf(`
+provider "streamtime" {}
+
+resource "streamtime_flink_project" "t" {
+  identifier = %q
+  name       = %q
+  runtime    = "java"
+
+  store = {
+    store_type     = "oras"
+    url            = %q
+    authentication = "token"
+    token          = "tfacc-read-only"
+  }
+}
+`, id, name, storeURL)
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { preCheck(t) },
+		ProtoV6ProviderFactories: protoV6Factories,
+		CheckDestroy:             destroyed("streamtime_flink_project", "flink-projects/", "id"),
+		Steps: []resource.TestStep{
+			{
+				Config: cfg("first", "https://ghcr.io"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("streamtime_flink_project.t", "id", id),
+					resource.TestCheckResourceAttr("streamtime_flink_project.t", "store.has_credential", "true"),
+				),
+			},
+			{
+				Config: cfg("second", "https://registry.example.com"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("streamtime_flink_project.t", "name", "second"),
+					resource.TestCheckResourceAttr("streamtime_flink_project.t", "store.url", "https://registry.example.com"),
+				),
+			},
+			{
+				ResourceName:            "streamtime_flink_project.t",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"store.token"},
+			},
+		},
+	})
+}

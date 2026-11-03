@@ -339,15 +339,20 @@ func TestRead_404DropsState(t *testing.T) {
 	}
 }
 
-// TestSensitive_NotLogged: secret value, TLS key and DNS settings are marked sensitive,
-// so Terraform never prints them in plans or logs.
+// TestSensitive_NotLogged: secret value, TLS key, DNS settings, cloud credentials and a
+// fleet's, Flink instance's and ClickHouse database's advanced settings and the fleet's
+// webhook secret are marked sensitive, so Terraform never prints them in plans or logs.
 func TestSensitive_NotLogged(t *testing.T) {
 	for name, tc := range map[string]struct {
 		r    resource.Resource
 		attr []string
 	}{
-		"secret":      {NewSecret(), []string{"content"}},
-		"base_domain": {NewBaseDomain(), []string{"tls_key", "dns_provider_config"}},
+		"secret":        {NewSecret(), []string{"content"}},
+		"base_domain":   {NewBaseDomain(), []string{"tls_key", "dns_provider_config"}},
+		"cloud_account": {NewCloudAccount(), []string{"configuration"}},
+		"fleet":         {NewFleet(), []string{"advanced_config", "alert_webhook_secret"}},
+		"flink":         {NewFlink(), []string{"advanced_configuration"}},
+		"clickhouse":    {NewClickHouse(), []string{"advanced_configuration"}},
 	} {
 		var sr resource.SchemaResponse
 		tc.r.Schema(context.Background(), resource.SchemaRequest{}, &sr)
@@ -366,8 +371,11 @@ func TestReplaceAttributes(t *testing.T) {
 		r     resource.Resource
 		attrs []string
 	}{
-		"secret":      {NewSecret(), []string{"path", "secret_provider"}},
-		"base_domain": {NewBaseDomain(), []string{"domain"}},
+		"secret":        {NewSecret(), []string{"path", "secret_provider"}},
+		"base_domain":   {NewBaseDomain(), []string{"domain"}},
+		"cloud_account": {NewCloudAccount(), []string{"identifier"}},
+		"network":       {NewNetwork(), []string{"identifier", "cloud_account", "region", "cidr", "network_id"}},
+		"fleet":         {NewFleet(), []string{"identifier", "fleet_provider", "network"}},
 	} {
 		var sr resource.SchemaResponse
 		tc.r.Schema(context.Background(), resource.SchemaRequest{}, &sr)

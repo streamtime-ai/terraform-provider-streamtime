@@ -106,9 +106,23 @@ func checkServerVersion(ctx context.Context, c *client.Client, providerVersion s
 }
 
 func (p *streamtimeProvider) Resources(context.Context) []func() resource.Resource {
-	return []func() resource.Resource{resources.NewSecret, resources.NewBaseDomain}
+	return []func() resource.Resource{
+		resources.NewSecret, resources.NewBaseDomain,
+		resources.NewCloudAccount, resources.NewNetwork, resources.NewFleet,
+		resources.NewKafka, resources.NewKafkaTopic,
+		resources.NewKafkaConnect, resources.NewKafkaReplicator, resources.NewVirtualKafka,
+		resources.NewFlink, resources.NewFlinkProject, resources.NewClickHouse,
+		resources.NewMember, resources.NewAPIKey, resources.NewOAuthProvider, resources.NewOAuthClient,
+		resources.NewAlertChannel, resources.NewObservabilityProvider,
+		resources.NewHelmRepository, resources.NewTrackedRepository, resources.NewPackage, resources.NewPackageRule,
+		resources.NewSMTPConfig,
+	}
 }
 
 func (p *streamtimeProvider) DataSources(context.Context) []func() datasource.DataSource {
-	return nil
+	return []func() datasource.DataSource{
+		resources.NewFleetDataSource, resources.NewFleetConfigurationProfilesDataSource,
+		resources.NewFleetConfigurationProfileDataSource, resources.NewFleetNodePoolsDataSource,
+		resources.NewKafkaConnectionConfigurationDataSource,
+	}
 }

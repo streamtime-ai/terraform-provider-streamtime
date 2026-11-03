@@ -75,15 +75,20 @@ func (c *Client) authenticate(req *http.Request) {
 // Do sends an authenticated request to an org-scoped path and decodes a JSON
 // response into out (which may be nil).
 func (c *Client) Do(ctx context.Context, method, orgPath string, body, out any) error {
-	return c.do(ctx, method, c.OrgPath(orgPath), body, out, true)
+	return c.do(ctx, method, c.OrgPath(orgPath), nil, body, out, true)
+}
+
+// DoWithHeaders is Do with extra request headers, such as an Idempotency-Key.
+func (c *Client) DoWithHeaders(ctx context.Context, method, orgPath string, headers map[string]string, body, out any) error {
+	return c.do(ctx, method, c.OrgPath(orgPath), headers, body, out, true)
 }
 
 // GetPublic reads an unauthenticated global path. Only /setup/info/ uses it.
 func (c *Client) GetPublic(ctx context.Context, path string, out any) error {
-	return c.do(ctx, http.MethodGet, "/"+strings.TrimLeft(path, "/"), nil, out, false)
+	return c.do(ctx, http.MethodGet, "/"+strings.TrimLeft(path, "/"), nil, nil, out, false)
 }
 
-func (c *Client) do(ctx context.Context, method, path string, body, out any, auth bool) error {
+func (c *Client) do(ctx context.Context, method, path string, headers map[string]string, body, out any, auth bool) error {
 	var rdr io.Reader
 	if body != nil {
 		b, err := json.Marshal(body)
@@ -99,6 +104,9 @@ func (c *Client) do(ctx context.Context, method, path string, body, out any, aut
 	req.Header.Set("Accept", "application/json")
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
+	}
+	for k, v := range headers {
+		req.Header.Set(k, v)
 	}
 	if auth {
 		c.authenticate(req)

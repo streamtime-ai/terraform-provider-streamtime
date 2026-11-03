@@ -100,15 +100,6 @@ const (
 	BootstrapProviderProviderEnumOci          BootstrapProviderProviderEnum = "oci"
 )
 
-// Defines values for BuildToolEnum.
-const (
-	BuildToolEnumGradle BuildToolEnum = "gradle"
-	BuildToolEnumMaven  BuildToolEnum = "maven"
-	BuildToolEnumOther  BuildToolEnum = "other"
-	BuildToolEnumPip    BuildToolEnum = "pip"
-	BuildToolEnumSbt    BuildToolEnum = "sbt"
-)
-
 // Defines values for BuiltinCertificateSettingSourceEnum.
 const (
 	BuiltinCertificateSettingSourceEnumBundled   BuiltinCertificateSettingSourceEnum = "bundled"
@@ -120,6 +111,13 @@ const (
 const (
 	BuiltinCertificateSettingWriteSourceEnumGenerated BuiltinCertificateSettingWriteSourceEnum = "generated"
 	BuiltinCertificateSettingWriteSourceEnumUploaded  BuiltinCertificateSettingWriteSourceEnum = "uploaded"
+)
+
+// Defines values for CapacityModeEnum.
+const (
+	CapacityModeEnumLegacy      CapacityModeEnum = "legacy"
+	CapacityModeEnumPerCategory CapacityModeEnum = "per_category"
+	CapacityModeEnumSplit       CapacityModeEnum = "split"
 )
 
 // Defines values for CategoryEnum.
@@ -219,12 +217,6 @@ const (
 	Server   ClusterBenchmarkResultTypeEnum = "Server"
 )
 
-// Defines values for ClusterHealthStatusEnum.
-const (
-	ClusterHealthStatusEnumHealthy   ClusterHealthStatusEnum = "Healthy"
-	ClusterHealthStatusEnumUnhealthy ClusterHealthStatusEnum = "Unhealthy"
-)
-
 // Defines values for ClusterTypeEnum.
 const (
 	ClusterTypeEnumFleet ClusterTypeEnum = "Fleet"
@@ -294,6 +286,12 @@ const (
 	FleetBootstrap FleetInstalledComponentsRequestComponentTypeEnum = "fleet_bootstrap"
 )
 
+// Defines values for FlinkAdvancedConfigSchemaRuntime.
+const (
+	FlinkAdvancedConfigSchemaRuntimeJava   FlinkAdvancedConfigSchemaRuntime = "java"
+	FlinkAdvancedConfigSchemaRuntimePython FlinkAdvancedConfigSchemaRuntime = "python"
+)
+
 // Defines values for FlinkAuthSchemaTypeEnum.
 const (
 	Basic FlinkAuthSchemaTypeEnum = "basic"
@@ -337,6 +335,12 @@ const (
 const (
 	FlinkProjectDeploymentTargetTypeEnumFlink FlinkProjectDeploymentTargetTypeEnum = "flink"
 	FlinkProjectDeploymentTargetTypeEnumJob   FlinkProjectDeploymentTargetTypeEnum = "job"
+)
+
+// Defines values for FlinkProjectHeadRequestTargetTypeEnum.
+const (
+	FlinkProjectHeadRequestTargetTypeEnumCluster FlinkProjectHeadRequestTargetTypeEnum = "cluster"
+	FlinkProjectHeadRequestTargetTypeEnumJob     FlinkProjectHeadRequestTargetTypeEnum = "job"
 )
 
 // Defines values for FlinkProjectVersionSourceEnum.
@@ -391,13 +395,6 @@ const (
 	Complete  InstalledComponentTrackingStatusEnum = "complete"
 	Legacy    InstalledComponentTrackingStatusEnum = "legacy"
 	Untracked InstalledComponentTrackingStatusEnum = "untracked"
-)
-
-// Defines values for IssueSeverityEnum.
-const (
-	Amber IssueSeverityEnum = "Amber"
-	Green IssueSeverityEnum = "Green"
-	Red   IssueSeverityEnum = "Red"
 )
 
 // Defines values for KafkaConnectCreateSchemaProviderEnum.
@@ -741,15 +738,6 @@ const (
 	PlatformDefault Source839Enum = "platform_default"
 )
 
-// Defines values for SourceProviderEnum.
-const (
-	SourceProviderEnumBitbucket SourceProviderEnum = "bitbucket"
-	SourceProviderEnumGithub    SourceProviderEnum = "github"
-	SourceProviderEnumGitlab    SourceProviderEnum = "gitlab"
-	SourceProviderEnumNone      SourceProviderEnum = "none"
-	SourceProviderEnumOther     SourceProviderEnum = "other"
-)
-
 // Defines values for StateEnum.
 const (
 	Installed StateEnum = "installed"
@@ -845,10 +833,10 @@ const (
 	ReadWrite StreamtimeAiAccessEnum = "read_write"
 )
 
-// Defines values for TargetType89cEnum.
+// Defines values for TargetEnum.
 const (
-	Cluster TargetType89cEnum = "cluster"
-	Job     TargetType89cEnum = "job"
+	TargetEnumFleet    TargetEnum = "fleet"
+	TargetEnumWorkload TargetEnum = "workload"
 )
 
 // Defines values for TenancyModeEnum.
@@ -860,8 +848,8 @@ const (
 
 // Defines values for TunnelProviderEnum.
 const (
-	TunnelProviderEnumOther     TunnelProviderEnum = "other"
-	TunnelProviderEnumTailscale TunnelProviderEnum = "tailscale"
+	Other     TunnelProviderEnum = "other"
+	Tailscale TunnelProviderEnum = "tailscale"
 )
 
 // Defines values for UnmatchStatusEnum.
@@ -896,7 +884,7 @@ const (
 
 // Defines values for VirtualKafkaClusterProviderEnum.
 const (
-	Kroxy VirtualKafkaClusterProviderEnum = "kroxy"
+	VirtualKafkaClusterProviderEnumKroxy VirtualKafkaClusterProviderEnum = "kroxy"
 )
 
 // Defines values for VirtualKafkaClusterStatusEnum.
@@ -972,6 +960,27 @@ const (
 	OrganizationsClusterHistoryListParamsClusterTypeKafka OrganizationsClusterHistoryListParamsClusterType = "Kafka"
 )
 
+// Defines values for GetComponentCatalogParamsSku.
+const (
+	GetComponentCatalogParamsSkuBenchstress     GetComponentCatalogParamsSku = "benchstress"
+	GetComponentCatalogParamsSkuCfk             GetComponentCatalogParamsSku = "cfk"
+	GetComponentCatalogParamsSkuClickhouse      GetComponentCatalogParamsSku = "clickhouse"
+	GetComponentCatalogParamsSkuFlink           GetComponentCatalogParamsSku = "flink"
+	GetComponentCatalogParamsSkuFlinkJob        GetComponentCatalogParamsSku = "flink_job"
+	GetComponentCatalogParamsSkuKafkaConnect    GetComponentCatalogParamsSku = "kafka_connect"
+	GetComponentCatalogParamsSkuKafkaReplicator GetComponentCatalogParamsSku = "kafka_replicator"
+	GetComponentCatalogParamsSkuKroxy           GetComponentCatalogParamsSku = "kroxy"
+	GetComponentCatalogParamsSkuRedpanda        GetComponentCatalogParamsSku = "redpanda"
+	GetComponentCatalogParamsSkuStrimzi         GetComponentCatalogParamsSku = "strimzi"
+	GetComponentCatalogParamsSkuWarpstream      GetComponentCatalogParamsSku = "warpstream"
+)
+
+// Defines values for GetComponentCatalogParamsTarget.
+const (
+	GetComponentCatalogParamsTargetFleet    GetComponentCatalogParamsTarget = "fleet"
+	GetComponentCatalogParamsTargetWorkload GetComponentCatalogParamsTarget = "workload"
+)
+
 // Defines values for DispatchAgentTaskParamsWorkflowType.
 const (
 	ByokProvider                     DispatchAgentTaskParamsWorkflowType = "ByokProvider"
@@ -987,18 +996,9 @@ const (
 
 // Defines values for FlinkProjectsListParamsRuntime.
 const (
-	FlinkProjectsListParamsRuntimeJava   FlinkProjectsListParamsRuntime = "java"
-	FlinkProjectsListParamsRuntimePython FlinkProjectsListParamsRuntime = "python"
-	FlinkProjectsListParamsRuntimeScala  FlinkProjectsListParamsRuntime = "scala"
-)
-
-// Defines values for FlinkProjectsListParamsSourceProvider.
-const (
-	FlinkProjectsListParamsSourceProviderBitbucket FlinkProjectsListParamsSourceProvider = "bitbucket"
-	FlinkProjectsListParamsSourceProviderGithub    FlinkProjectsListParamsSourceProvider = "github"
-	FlinkProjectsListParamsSourceProviderGitlab    FlinkProjectsListParamsSourceProvider = "gitlab"
-	FlinkProjectsListParamsSourceProviderNone      FlinkProjectsListParamsSourceProvider = "none"
-	FlinkProjectsListParamsSourceProviderOther     FlinkProjectsListParamsSourceProvider = "other"
+	Java   FlinkProjectsListParamsRuntime = "java"
+	Python FlinkProjectsListParamsRuntime = "python"
+	Scala  FlinkProjectsListParamsRuntime = "scala"
 )
 
 // Defines values for FlinkProjectsCiTemplateParamsFormat.
@@ -1557,13 +1557,6 @@ type BootstrapProvider struct {
 // * `civo` - civo
 type BootstrapProviderProviderEnum string
 
-// BuildToolEnum * `maven` - Maven
-// * `gradle` - Gradle
-// * `sbt` - sbt
-// * `pip` - pip
-// * `other` - Other
-type BuildToolEnum string
-
 // BuiltinCertificateSetting defines model for BuiltinCertificateSetting.
 type BuiltinCertificateSetting struct {
 	// CaCertificatePem The Streamtime CA. Trusting it trusts every certificate generated here.
@@ -1649,6 +1642,9 @@ type CPAnsibleConnectionConfiguration struct {
 	ControlCenterUsername *string `json:"control_center_username,omitempty"`
 }
 
+// CapacityModeEnum defines model for CapacityModeEnum.
+type CapacityModeEnum string
+
 // Catalog Base serializer for all model serializers.
 type Catalog struct {
 	CreatedAt *time.Time          `json:"created_at,omitempty"`
@@ -1660,6 +1656,61 @@ type Catalog struct {
 	Organization *string    `json:"organization,omitempty"`
 	UpdatedAt    *time.Time `json:"updated_at,omitempty"`
 	Version      *int64     `json:"version,omitempty"`
+}
+
+// CatalogComponent defines model for CatalogComponent.
+type CatalogComponent struct {
+	// DefaultVersion Recommended version from the package rules.
+	DefaultVersion *string `json:"default_version"`
+
+	// DefaultVersionAvailable Whether the recommended version exists in the preferred registry.
+	DefaultVersionAvailable bool   `json:"default_version_available"`
+	Description             string `json:"description"`
+
+	// Key Key used in chart_config / bootstrap_config.
+	Key string `json:"key"`
+
+	// Label User-facing name.
+	Label string `json:"label"`
+
+	// NewestVersion Newest version in the preferred registry.
+	NewestVersion        *string                 `json:"newest_version"`
+	Order                int                     `json:"order"`
+	PreferredRegistryUrl *string                 `json:"preferred_registry_url"`
+	RegistryOptions      []CatalogRegistryOption `json:"registry_options"`
+
+	// Repository Catalog repository the versions come from.
+	Repository string `json:"repository"`
+
+	// UserSelectable False when the form does not offer this component.
+	UserSelectable     bool `json:"user_selectable"`
+	ValuesConfigurable bool `json:"values_configurable"`
+}
+
+// CatalogRegistryOption defines model for CatalogRegistryOption.
+type CatalogRegistryOption struct {
+	Allowed      bool   `json:"allowed"`
+	PackageCount int    `json:"package_count"`
+	Preferred    bool   `json:"preferred"`
+	RegistryUrl  string `json:"registry_url"`
+}
+
+// CategoryConfigSchema One workload category on a fleet.
+type CategoryConfigSchema struct {
+	// Enabled Whether the fleet runs this category of workloads.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Providers Providers enabled for this category. At least one when enabled.
+	Providers *[]string `json:"providers,omitempty"`
+
+	// Services Optional services enabled for this category (Streaming: virtual_clusters).
+	Services *[]string `json:"services,omitempty"`
+
+	// Units Capacity for this category, in its units. Cloud fleets only (BYOK capacity is derived).
+	Units *int `json:"units"`
+
+	// Weight BYOK only: relative share of the derived capacity (equal shares by default).
+	Weight *int `json:"weight,omitempty"`
 }
 
 // CategoryEnum * `load` - Load
@@ -2290,41 +2341,6 @@ type ClusterBenchmarkResult struct {
 // * `Server` - Server
 type ClusterBenchmarkResultTypeEnum string
 
-// ClusterHealth Base serializer for all ADRF model serializers.
-type ClusterHealth struct {
-	ClusterHealthStatus *ClusterHealth_ClusterHealthStatus `json:"cluster_health_status"`
-	ClusterId           string                             `json:"cluster_id"`
-	ClusterType         string                             `json:"cluster_type"`
-	CreatedAt           *time.Time                         `json:"created_at,omitempty"`
-	Id                  *openapi_types.UUID                `json:"id,omitempty"`
-
-	// Identifier Server-generated from this row's own id.
-	Identifier    *string                      `json:"identifier,omitempty"`
-	Input         string                       `json:"input"`
-	IssueSeverity *ClusterHealth_IssueSeverity `json:"issue_severity"`
-	IssueSummary  *string                      `json:"issue_summary"`
-	IssueTitle    *string                      `json:"issue_title"`
-
-	// Organization An alphanumeric string (< 24 characters) containing only lowercase characters, "-", and "_", starting with a letter or number.
-	Organization *string    `json:"organization,omitempty"`
-	Output       *string    `json:"output"`
-	UpdatedAt    *time.Time `json:"updated_at,omitempty"`
-}
-
-// ClusterHealth_ClusterHealthStatus defines model for ClusterHealth.ClusterHealthStatus.
-type ClusterHealth_ClusterHealthStatus struct {
-	union json.RawMessage
-}
-
-// ClusterHealth_IssueSeverity defines model for ClusterHealth.IssueSeverity.
-type ClusterHealth_IssueSeverity struct {
-	union json.RawMessage
-}
-
-// ClusterHealthStatusEnum * `Healthy` - Healthy
-// * `Unhealthy` - Unhealthy
-type ClusterHealthStatusEnum string
-
 // ClusterHistory Base serializer for all ADRF model serializers.
 type ClusterHistory struct {
 	ClusterId string `json:"cluster_id"`
@@ -2400,6 +2416,17 @@ type CommandDispatchResponse struct {
 
 	// WorkflowId Temporal workflow ID
 	WorkflowId string `json:"workflow_id"`
+}
+
+// ComponentCatalog defines model for ComponentCatalog.
+type ComponentCatalog struct {
+	Components []CatalogComponent `json:"components"`
+	Provider   *string            `json:"provider"`
+	Sku        *string            `json:"sku"`
+
+	// Target * `fleet` - fleet
+	// * `workload` - workload
+	Target TargetEnum `json:"target"`
 }
 
 // ConfigurationState7a4Enum * `incomplete` - Incomplete
@@ -2478,6 +2505,20 @@ type DeploymentEnvironmentEnum string
 // * `absent` - Absent
 type DesiredLifecycle0b2Enum string
 
+// DevEnv defines model for DevEnv.
+type DevEnv struct {
+	Files []DevEnvFile `json:"files"`
+}
+
+// DevEnvFile defines model for DevEnvFile.
+type DevEnvFile struct {
+	// Content The file's text.
+	Content string `json:"content"`
+
+	// Path Where the file goes, relative to the project's repository.
+	Path string `json:"path"`
+}
+
 // EncryptionEnum * `starttls` - STARTTLS
 // * `ssl` - SSL/TLS
 // * `none` - None
@@ -2494,6 +2535,11 @@ type Endpoint struct {
 // * `non-prod` - Non-prod
 // * `production` - Production
 type EnvironmentEnum string
+
+// ErrorDetail defines model for ErrorDetail.
+type ErrorDetail struct {
+	Detail string `json:"detail"`
+}
 
 // Fleet Base serializer for Fleet model.
 // Use FleetCreateSerializer for POST requests and FleetSerializer for PATCH/PUT requests.
@@ -2586,7 +2632,7 @@ type Fleet struct {
 	UpdatedAt   *time.Time       `json:"updated_at,omitempty"`
 
 	// Workloads Workload categories (streaming, stream_processing, analytics), each with enabled, providers and units (cloud fleets) or weight (BYOK). capacity_mode is set by the server.
-	Workloads *string `json:"workloads,omitempty"`
+	Workloads *FleetWorkloadsSchema `json:"workloads,omitempty"`
 }
 
 // FleetAdvancedConfigurationSchemaResponse defines model for FleetAdvancedConfigurationSchemaResponse.
@@ -2732,6 +2778,36 @@ type FleetConfigDetailResponse struct {
 	Detail string `json:"detail"`
 }
 
+// FleetConfigurationProfile defines model for FleetConfigurationProfile.
+type FleetConfigurationProfile struct {
+	// AdvancedConfig Schema of the fleet's advanced settings for an empty placement, or {"detail": ...} when it depends on the placement.
+	AdvancedConfig map[string]interface{} `json:"advanced_config"`
+
+	// Placement Schema of the fleet's placement settings.
+	Placement map[string]interface{} `json:"placement"`
+	Provider  string                 `json:"provider"`
+}
+
+// FleetConfigurationProfileSummary defines model for FleetConfigurationProfileSummary.
+type FleetConfigurationProfileSummary struct {
+	Description string `json:"description"`
+
+	// Details Indicative cost details, for display.
+	Details         *map[string]interface{} `json:"details,omitempty"`
+	Disabled        bool                    `json:"disabled"`
+	DisabledReasons []string                `json:"disabled_reasons"`
+	DisplayName     string                  `json:"display_name"`
+
+	// Enabled Whether this organization can create fleets with it.
+	Enabled bool `json:"enabled"`
+
+	// Identifier Fleet provider ID, used as a fleet's provider.
+	Identifier  string                    `json:"identifier"`
+	Priority    int                       `json:"priority"`
+	TenancyMode *[]map[string]interface{} `json:"tenancy_mode,omitempty"`
+	Version     string                    `json:"version"`
+}
+
 // FleetCreate Serializer for creating Fleet instances (POST requests).
 // metadata, advanced_properties, status, and resources are read-only on creation.
 type FleetCreate struct {
@@ -2827,7 +2903,7 @@ type FleetCreate struct {
 	UpdatedAt   *time.Time       `json:"updated_at,omitempty"`
 
 	// Workloads Workload categories (streaming, stream_processing, analytics), each with enabled, providers and units (cloud fleets) or weight (BYOK). capacity_mode is set by the server.
-	Workloads *string `json:"workloads,omitempty"`
+	Workloads *FleetWorkloadsSchema `json:"workloads,omitempty"`
 }
 
 // FleetInstalledComponentsRequest Documents the bulk-record request body accepted by the fleet installed-components POST endpoint.
@@ -2990,6 +3066,21 @@ type FleetWorkloadUnitFootprint struct {
 	Vcpu  float64 `json:"vcpu"`
 }
 
+// FleetWorkloadsSchema Workload categories and providers enabled on a fleet.
+type FleetWorkloadsSchema struct {
+	// Analytics One workload category on a fleet.
+	Analytics *CategoryConfigSchema `json:"analytics,omitempty"`
+
+	// CapacityMode How capacity is sized: legacy (pre-workloads fleets), split (BYOK) or per_category (cloud).
+	CapacityMode *CapacityModeEnum `json:"capacity_mode,omitempty"`
+
+	// StreamProcessing One workload category on a fleet.
+	StreamProcessing *CategoryConfigSchema `json:"stream_processing,omitempty"`
+
+	// Streaming One workload category on a fleet.
+	Streaming *CategoryConfigSchema `json:"streaming,omitempty"`
+}
+
 // Flink Serializer for the Flink model.
 //
 // The advanced_configuration field is strictly validated via FlinkAdvancedConfigSchema
@@ -3014,6 +3105,12 @@ type Flink struct {
 	// * `present` - Present
 	// * `absent` - Absent
 	DesiredLifecycle *DesiredLifecycle0b2Enum `json:"desired_lifecycle,omitempty"`
+
+	// EffectiveCheckpointsLocation Where this cluster keeps checkpoints, after the fleet's own store replaces an unset location.
+	EffectiveCheckpointsLocation *string `json:"effective_checkpoints_location"`
+
+	// EffectiveSavepointsLocation Where this cluster keeps savepoints, after the fleet's own store replaces an unset location.
+	EffectiveSavepointsLocation *string `json:"effective_savepoints_location"`
 
 	// Fleet An alphanumeric string (< 24 characters) containing only lowercase characters and "-", starting with a letter or number. Underscores are not allowed as they are incompatible with Kubernetes naming requirements.
 	Fleet *string `json:"fleet"`
@@ -3070,7 +3167,10 @@ type Flink struct {
 	// * `Deleting` - Deleting
 	// * `Healthy` - Healthy
 	Status *Status1f9Enum `json:"status,omitempty"`
-	Tags   interface{}    `json:"tags,omitempty"`
+
+	// StatusDetail Short, redacted reason of the last failed operation; empty once the status recovers.
+	StatusDetail *string     `json:"status_detail,omitempty"`
+	Tags         interface{} `json:"tags,omitempty"`
 
 	// UiUrl Public URL for the Flink Web UI (populated by workflow after successful deploy).
 	UiUrl     *string    `json:"ui_url"`
@@ -3167,6 +3267,9 @@ type FlinkAdvancedConfigSchema struct {
 	// PythonEntryFile For a Python project version: the Python file that starts the job, relative to the archive root. Defaults to the file found when the archive was uploaded (main.py).
 	PythonEntryFile *string `json:"python_entry_file"`
 
+	// Runtime For a Job Workspace: the kind of jobs it runs. 'python' installs the Flink image that runs Python jobs; 'java' (or not set) uses the plain Flink image. Needs no project. A workspace that already holds a Python version runs Python whatever this says.
+	Runtime *FlinkAdvancedConfigSchemaRuntime `json:"runtime"`
+
 	// SavepointStrategy Savepoint strategy for the Flink job.
 	SavepointStrategy *FlinkSavepointStrategySchema `json:"savepoint_strategy,omitempty"`
 
@@ -3191,6 +3294,9 @@ type FlinkAdvancedConfigSchema struct {
 	// WebUi Web UI and REST API configuration for Flink JobManager.
 	WebUi *FlinkWebUISchema `json:"web_ui,omitempty"`
 }
+
+// FlinkAdvancedConfigSchemaRuntime For a Job Workspace: the kind of jobs it runs. 'python' installs the Flink image that runs Python jobs; 'java' (or not set) uses the plain Flink image. Needs no project. A workspace that already holds a Python version runs Python whatever this says.
+type FlinkAdvancedConfigSchemaRuntime string
 
 // FlinkAuthDetailsSchema Provider-specific auth detail fields.
 //
@@ -3304,6 +3410,9 @@ type FlinkCreateSchema struct {
 	// Description Optional free-text description.
 	Description *string `json:"description"`
 
+	// Fleet Target fleet identifier. Leave it out to let Streamtime choose a fleet when the cluster is first deployed.
+	Fleet *string `json:"fleet"`
+
 	// FlinkUnits Flink units allocation for Single-Job Cluster mode (mode=application).
 	FlinkUnits *int `json:"flink_units"`
 
@@ -3313,7 +3422,7 @@ type FlinkCreateSchema struct {
 	// MaxFlinkUnits Max Flink units capacity pool for Job Workspace mode (mode=session).
 	MaxFlinkUnits *int `json:"max_flink_units"`
 
-	// Mode Deployment mode for the Flink cluster. 'application' runs a single JAR as the cluster workload (spec.job in FlinkDeployment). 'session' starts a long-running cluster that accepts FlinkSessionJob submissions.
+	// Mode Deployment mode for the Flink cluster. 'application' runs a single JAR as the cluster workload (spec.job in FlinkDeployment); only the 'cmf' provider accepts it. 'session' starts a long-running Job Workspace that accepts FlinkSessionJob submissions; it is the only mode for the 'open-source' provider.
 	Mode FlinkCreateSchemaModeEnum `json:"mode"`
 
 	// ProjectVersion Names an uploaded Flink project version (documents the `project_version` field).
@@ -3389,9 +3498,12 @@ type FlinkJob struct {
 	// * `Healthy` - Healthy
 	// * `Error` - Error
 	// * `Deleting` - Deleting
-	Status    *FlinkJobStatusEnum `json:"status,omitempty"`
-	Tags      interface{}         `json:"tags,omitempty"`
-	UpdatedAt *time.Time          `json:"updated_at,omitempty"`
+	Status *FlinkJobStatusEnum `json:"status,omitempty"`
+
+	// StatusDetail Short, redacted reason of the last failed operation; empty once the status recovers.
+	StatusDetail *string     `json:"status_detail,omitempty"`
+	Tags         interface{} `json:"tags,omitempty"`
+	UpdatedAt    *time.Time  `json:"updated_at,omitempty"`
 }
 
 // FlinkJobAdvancedConfigSchema Strict Pydantic schema for FlinkJob advanced_configuration.
@@ -3584,34 +3696,32 @@ type FlinkModeEnum string
 
 // FlinkProject A Flink project. “identifier“ and “runtime“ are fixed once the project is
 // created: the identifier appears in URLs and storage keys, and the runtime decides
-// which artifact type the project accepts.
+// which artifact type the project accepts and which build tool its pipeline uses.
+// A project runs in one Job Workspace (“cluster“) within a Flink-unit budget; both are required.
 type FlinkProject struct {
 	ArtifactKind *string `json:"artifact_kind,omitempty"`
 
-	// BuildTool Tool the CI pipeline uses to build the artifact. Used to tailor the CI template.
-	//
-	// * `maven` - Maven
-	// * `gradle` - Gradle
-	// * `sbt` - sbt
-	// * `pip` - pip
-	// * `other` - Other
-	BuildTool *FlinkProject_BuildTool `json:"build_tool"`
+	// BuildTool Tool the project's CI pipeline builds with. Decided by the runtime.
+	BuildTool *string `json:"build_tool,omitempty"`
 
-	// Cluster Job Workspace the project's Flink units are booked on.
-	Cluster   *string    `json:"cluster"`
+	// Cluster Job Workspace the project's jobs run in and its Flink units are booked on.
+	Cluster   string     `json:"cluster"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 
 	// Description Optional free-text description.
 	Description *string `json:"description"`
 
 	// FlinkUnitBudget Flink units the project may use on its workspace, booked from the workspace's pool.
-	FlinkUnitBudget *int                `json:"flink_unit_budget"`
-	Id              *openapi_types.UUID `json:"id,omitempty"`
+	FlinkUnitBudget int `json:"flink_unit_budget"`
+
+	// HasCiKey Whether a CI upload key has been created for this project. The key itself is never returned here.
+	HasCiKey *bool               `json:"has_ci_key,omitempty"`
+	Id       *openapi_types.UUID `json:"id,omitempty"`
 
 	// Identifier Short name used in URLs and file locations: lowercase letters, digits and '-'.
-	Identifier    string  `json:"identifier"`
-	LatestVersion *string `json:"latest_version"`
-	Metadata      *string `json:"metadata"`
+	Identifier    string                      `json:"identifier"`
+	LatestVersion *string                     `json:"latest_version"`
+	Metadata      *FlinkProjectMetadataSchema `json:"metadata"`
 
 	// Name Display name of the project.
 	Name string `json:"name"`
@@ -3624,35 +3734,9 @@ type FlinkProject struct {
 	// * `java` - Java
 	// * `scala` - Scala
 	// * `python` - Python
-	Runtime *RuntimeEnum `json:"runtime,omitempty"`
-
-	// SourceBranch Branch the CI pipeline builds from.
-	SourceBranch *string `json:"source_branch"`
-
-	// SourceProvider Where the source code is hosted. Used to pick the CI template.
-	//
-	// * `github` - GitHub
-	// * `gitlab` - GitLab
-	// * `bitbucket` - Bitbucket
-	// * `other` - Other
-	// * `none` - None
-	SourceProvider *SourceProviderEnum `json:"source_provider,omitempty"`
-
-	// SourceUrl Link to the source repository. Informational only; it is never accessed.
-	SourceUrl     *string    `json:"source_url"`
-	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
-	VersionsCount *int       `json:"versions_count,omitempty"`
-}
-
-// FlinkProject_BuildTool Tool the CI pipeline uses to build the artifact. Used to tailor the CI template.
-//
-// * `maven` - Maven
-// * `gradle` - Gradle
-// * `sbt` - sbt
-// * `pip` - pip
-// * `other` - Other
-type FlinkProject_BuildTool struct {
-	union json.RawMessage
+	Runtime       *RuntimeEnum `json:"runtime,omitempty"`
+	UpdatedAt     *time.Time   `json:"updated_at,omitempty"`
+	VersionsCount *int         `json:"versions_count,omitempty"`
 }
 
 // FlinkProjectApiKey The project's CI upload key. “key“ is only ever returned once.
@@ -3665,35 +3749,32 @@ type FlinkProjectApiKey struct {
 	Role *string `json:"role,omitempty"`
 }
 
-// FlinkProjectCreated Create / rotate response: the project plus its freshly issued CI key.
+// FlinkProjectCreated Response of creating or rotating the CI key: the project plus the key, shown once.
 type FlinkProjectCreated struct {
 	ApiKey       *FlinkProjectApiKey `json:"api_key,omitempty"`
 	ArtifactKind *string             `json:"artifact_kind,omitempty"`
 
-	// BuildTool Tool the CI pipeline uses to build the artifact. Used to tailor the CI template.
-	//
-	// * `maven` - Maven
-	// * `gradle` - Gradle
-	// * `sbt` - sbt
-	// * `pip` - pip
-	// * `other` - Other
-	BuildTool *FlinkProjectCreated_BuildTool `json:"build_tool"`
+	// BuildTool Tool the project's CI pipeline builds with. Decided by the runtime.
+	BuildTool *string `json:"build_tool,omitempty"`
 
-	// Cluster Job Workspace the project's Flink units are booked on.
-	Cluster   *string    `json:"cluster"`
+	// Cluster Job Workspace the project's jobs run in and its Flink units are booked on.
+	Cluster   string     `json:"cluster"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 
 	// Description Optional free-text description.
 	Description *string `json:"description"`
 
 	// FlinkUnitBudget Flink units the project may use on its workspace, booked from the workspace's pool.
-	FlinkUnitBudget *int                `json:"flink_unit_budget"`
-	Id              *openapi_types.UUID `json:"id,omitempty"`
+	FlinkUnitBudget int `json:"flink_unit_budget"`
+
+	// HasCiKey Whether a CI upload key has been created for this project. The key itself is never returned here.
+	HasCiKey *bool               `json:"has_ci_key,omitempty"`
+	Id       *openapi_types.UUID `json:"id,omitempty"`
 
 	// Identifier Short name used in URLs and file locations: lowercase letters, digits and '-'.
-	Identifier    string  `json:"identifier"`
-	LatestVersion *string `json:"latest_version"`
-	Metadata      *string `json:"metadata"`
+	Identifier    string                      `json:"identifier"`
+	LatestVersion *string                     `json:"latest_version"`
+	Metadata      *FlinkProjectMetadataSchema `json:"metadata"`
 
 	// Name Display name of the project.
 	Name string `json:"name"`
@@ -3706,78 +3787,9 @@ type FlinkProjectCreated struct {
 	// * `java` - Java
 	// * `scala` - Scala
 	// * `python` - Python
-	Runtime *RuntimeEnum `json:"runtime,omitempty"`
-
-	// SourceBranch Branch the CI pipeline builds from.
-	SourceBranch *string `json:"source_branch"`
-
-	// SourceProvider Where the source code is hosted. Used to pick the CI template.
-	//
-	// * `github` - GitHub
-	// * `gitlab` - GitLab
-	// * `bitbucket` - Bitbucket
-	// * `other` - Other
-	// * `none` - None
-	SourceProvider *SourceProviderEnum `json:"source_provider,omitempty"`
-
-	// SourceUrl Link to the source repository. Informational only; it is never accessed.
-	SourceUrl     *string    `json:"source_url"`
-	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
-	VersionsCount *int       `json:"versions_count,omitempty"`
-}
-
-// FlinkProjectCreated_BuildTool Tool the CI pipeline uses to build the artifact. Used to tailor the CI template.
-//
-// * `maven` - Maven
-// * `gradle` - Gradle
-// * `sbt` - sbt
-// * `pip` - pip
-// * `other` - Other
-type FlinkProjectCreated_BuildTool struct {
-	union json.RawMessage
-}
-
-// FlinkProjectDeployRequest defines model for FlinkProjectDeployRequest.
-type FlinkProjectDeployRequest struct {
-	// Cluster Identifier of the session cluster the job runs on. Required for jobs.
-	Cluster *string `json:"cluster,omitempty"`
-
-	// EntryFile Python versions only: the Python file that starts the job, relative to the archive root. Defaults to main.py.
-	EntryFile *string `json:"entry_file,omitempty"`
-
-	// Target Identifier of the cluster, or of the job when target_type is `job`.
-	Target string `json:"target"`
-
-	// TargetType `cluster` for an application-mode Flink cluster, `job` for a job on a session cluster.
-	//
-	// * `cluster` - cluster
-	// * `job` - job
-	TargetType TargetType89cEnum `json:"target_type"`
-
-	// UpgradeMode How running state is handled during the switch. Rolling back to an older version often needs `stateless`, because newer state may not restore on older code.
-	//
-	// * `stateless` - stateless
-	// * `savepoint` - savepoint
-	// * `last-state` - last-state
-	UpgradeMode *UpgradeModeEnum `json:"upgrade_mode,omitempty"`
-
-	// Version Version label to deploy, for example 1.4.0.
-	Version string `json:"version"`
-}
-
-// FlinkProjectDeployResponse defines model for FlinkProjectDeployResponse.
-type FlinkProjectDeployResponse struct {
-	// Deployment One deploy / rollback request (read-only history).
-	Deployment FlinkProjectDeployment `json:"deployment"`
-
-	// Operation For clusters: the reconcile operation that was started.
-	Operation *map[string]interface{} `json:"operation"`
-
-	// Target `type`, `identifier` and the current `status` of the target.
-	Target map[string]interface{} `json:"target"`
-
-	// WorkflowId For jobs: the update operation that was started.
-	WorkflowId *string `json:"workflow_id,omitempty"`
+	Runtime       *RuntimeEnum `json:"runtime,omitempty"`
+	UpdatedAt     *time.Time   `json:"updated_at,omitempty"`
+	VersionsCount *int         `json:"versions_count,omitempty"`
 }
 
 // FlinkProjectDeployment One deploy / rollback request (read-only history).
@@ -3808,29 +3820,75 @@ type FlinkProjectDeployment struct {
 // * `job` - Session job
 type FlinkProjectDeploymentTargetTypeEnum string
 
-// FlinkProjectRollbackRequest defines model for FlinkProjectRollbackRequest.
-type FlinkProjectRollbackRequest struct {
-	// Cluster Identifier of the session cluster the job runs on. Required for jobs.
+// FlinkProjectHead defines model for FlinkProjectHead.
+type FlinkProjectHead struct {
+	// Target `type` (always `job`), `identifier`, `cluster` (the Job Workspace) and the current `status` of the job.
+	Target *map[string]interface{} `json:"target"`
+
+	// Version The release HEAD points at, or null before the first deployment.
+	Version *string `json:"version"`
+}
+
+// FlinkProjectHeadMoveResponse defines model for FlinkProjectHeadMoveResponse.
+type FlinkProjectHeadMoveResponse struct {
+	// Deployment One deploy / rollback request (read-only history).
+	Deployment FlinkProjectDeployment `json:"deployment"`
+
+	// Target `type`, `identifier`, `cluster` and the current `status` of the job.
+	Target map[string]interface{} `json:"target"`
+
+	// Warnings Things to know about this move.
+	Warnings []string `json:"warnings"`
+
+	// WorkflowId The update operation that was started.
+	WorkflowId string `json:"workflow_id"`
+}
+
+// FlinkProjectHeadRequest defines model for FlinkProjectHeadRequest.
+type FlinkProjectHeadRequest struct {
+	// Cluster First call only: identifier of the Job Workspace the job runs in.
 	Cluster *string `json:"cluster,omitempty"`
 
-	// Target Identifier of the cluster, or of the job when target_type is `job`.
-	Target string `json:"target"`
+	// EntryFile Python releases only: the Python file that starts the job, relative to the archive root. Defaults to main.py.
+	EntryFile *string `json:"entry_file,omitempty"`
 
-	// TargetType `cluster` for an application-mode Flink cluster, `job` for a job on a session cluster.
+	// Target First call only: identifier of the job.
+	Target *string `json:"target,omitempty"`
+
+	// TargetType First call only: `job`, a job in the project's Job Workspace. `cluster` is refused: a project does not deploy to an application cluster. Once set, the project keeps its job and this field may be left out.
 	//
 	// * `cluster` - cluster
 	// * `job` - job
-	TargetType TargetType89cEnum `json:"target_type"`
+	TargetType *FlinkProjectHeadRequestTargetTypeEnum `json:"target_type,omitempty"`
 
-	// UpgradeMode How running state is handled during the switch. Rolling back to an older version often needs `stateless`, because newer state may not restore on older code.
+	// UpgradeMode How running state is handled during the switch. Moving to an older release often needs `stateless`, because newer state may not restore on older code.
 	//
 	// * `stateless` - stateless
 	// * `savepoint` - savepoint
 	// * `last-state` - last-state
 	UpgradeMode *UpgradeModeEnum `json:"upgrade_mode,omitempty"`
 
-	// Version Version to roll back to. Defaults to the version the target ran before its current one.
-	Version *string `json:"version,omitempty"`
+	// Version Version label HEAD moves to, for example 1.4.0. It may be newer or older than the current one.
+	Version string `json:"version"`
+}
+
+// FlinkProjectHeadRequestTargetTypeEnum * `cluster` - cluster
+// * `job` - job
+type FlinkProjectHeadRequestTargetTypeEnum string
+
+// FlinkProjectMetadataSchema Optional project-level defaults and labels.
+type FlinkProjectMetadataSchema struct {
+	// DefaultArgs Program arguments passed to the job unless a deployment overrides them.
+	DefaultArgs *[]string `json:"default_args,omitempty"`
+
+	// DocumentationUrl Link to the project's README or runbook.
+	DocumentationUrl *string `json:"documentation_url"`
+
+	// EntryClass Default main class to run for JAR artifacts (can be overridden per deployment).
+	EntryClass *string `json:"entry_class"`
+
+	// Labels Free-form key/value labels, for example a team or cost centre.
+	Labels *map[string]string `json:"labels,omitempty"`
 }
 
 // FlinkProjectStore The project's artifact store connection. The credential is write-only.
@@ -3976,14 +4034,26 @@ type FlinkResponseSchema struct {
 	// AdvancedConfiguration Advanced configuration.
 	AdvancedConfiguration *map[string]interface{} `json:"advanced_configuration"`
 
+	// ConfigurationState Whether the saved configuration is complete enough to reconcile: incomplete, valid or invalid.
+	ConfigurationState string `json:"configuration_state"`
+
 	// CreatedAt Creation timestamp (ISO format).
 	CreatedAt string `json:"created_at"`
 
 	// Description Optional description.
 	Description *string `json:"description"`
 
+	// DesiredLifecycle present, or absent once DELETE has been requested.
+	DesiredLifecycle string `json:"desired_lifecycle"`
+
 	// Fleet Fleet identifier where the cluster is deployed (populated after first deploy).
 	Fleet *string `json:"fleet"`
+
+	// FlinkUnits Flink units allocation for Single-Job Cluster mode (mode=application).
+	FlinkUnits *int `json:"flink_units"`
+
+	// Generation Increments whenever deployable desired state changes. Send it to the reconcile call.
+	Generation int `json:"generation"`
 
 	// Id UUID of the Flink instance.
 	Id string `json:"id"`
@@ -3994,8 +4064,14 @@ type FlinkResponseSchema struct {
 	// JobsCount Number of FlinkJob records associated with this cluster (session mode only).
 	JobsCount *int `json:"jobs_count,omitempty"`
 
+	// MaxFlinkUnits Max Flink units capacity pool for Job Workspace mode (mode=session).
+	MaxFlinkUnits *int `json:"max_flink_units"`
+
 	// Mode Deployment mode: 'application' or 'session'.
 	Mode string `json:"mode"`
+
+	// ObservedGeneration Latest generation successfully reconciled. 0 = never.
+	ObservedGeneration int `json:"observed_generation"`
 
 	// Organization Organization identifier.
 	Organization string `json:"organization"`
@@ -4005,6 +4081,9 @@ type FlinkResponseSchema struct {
 
 	// Provider Flink provider.
 	Provider string `json:"provider"`
+
+	// ReconciliationState State of the current or most recent reconcile attempt: never_reconciled, pending, queued, running, succeeded or failed.
+	ReconciliationState string `json:"reconciliation_state"`
 
 	// Status Current status.
 	Status string `json:"status"`
@@ -4078,6 +4157,9 @@ type FlinkUpdateSchema struct {
 
 	// Description Optional free-text description.
 	Description *string `json:"description"`
+
+	// Fleet Target fleet identifier.
+	Fleet *string `json:"fleet"`
 
 	// FlinkUnits Flink units allocation.
 	FlinkUnits *int `json:"flink_units"`
@@ -4254,11 +4336,6 @@ type InvestigationPlaybookYamlRequest struct {
 	// Yaml The InvestigationPlaybook YAML document
 	Yaml string `json:"yaml"`
 }
-
-// IssueSeverityEnum * `Red` - Red
-// * `Amber` - Amber
-// * `Green` - Green
-type IssueSeverityEnum string
 
 // Kafka Base serializer for Kafka model.
 // Use KafkaCreateSerializer for POST requests and KafkaSerializer for PATCH/PUT requests.
@@ -4477,11 +4554,20 @@ type KafkaConnectResponseSchema struct {
 	// AdvancedConfig Advanced configuration
 	AdvancedConfig *map[string]interface{} `json:"advanced_config"`
 
+	// ConfigurationState Whether the saved configuration is complete enough to reconcile: incomplete, valid or invalid.
+	ConfigurationState string `json:"configuration_state"`
+
 	// CreatedAt Creation timestamp (ISO format)
 	CreatedAt string `json:"created_at"`
 
+	// DesiredLifecycle present, or absent once DELETE has been requested.
+	DesiredLifecycle string `json:"desired_lifecycle"`
+
 	// Fleet Fleet identifier
 	Fleet *string `json:"fleet"`
+
+	// Generation Increments whenever deployable desired state changes. Send it to the reconcile call.
+	Generation int `json:"generation"`
 
 	// Id UUID of the Kafka Connect instance
 	Id string `json:"id"`
@@ -4492,11 +4578,17 @@ type KafkaConnectResponseSchema struct {
 	// Kafka Kafka cluster identifier
 	Kafka *string `json:"kafka"`
 
+	// ObservedGeneration Latest generation successfully reconciled. 0 = never.
+	ObservedGeneration int `json:"observed_generation"`
+
 	// Organization Organization identifier
 	Organization string `json:"organization"`
 
 	// Provider Provider type
 	Provider string `json:"provider"`
+
+	// ReconciliationState State of the current or most recent reconcile attempt: never_reconciled, pending, queued, running, succeeded or failed.
+	ReconciliationState string `json:"reconciliation_state"`
 
 	// Status Status of the Kafka Connect instance
 	Status string `json:"status"`
@@ -5025,11 +5117,20 @@ type KafkaReplicatorResponseSchema struct {
 	// ClusterLinkAdvancedSettings Pydantic model for Cluster Link advanced settings (provider-specific configuration).
 	ClusterLinkAdvancedSettings *ClusterLinkAdvancedSettingsSchema `json:"cluster_link_advanced_settings,omitempty"`
 
+	// ConfigurationState Whether the saved configuration is complete enough to reconcile: incomplete, valid or invalid.
+	ConfigurationState *string `json:"configuration_state"`
+
 	// CreatedAt Creation timestamp
 	CreatedAt string `json:"created_at"`
 
+	// DesiredLifecycle present, or absent once DELETE has been requested.
+	DesiredLifecycle *string `json:"desired_lifecycle"`
+
 	// DestinationConnectionDetails Pydantic model for Kafka connection details (external clusters).
 	DestinationConnectionDetails *KafkaConnectionDetailsSchema `json:"destination_connection_details,omitempty"`
+
+	// DestinationKafka Destination Kafka cluster identifier.
+	DestinationKafka *string `json:"destination_kafka"`
 
 	// DestinationKafkaId Destination Kafka cluster ID
 	DestinationKafkaId *string `json:"destination_kafka_id"`
@@ -5037,8 +5138,14 @@ type KafkaReplicatorResponseSchema struct {
 	// DestinationSecretPath Destination secret path
 	DestinationSecretPath *string `json:"destination_secret_path"`
 
+	// Fleet Identifier of the fleet the replicator runs on.
+	Fleet *string `json:"fleet"`
+
 	// FleetId Fleet identifier
 	FleetId *string `json:"fleet_id"`
+
+	// Generation Increments whenever deployable desired state changes. Send it to the reconcile call.
+	Generation *int `json:"generation,omitempty"`
 
 	// GroupsBlacklist Groups blacklist
 	GroupsBlacklist *string `json:"groups_blacklist"`
@@ -5064,8 +5171,14 @@ type KafkaReplicatorResponseSchema struct {
 	// Mirrormaker2AdvancedSettings Pydantic model for MirrorMaker2 advanced settings (provider-specific configuration).
 	Mirrormaker2AdvancedSettings *MirrorMaker2AdvancedSettingsSchema `json:"mirrormaker2_advanced_settings,omitempty"`
 
+	// ObservedGeneration Latest generation successfully reconciled. 0 = never.
+	ObservedGeneration *int `json:"observed_generation,omitempty"`
+
 	// Provider Provider type
 	Provider string `json:"provider"`
+
+	// ReconciliationState State of the current or most recent reconcile attempt: never_reconciled, pending, queued, running, succeeded or failed.
+	ReconciliationState *string `json:"reconciliation_state"`
 
 	// ReplicationMode Replication mode
 	ReplicationMode string `json:"replication_mode"`
@@ -5075,6 +5188,9 @@ type KafkaReplicatorResponseSchema struct {
 
 	// SourceInitiatedLink Source-initiated link
 	SourceInitiatedLink *bool `json:"source_initiated_link,omitempty"`
+
+	// SourceKafka Source Kafka cluster identifier.
+	SourceKafka *string `json:"source_kafka"`
 
 	// SourceKafkaId Source Kafka cluster ID
 	SourceKafkaId *string `json:"source_kafka_id"`
@@ -5455,7 +5571,7 @@ type OAuthClient struct {
 	CreatedAt        *time.Time     `json:"created_at,omitempty"`
 	GrantType        *GrantTypeEnum `json:"grant_type,omitempty"`
 	Identifier       *string        `json:"identifier,omitempty"`
-	KafkaClusters    *string        `json:"kafka_clusters,omitempty"`
+	KafkaClusters    *[]string      `json:"kafka_clusters,omitempty"`
 	Name             *string        `json:"name,omitempty"`
 	SecretLast4      *string        `json:"secret_last4,omitempty"`
 	UpdatedAt        *time.Time     `json:"updated_at,omitempty"`
@@ -5707,6 +5823,20 @@ type OrganizationConfig struct {
 	EnabledFleetProviders *[]string          `json:"enabled_fleet_providers"`
 	EnabledKafkaWorkloads *[]string          `json:"enabled_kafka_workloads"`
 	MaintenanceWindow     *MaintenanceWindow `json:"maintenance_window"`
+}
+
+// OrganizationMemberInviteRequest defines model for OrganizationMemberInviteRequest.
+type OrganizationMemberInviteRequest struct {
+	Email    openapi_types.Email `json:"email"`
+	Password *string             `json:"password,omitempty"`
+	Role     *string             `json:"role"`
+}
+
+// OrganizationMemberInviteResponse defines model for OrganizationMemberInviteResponse.
+type OrganizationMemberInviteResponse struct {
+	InviteText string `json:"invite_text"`
+	Message    string `json:"message"`
+	Note       string `json:"note"`
 }
 
 // OrganizationSmtpConfig The organization's outbound mail server settings. The password is never returned.
@@ -5976,14 +6106,6 @@ type PaginatedClusterBenchmarkResultList struct {
 	Next     *string                  `json:"next"`
 	Previous *string                  `json:"previous"`
 	Results  []ClusterBenchmarkResult `json:"results"`
-}
-
-// PaginatedClusterHealthList defines model for PaginatedClusterHealthList.
-type PaginatedClusterHealthList struct {
-	Count    int             `json:"count"`
-	Next     *string         `json:"next"`
-	Previous *string         `json:"previous"`
-	Results  []ClusterHealth `json:"results"`
 }
 
 // PaginatedClusterHistoryList defines model for PaginatedClusterHistoryList.
@@ -6625,37 +6747,6 @@ type PatchedClusterBenchmarkResult struct {
 	Type *ClusterBenchmarkResultTypeEnum `json:"type,omitempty"`
 }
 
-// PatchedClusterHealth Base serializer for all ADRF model serializers.
-type PatchedClusterHealth struct {
-	ClusterHealthStatus *PatchedClusterHealth_ClusterHealthStatus `json:"cluster_health_status"`
-	ClusterId           *string                                   `json:"cluster_id,omitempty"`
-	ClusterType         *string                                   `json:"cluster_type,omitempty"`
-	CreatedAt           *time.Time                                `json:"created_at,omitempty"`
-	Id                  *openapi_types.UUID                       `json:"id,omitempty"`
-
-	// Identifier Server-generated from this row's own id.
-	Identifier    *string                             `json:"identifier,omitempty"`
-	Input         *string                             `json:"input,omitempty"`
-	IssueSeverity *PatchedClusterHealth_IssueSeverity `json:"issue_severity"`
-	IssueSummary  *string                             `json:"issue_summary"`
-	IssueTitle    *string                             `json:"issue_title"`
-
-	// Organization An alphanumeric string (< 24 characters) containing only lowercase characters, "-", and "_", starting with a letter or number.
-	Organization *string    `json:"organization,omitempty"`
-	Output       *string    `json:"output"`
-	UpdatedAt    *time.Time `json:"updated_at,omitempty"`
-}
-
-// PatchedClusterHealth_ClusterHealthStatus defines model for PatchedClusterHealth.ClusterHealthStatus.
-type PatchedClusterHealth_ClusterHealthStatus struct {
-	union json.RawMessage
-}
-
-// PatchedClusterHealth_IssueSeverity defines model for PatchedClusterHealth.IssueSeverity.
-type PatchedClusterHealth_IssueSeverity struct {
-	union json.RawMessage
-}
-
 // PatchedFleet Base serializer for Fleet model.
 // Use FleetCreateSerializer for POST requests and FleetSerializer for PATCH/PUT requests.
 type PatchedFleet struct {
@@ -6747,7 +6838,7 @@ type PatchedFleet struct {
 	UpdatedAt   *time.Time       `json:"updated_at,omitempty"`
 
 	// Workloads Workload categories (streaming, stream_processing, analytics), each with enabled, providers and units (cloud fleets) or weight (BYOK). capacity_mode is set by the server.
-	Workloads *string `json:"workloads,omitempty"`
+	Workloads *FleetWorkloadsSchema `json:"workloads,omitempty"`
 }
 
 // PatchedFlinkJobUpdateSchema Request body schema for updating a FlinkJob (PATCH/PUT).
@@ -6804,34 +6895,32 @@ type PatchedFlinkJobUpdateSchemaStatus string
 
 // PatchedFlinkProject A Flink project. “identifier“ and “runtime“ are fixed once the project is
 // created: the identifier appears in URLs and storage keys, and the runtime decides
-// which artifact type the project accepts.
+// which artifact type the project accepts and which build tool its pipeline uses.
+// A project runs in one Job Workspace (“cluster“) within a Flink-unit budget; both are required.
 type PatchedFlinkProject struct {
 	ArtifactKind *string `json:"artifact_kind,omitempty"`
 
-	// BuildTool Tool the CI pipeline uses to build the artifact. Used to tailor the CI template.
-	//
-	// * `maven` - Maven
-	// * `gradle` - Gradle
-	// * `sbt` - sbt
-	// * `pip` - pip
-	// * `other` - Other
-	BuildTool *PatchedFlinkProject_BuildTool `json:"build_tool"`
+	// BuildTool Tool the project's CI pipeline builds with. Decided by the runtime.
+	BuildTool *string `json:"build_tool,omitempty"`
 
-	// Cluster Job Workspace the project's Flink units are booked on.
-	Cluster   *string    `json:"cluster"`
+	// Cluster Job Workspace the project's jobs run in and its Flink units are booked on.
+	Cluster   *string    `json:"cluster,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 
 	// Description Optional free-text description.
 	Description *string `json:"description"`
 
 	// FlinkUnitBudget Flink units the project may use on its workspace, booked from the workspace's pool.
-	FlinkUnitBudget *int                `json:"flink_unit_budget"`
-	Id              *openapi_types.UUID `json:"id,omitempty"`
+	FlinkUnitBudget *int `json:"flink_unit_budget,omitempty"`
+
+	// HasCiKey Whether a CI upload key has been created for this project. The key itself is never returned here.
+	HasCiKey *bool               `json:"has_ci_key,omitempty"`
+	Id       *openapi_types.UUID `json:"id,omitempty"`
 
 	// Identifier Short name used in URLs and file locations: lowercase letters, digits and '-'.
-	Identifier    *string `json:"identifier,omitempty"`
-	LatestVersion *string `json:"latest_version"`
-	Metadata      *string `json:"metadata"`
+	Identifier    *string                     `json:"identifier,omitempty"`
+	LatestVersion *string                     `json:"latest_version"`
+	Metadata      *FlinkProjectMetadataSchema `json:"metadata"`
 
 	// Name Display name of the project.
 	Name *string `json:"name,omitempty"`
@@ -6844,35 +6933,9 @@ type PatchedFlinkProject struct {
 	// * `java` - Java
 	// * `scala` - Scala
 	// * `python` - Python
-	Runtime *RuntimeEnum `json:"runtime,omitempty"`
-
-	// SourceBranch Branch the CI pipeline builds from.
-	SourceBranch *string `json:"source_branch"`
-
-	// SourceProvider Where the source code is hosted. Used to pick the CI template.
-	//
-	// * `github` - GitHub
-	// * `gitlab` - GitLab
-	// * `bitbucket` - Bitbucket
-	// * `other` - Other
-	// * `none` - None
-	SourceProvider *SourceProviderEnum `json:"source_provider,omitempty"`
-
-	// SourceUrl Link to the source repository. Informational only; it is never accessed.
-	SourceUrl     *string    `json:"source_url"`
-	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
-	VersionsCount *int       `json:"versions_count,omitempty"`
-}
-
-// PatchedFlinkProject_BuildTool Tool the CI pipeline uses to build the artifact. Used to tailor the CI template.
-//
-// * `maven` - Maven
-// * `gradle` - Gradle
-// * `sbt` - sbt
-// * `pip` - pip
-// * `other` - Other
-type PatchedFlinkProject_BuildTool struct {
-	union json.RawMessage
+	Runtime       *RuntimeEnum `json:"runtime,omitempty"`
+	UpdatedAt     *time.Time   `json:"updated_at,omitempty"`
+	VersionsCount *int         `json:"versions_count,omitempty"`
 }
 
 // PatchedFlinkUpdateSchema Request body schema for updating a Flink instance (PUT/PATCH).
@@ -6913,6 +6976,9 @@ type PatchedFlinkUpdateSchema struct {
 
 	// Description Optional free-text description.
 	Description *string `json:"description"`
+
+	// Fleet Target fleet identifier.
+	Fleet *string `json:"fleet"`
 
 	// FlinkUnits Flink units allocation.
 	FlinkUnits *int `json:"flink_units"`
@@ -7448,6 +7514,16 @@ type PatchedSecret struct {
 	Uri          *string     `json:"uri,omitempty"`
 }
 
+// PatchedTopicPatchRequest Request body for updating a topic.
+//
+// “partitions“ is a new total and may only increase; the fleet service
+// rejects a decrease before it reaches a broker. Replication-factor changes
+// are out of scope, which is why there is no field for one.
+type PatchedTopicPatchRequest struct {
+	Configs    *TopicConfigPatch `json:"configs,omitempty"`
+	Partitions *int              `json:"partitions"`
+}
+
 // PatchedTrackedRepository Serializer for TrackedRepository model.
 type PatchedTrackedRepository struct {
 	CreatedAt        *time.Time          `json:"created_at,omitempty"`
@@ -7830,13 +7906,6 @@ type SmtpTestResponse struct {
 // * `custom` - Custom
 type Source839Enum string
 
-// SourceProviderEnum * `github` - GitHub
-// * `gitlab` - GitLab
-// * `bitbucket` - Bitbucket
-// * `other` - Other
-// * `none` - None
-type SourceProviderEnum string
-
 // StateEnum * `planned` - planned
 // * `installed` - installed
 type StateEnum string
@@ -7980,9 +8049,9 @@ type TailscaleValidation struct {
 	Ok          bool                     `json:"ok"`
 }
 
-// TargetType89cEnum * `cluster` - cluster
-// * `job` - job
-type TargetType89cEnum string
+// TargetEnum * `fleet` - fleet
+// * `workload` - workload
+type TargetEnum string
 
 // TenancyModeEnum * `Shared` - Shared
 // * `Isolated` - Isolated
@@ -8007,6 +8076,64 @@ type ToolSchema struct {
 	Name        string                 `json:"name"`
 	Parameters  map[string]interface{} `json:"parameters"`
 	Tags        *[]string              `json:"tags,omitempty"`
+}
+
+// Topic defines model for Topic.
+type Topic struct {
+	Configs           []TopicConfigEntry `json:"configs"`
+	Internal          bool               `json:"internal"`
+	Name              string             `json:"name"`
+	Partitions        int                `json:"partitions"`
+	ReplicationFactor int                `json:"replication_factor"`
+}
+
+// TopicConfigEntry defines model for TopicConfigEntry.
+type TopicConfigEntry struct {
+	IsDefault   bool    `json:"is_default"`
+	IsSensitive bool    `json:"is_sensitive"`
+	Name        string  `json:"name"`
+	Source      string  `json:"source"`
+	Value       *string `json:"value"`
+}
+
+// TopicConfigPatch defines model for TopicConfigPatch.
+type TopicConfigPatch struct {
+	Delete *[]string          `json:"delete"`
+	Set    *map[string]string `json:"set"`
+}
+
+// TopicCreateRequest Request body for creating a topic.
+//
+// Validated here so an obviously bad request never costs a round trip to the
+// fleet, and so the error names the field rather than arriving as an opaque
+// upstream rejection. The fleet service validates it again regardless.
+type TopicCreateRequest struct {
+	Configs           *map[string]string `json:"configs"`
+	Name              string             `json:"name"`
+	Partitions        int                `json:"partitions"`
+	ReplicationFactor int                `json:"replication_factor"`
+}
+
+// TopicDeleteResponse defines model for TopicDeleteResponse.
+type TopicDeleteResponse struct {
+	Deleted bool   `json:"deleted"`
+	Name    string `json:"name"`
+}
+
+// TopicListResponse defines model for TopicListResponse.
+type TopicListResponse struct {
+	Items    []TopicSummary `json:"items"`
+	Page     int            `json:"page"`
+	PageSize int            `json:"page_size"`
+	Total    int            `json:"total"`
+}
+
+// TopicSummary defines model for TopicSummary.
+type TopicSummary struct {
+	Internal          bool   `json:"internal"`
+	Name              string `json:"name"`
+	Partitions        int    `json:"partitions"`
+	ReplicationFactor int    `json:"replication_factor"`
 }
 
 // TrackedRepository Serializer for TrackedRepository model.
@@ -8304,14 +8431,23 @@ type VirtualKafkaClusterResponseSchema struct {
 	// AdvancedConfig Advanced configuration
 	AdvancedConfig *map[string]interface{} `json:"advanced_config"`
 
+	// ConfigurationState Whether the saved configuration is complete enough to reconcile: incomplete, valid or invalid.
+	ConfigurationState string `json:"configuration_state"`
+
 	// CreatedAt Creation timestamp (ISO format)
 	CreatedAt string `json:"created_at"`
+
+	// DesiredLifecycle present, or absent once DELETE has been requested.
+	DesiredLifecycle string `json:"desired_lifecycle"`
 
 	// FetchBytesPerSecond Enforced fetch (egress) byte-rate limit, derived from kafka_units
 	FetchBytesPerSecond int `json:"fetch_bytes_per_second"`
 
 	// Fleet Fleet identifier
 	Fleet *string `json:"fleet"`
+
+	// Generation Increments whenever deployable desired state changes. Send it to the reconcile call.
+	Generation int `json:"generation"`
 
 	// Id UUID of the Virtual Kafka Cluster instance
 	Id string `json:"id"`
@@ -8325,6 +8461,9 @@ type VirtualKafkaClusterResponseSchema struct {
 	// KafkaUnits Kafka Units of throughput claimed from the backing Kafka cluster
 	KafkaUnits int `json:"kafka_units"`
 
+	// ObservedGeneration Latest generation successfully reconciled. 0 = never.
+	ObservedGeneration int `json:"observed_generation"`
+
 	// Organization Organization identifier
 	Organization string `json:"organization"`
 
@@ -8333,6 +8472,9 @@ type VirtualKafkaClusterResponseSchema struct {
 
 	// Provider Provider type
 	Provider string `json:"provider"`
+
+	// ReconciliationState State of the current or most recent reconcile attempt: never_reconciled, pending, queued, running, succeeded or failed.
+	ReconciliationState string `json:"reconciliation_state"`
 
 	// Resources Doc-only mirror of VirtualClusterResourcesSerializer's output shape.
 	Resources *VirtualClusterResourcesResponseSchema `json:"resources,omitempty"`
@@ -8736,15 +8878,6 @@ type OrganizationsClickhousesReconcileCreateParams struct {
 	IdempotencyKey string `json:"Idempotency-Key"`
 }
 
-// OrganizationsClusterHealthReportsListParams defines parameters for OrganizationsClusterHealthReportsList.
-type OrganizationsClusterHealthReportsListParams struct {
-	// Page A page number within the paginated result set.
-	Page *int `form:"page,omitempty" json:"page,omitempty"`
-
-	// PageSize Number of results to return per page.
-	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
-}
-
 // OrganizationsClusterHistoryListParams defines parameters for OrganizationsClusterHistoryList.
 type OrganizationsClusterHistoryListParams struct {
 	// ClusterType * `Fleet` - Fleet
@@ -8769,6 +8902,25 @@ type OrganizationsCommandsListParams struct {
 	// PageSize Number of results to return per page.
 	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
+
+// GetComponentCatalogParams defines parameters for GetComponentCatalog.
+type GetComponentCatalogParams struct {
+	// IncludeUnsupported Consider unsupported versions for the newest version.
+	IncludeUnsupported *bool `form:"include_unsupported,omitempty" json:"include_unsupported,omitempty"`
+
+	// Provider Fleet provider, or the workload's provider (Kafka Connect, replicator, Flink).
+	Provider *string `form:"provider,omitempty" json:"provider,omitempty"`
+
+	// Sku Workload type; required for target=workload.
+	Sku    *GetComponentCatalogParamsSku   `form:"sku,omitempty" json:"sku,omitempty"`
+	Target GetComponentCatalogParamsTarget `form:"target" json:"target"`
+}
+
+// GetComponentCatalogParamsSku defines parameters for GetComponentCatalog.
+type GetComponentCatalogParamsSku string
+
+// GetComponentCatalogParamsTarget defines parameters for GetComponentCatalog.
+type GetComponentCatalogParamsTarget string
 
 // OrganizationsContainerRegistryCreateJSONBody defines parameters for OrganizationsContainerRegistryCreate.
 type OrganizationsContainerRegistryCreateJSONBody struct {
@@ -8931,29 +9083,17 @@ type FlinkProjectsListParams struct {
 	// * `scala` - Scala
 	// * `python` - Python
 	Runtime *FlinkProjectsListParamsRuntime `form:"runtime,omitempty" json:"runtime,omitempty"`
-
-	// SourceProvider Where the source code is hosted. Used to pick the CI template.
-	//
-	// * `github` - GitHub
-	// * `gitlab` - GitLab
-	// * `bitbucket` - Bitbucket
-	// * `other` - Other
-	// * `none` - None
-	SourceProvider *FlinkProjectsListParamsSourceProvider `form:"source_provider,omitempty" json:"source_provider,omitempty"`
 }
 
 // FlinkProjectsListParamsRuntime defines parameters for FlinkProjectsList.
 type FlinkProjectsListParamsRuntime string
-
-// FlinkProjectsListParamsSourceProvider defines parameters for FlinkProjectsList.
-type FlinkProjectsListParamsSourceProvider string
 
 // FlinkProjectsCiTemplateParams defines parameters for FlinkProjectsCiTemplate.
 type FlinkProjectsCiTemplateParams struct {
 	// Format `file` (default) downloads the pipeline file; `json` returns it with setup steps.
 	Format *FlinkProjectsCiTemplateParamsFormat `form:"format,omitempty" json:"format,omitempty"`
 
-	// Provider Where your CI runs. Defaults to the project's source provider.
+	// Provider Where your CI runs. Defaults to `generic`, a script that runs in any CI.
 	Provider *FlinkProjectsCiTemplateParamsProvider `form:"provider,omitempty" json:"provider,omitempty"`
 }
 
@@ -9006,6 +9146,24 @@ type OrganizationsFlinkJobsListParams struct {
 
 	// PageSize Number of results to return per page.
 	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// FlinkJobLogsRetrieveParams defines parameters for FlinkJobLogsRetrieve.
+type FlinkJobLogsRetrieveParams struct {
+	// Component Which log to read.
+	Component *string `form:"component,omitempty" json:"component,omitempty"`
+
+	// Lines Newest lines to return (1 to 500, default 200).
+	Lines *int `form:"lines,omitempty" json:"lines,omitempty"`
+}
+
+// FlinkLogsRetrieveParams defines parameters for FlinkLogsRetrieve.
+type FlinkLogsRetrieveParams struct {
+	// Component Which log to read.
+	Component *string `form:"component,omitempty" json:"component,omitempty"`
+
+	// Lines Newest lines to return (1 to 500, default 200).
+	Lines *int `form:"lines,omitempty" json:"lines,omitempty"`
 }
 
 // OrganizationsFlinkReconcileCreateParams defines parameters for OrganizationsFlinkReconcileCreate.
@@ -9166,15 +9324,6 @@ type OrganizationsKafkaCredentialsListParams struct {
 	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
 
-// OrganizationsKafkaHealthListParams defines parameters for OrganizationsKafkaHealthList.
-type OrganizationsKafkaHealthListParams struct {
-	// Page A page number within the paginated result set.
-	Page *int `form:"page,omitempty" json:"page,omitempty"`
-
-	// PageSize Number of results to return per page.
-	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
-}
-
 // KafkaMetricsListParams defines parameters for KafkaMetricsList.
 type KafkaMetricsListParams struct {
 	// End Absolute end (RFC3339 or unix seconds). Requires start.
@@ -9221,12 +9370,6 @@ type ListKafkaTopicsParams struct {
 	// Search Case-insensitive substring filter on the topic name.
 	Search *string `form:"search,omitempty" json:"search,omitempty"`
 }
-
-// CreateKafkaTopicJSONBody defines parameters for CreateKafkaTopic.
-type CreateKafkaTopicJSONBody map[string]interface{}
-
-// UpdateKafkaTopicJSONBody defines parameters for UpdateKafkaTopic.
-type UpdateKafkaTopicJSONBody map[string]interface{}
 
 // ListKafkaTopicMessagesParams defines parameters for ListKafkaTopicMessages.
 type ListKafkaTopicMessagesParams struct {
@@ -9651,14 +9794,11 @@ type FlinkProjectsPartialUpdateJSONRequestBody = PatchedFlinkProject
 // FlinkProjectsUpdateJSONRequestBody defines body for FlinkProjectsUpdate for application/json ContentType.
 type FlinkProjectsUpdateJSONRequestBody = FlinkProject
 
-// FlinkProjectsDeployJSONRequestBody defines body for FlinkProjectsDeploy for application/json ContentType.
-type FlinkProjectsDeployJSONRequestBody = FlinkProjectDeployRequest
+// FlinkProjectsHeadUpdateJSONRequestBody defines body for FlinkProjectsHeadUpdate for application/json ContentType.
+type FlinkProjectsHeadUpdateJSONRequestBody = FlinkProjectHeadRequest
 
 // FlinkProjectReleasesRegisterJSONRequestBody defines body for FlinkProjectReleasesRegister for application/json ContentType.
 type FlinkProjectReleasesRegisterJSONRequestBody = FlinkReleaseRegister
-
-// FlinkProjectsRollbackJSONRequestBody defines body for FlinkProjectsRollback for application/json ContentType.
-type FlinkProjectsRollbackJSONRequestBody = FlinkProjectRollbackRequest
 
 // FlinkProjectStoreUpdateJSONRequestBody defines body for FlinkProjectStoreUpdate for application/json ContentType.
 type FlinkProjectStoreUpdateJSONRequestBody = FlinkProjectStore
@@ -9801,15 +9941,6 @@ type OrganizationsKafkaBenchmarksReconcileCreateJSONRequestBody = ReconcileReque
 // OrganizationsKafkaCredentialsCreateJSONRequestBody defines body for OrganizationsKafkaCredentialsCreate for application/json ContentType.
 type OrganizationsKafkaCredentialsCreateJSONRequestBody = Credential
 
-// OrganizationsKafkaHealthCreateJSONRequestBody defines body for OrganizationsKafkaHealthCreate for application/json ContentType.
-type OrganizationsKafkaHealthCreateJSONRequestBody = ClusterHealth
-
-// OrganizationsKafkaHealthPartialUpdateJSONRequestBody defines body for OrganizationsKafkaHealthPartialUpdate for application/json ContentType.
-type OrganizationsKafkaHealthPartialUpdateJSONRequestBody = PatchedClusterHealth
-
-// OrganizationsKafkaHealthUpdateJSONRequestBody defines body for OrganizationsKafkaHealthUpdate for application/json ContentType.
-type OrganizationsKafkaHealthUpdateJSONRequestBody = ClusterHealth
-
 // OrganizationsKafkaInstalledComponentsCreateJSONRequestBody defines body for OrganizationsKafkaInstalledComponentsCreate for application/json ContentType.
 type OrganizationsKafkaInstalledComponentsCreateJSONRequestBody = KafkaInstalledComponentsRequest
 
@@ -9820,16 +9951,19 @@ type OrganizationsKafkaLabelsPartialUpdateJSONRequestBody = PatchedLabel
 type OrganizationsKafkaLabelsUpdateJSONRequestBody = Label
 
 // CreateKafkaTopicJSONRequestBody defines body for CreateKafkaTopic for application/json ContentType.
-type CreateKafkaTopicJSONRequestBody CreateKafkaTopicJSONBody
+type CreateKafkaTopicJSONRequestBody = TopicCreateRequest
 
 // UpdateKafkaTopicJSONRequestBody defines body for UpdateKafkaTopic for application/json ContentType.
-type UpdateKafkaTopicJSONRequestBody UpdateKafkaTopicJSONBody
+type UpdateKafkaTopicJSONRequestBody = PatchedTopicPatchRequest
 
 // OrganizationsMeOrganizationsCreateJSONRequestBody defines body for OrganizationsMeOrganizationsCreate for application/json ContentType.
 type OrganizationsMeOrganizationsCreateJSONRequestBody = Organization
 
 // OrganizationsMembersCreateJSONRequestBody defines body for OrganizationsMembersCreate for application/json ContentType.
 type OrganizationsMembersCreateJSONRequestBody = OrgUser
+
+// OrganizationsMembersInviteCreateJSONRequestBody defines body for OrganizationsMembersInviteCreate for application/json ContentType.
+type OrganizationsMembersInviteCreateJSONRequestBody = OrganizationMemberInviteRequest
 
 // OrganizationsMembersPartialUpdateJSONRequestBody defines body for OrganizationsMembersPartialUpdate for application/json ContentType.
 type OrganizationsMembersPartialUpdateJSONRequestBody = PatchedOrgUser
@@ -10278,6 +10412,14 @@ func (a *KafkaReplicatorResponseSchema) UnmarshalJSON(b []byte) error {
 		delete(object, "cluster_link_advanced_settings")
 	}
 
+	if raw, found := object["configuration_state"]; found {
+		err = json.Unmarshal(raw, &a.ConfigurationState)
+		if err != nil {
+			return fmt.Errorf("error reading 'configuration_state': %w", err)
+		}
+		delete(object, "configuration_state")
+	}
+
 	if raw, found := object["created_at"]; found {
 		err = json.Unmarshal(raw, &a.CreatedAt)
 		if err != nil {
@@ -10286,12 +10428,28 @@ func (a *KafkaReplicatorResponseSchema) UnmarshalJSON(b []byte) error {
 		delete(object, "created_at")
 	}
 
+	if raw, found := object["desired_lifecycle"]; found {
+		err = json.Unmarshal(raw, &a.DesiredLifecycle)
+		if err != nil {
+			return fmt.Errorf("error reading 'desired_lifecycle': %w", err)
+		}
+		delete(object, "desired_lifecycle")
+	}
+
 	if raw, found := object["destination_connection_details"]; found {
 		err = json.Unmarshal(raw, &a.DestinationConnectionDetails)
 		if err != nil {
 			return fmt.Errorf("error reading 'destination_connection_details': %w", err)
 		}
 		delete(object, "destination_connection_details")
+	}
+
+	if raw, found := object["destination_kafka"]; found {
+		err = json.Unmarshal(raw, &a.DestinationKafka)
+		if err != nil {
+			return fmt.Errorf("error reading 'destination_kafka': %w", err)
+		}
+		delete(object, "destination_kafka")
 	}
 
 	if raw, found := object["destination_kafka_id"]; found {
@@ -10310,12 +10468,28 @@ func (a *KafkaReplicatorResponseSchema) UnmarshalJSON(b []byte) error {
 		delete(object, "destination_secret_path")
 	}
 
+	if raw, found := object["fleet"]; found {
+		err = json.Unmarshal(raw, &a.Fleet)
+		if err != nil {
+			return fmt.Errorf("error reading 'fleet': %w", err)
+		}
+		delete(object, "fleet")
+	}
+
 	if raw, found := object["fleet_id"]; found {
 		err = json.Unmarshal(raw, &a.FleetId)
 		if err != nil {
 			return fmt.Errorf("error reading 'fleet_id': %w", err)
 		}
 		delete(object, "fleet_id")
+	}
+
+	if raw, found := object["generation"]; found {
+		err = json.Unmarshal(raw, &a.Generation)
+		if err != nil {
+			return fmt.Errorf("error reading 'generation': %w", err)
+		}
+		delete(object, "generation")
 	}
 
 	if raw, found := object["groups_blacklist"]; found {
@@ -10382,12 +10556,28 @@ func (a *KafkaReplicatorResponseSchema) UnmarshalJSON(b []byte) error {
 		delete(object, "mirrormaker2_advanced_settings")
 	}
 
+	if raw, found := object["observed_generation"]; found {
+		err = json.Unmarshal(raw, &a.ObservedGeneration)
+		if err != nil {
+			return fmt.Errorf("error reading 'observed_generation': %w", err)
+		}
+		delete(object, "observed_generation")
+	}
+
 	if raw, found := object["provider"]; found {
 		err = json.Unmarshal(raw, &a.Provider)
 		if err != nil {
 			return fmt.Errorf("error reading 'provider': %w", err)
 		}
 		delete(object, "provider")
+	}
+
+	if raw, found := object["reconciliation_state"]; found {
+		err = json.Unmarshal(raw, &a.ReconciliationState)
+		if err != nil {
+			return fmt.Errorf("error reading 'reconciliation_state': %w", err)
+		}
+		delete(object, "reconciliation_state")
 	}
 
 	if raw, found := object["replication_mode"]; found {
@@ -10412,6 +10602,14 @@ func (a *KafkaReplicatorResponseSchema) UnmarshalJSON(b []byte) error {
 			return fmt.Errorf("error reading 'source_initiated_link': %w", err)
 		}
 		delete(object, "source_initiated_link")
+	}
+
+	if raw, found := object["source_kafka"]; found {
+		err = json.Unmarshal(raw, &a.SourceKafka)
+		if err != nil {
+			return fmt.Errorf("error reading 'source_kafka': %w", err)
+		}
+		delete(object, "source_kafka")
 	}
 
 	if raw, found := object["source_kafka_id"]; found {
@@ -10510,15 +10708,36 @@ func (a KafkaReplicatorResponseSchema) MarshalJSON() ([]byte, error) {
 		}
 	}
 
+	if a.ConfigurationState != nil {
+		object["configuration_state"], err = json.Marshal(a.ConfigurationState)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'configuration_state': %w", err)
+		}
+	}
+
 	object["created_at"], err = json.Marshal(a.CreatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("error marshaling 'created_at': %w", err)
+	}
+
+	if a.DesiredLifecycle != nil {
+		object["desired_lifecycle"], err = json.Marshal(a.DesiredLifecycle)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'desired_lifecycle': %w", err)
+		}
 	}
 
 	if a.DestinationConnectionDetails != nil {
 		object["destination_connection_details"], err = json.Marshal(a.DestinationConnectionDetails)
 		if err != nil {
 			return nil, fmt.Errorf("error marshaling 'destination_connection_details': %w", err)
+		}
+	}
+
+	if a.DestinationKafka != nil {
+		object["destination_kafka"], err = json.Marshal(a.DestinationKafka)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'destination_kafka': %w", err)
 		}
 	}
 
@@ -10536,10 +10755,24 @@ func (a KafkaReplicatorResponseSchema) MarshalJSON() ([]byte, error) {
 		}
 	}
 
+	if a.Fleet != nil {
+		object["fleet"], err = json.Marshal(a.Fleet)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'fleet': %w", err)
+		}
+	}
+
 	if a.FleetId != nil {
 		object["fleet_id"], err = json.Marshal(a.FleetId)
 		if err != nil {
 			return nil, fmt.Errorf("error marshaling 'fleet_id': %w", err)
+		}
+	}
+
+	if a.Generation != nil {
+		object["generation"], err = json.Marshal(a.Generation)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'generation': %w", err)
 		}
 	}
 
@@ -10591,9 +10824,23 @@ func (a KafkaReplicatorResponseSchema) MarshalJSON() ([]byte, error) {
 		}
 	}
 
+	if a.ObservedGeneration != nil {
+		object["observed_generation"], err = json.Marshal(a.ObservedGeneration)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'observed_generation': %w", err)
+		}
+	}
+
 	object["provider"], err = json.Marshal(a.Provider)
 	if err != nil {
 		return nil, fmt.Errorf("error marshaling 'provider': %w", err)
+	}
+
+	if a.ReconciliationState != nil {
+		object["reconciliation_state"], err = json.Marshal(a.ReconciliationState)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'reconciliation_state': %w", err)
+		}
 	}
 
 	object["replication_mode"], err = json.Marshal(a.ReplicationMode)
@@ -10612,6 +10859,13 @@ func (a KafkaReplicatorResponseSchema) MarshalJSON() ([]byte, error) {
 		object["source_initiated_link"], err = json.Marshal(a.SourceInitiatedLink)
 		if err != nil {
 			return nil, fmt.Errorf("error marshaling 'source_initiated_link': %w", err)
+		}
+	}
+
+	if a.SourceKafka != nil {
+		object["source_kafka"], err = json.Marshal(a.SourceKafka)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'source_kafka': %w", err)
 		}
 	}
 
@@ -10917,130 +11171,6 @@ func (t *ClickHouse_TenancyMode) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-// AsClusterHealthStatusEnum returns the union data inside the ClusterHealth_ClusterHealthStatus as a ClusterHealthStatusEnum
-func (t ClusterHealth_ClusterHealthStatus) AsClusterHealthStatusEnum() (ClusterHealthStatusEnum, error) {
-	var body ClusterHealthStatusEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromClusterHealthStatusEnum overwrites any union data inside the ClusterHealth_ClusterHealthStatus as the provided ClusterHealthStatusEnum
-func (t *ClusterHealth_ClusterHealthStatus) FromClusterHealthStatusEnum(v ClusterHealthStatusEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeClusterHealthStatusEnum performs a merge with any union data inside the ClusterHealth_ClusterHealthStatus, using the provided ClusterHealthStatusEnum
-func (t *ClusterHealth_ClusterHealthStatus) MergeClusterHealthStatusEnum(v ClusterHealthStatusEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsNullEnum returns the union data inside the ClusterHealth_ClusterHealthStatus as a NullEnum
-func (t ClusterHealth_ClusterHealthStatus) AsNullEnum() (NullEnum, error) {
-	var body NullEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromNullEnum overwrites any union data inside the ClusterHealth_ClusterHealthStatus as the provided NullEnum
-func (t *ClusterHealth_ClusterHealthStatus) FromNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeNullEnum performs a merge with any union data inside the ClusterHealth_ClusterHealthStatus, using the provided NullEnum
-func (t *ClusterHealth_ClusterHealthStatus) MergeNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ClusterHealth_ClusterHealthStatus) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ClusterHealth_ClusterHealthStatus) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsIssueSeverityEnum returns the union data inside the ClusterHealth_IssueSeverity as a IssueSeverityEnum
-func (t ClusterHealth_IssueSeverity) AsIssueSeverityEnum() (IssueSeverityEnum, error) {
-	var body IssueSeverityEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromIssueSeverityEnum overwrites any union data inside the ClusterHealth_IssueSeverity as the provided IssueSeverityEnum
-func (t *ClusterHealth_IssueSeverity) FromIssueSeverityEnum(v IssueSeverityEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeIssueSeverityEnum performs a merge with any union data inside the ClusterHealth_IssueSeverity, using the provided IssueSeverityEnum
-func (t *ClusterHealth_IssueSeverity) MergeIssueSeverityEnum(v IssueSeverityEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsNullEnum returns the union data inside the ClusterHealth_IssueSeverity as a NullEnum
-func (t ClusterHealth_IssueSeverity) AsNullEnum() (NullEnum, error) {
-	var body NullEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromNullEnum overwrites any union data inside the ClusterHealth_IssueSeverity as the provided NullEnum
-func (t *ClusterHealth_IssueSeverity) FromNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeNullEnum performs a merge with any union data inside the ClusterHealth_IssueSeverity, using the provided NullEnum
-func (t *ClusterHealth_IssueSeverity) MergeNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ClusterHealth_IssueSeverity) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ClusterHealth_IssueSeverity) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
 // AsNoDNSProviderSchema returns the union data inside the DNSProviderConfigSchema_DnsProvider as a NoDNSProviderSchema
 func (t DNSProviderConfigSchema_DnsProvider) AsNoDNSProviderSchema() (NoDNSProviderSchema, error) {
 	var body NoDNSProviderSchema
@@ -11239,182 +11369,6 @@ func (t FleetCategoryCapacity_LimitedBy) MarshalJSON() ([]byte, error) {
 }
 
 func (t *FleetCategoryCapacity_LimitedBy) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsBuildToolEnum returns the union data inside the FlinkProject_BuildTool as a BuildToolEnum
-func (t FlinkProject_BuildTool) AsBuildToolEnum() (BuildToolEnum, error) {
-	var body BuildToolEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromBuildToolEnum overwrites any union data inside the FlinkProject_BuildTool as the provided BuildToolEnum
-func (t *FlinkProject_BuildTool) FromBuildToolEnum(v BuildToolEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeBuildToolEnum performs a merge with any union data inside the FlinkProject_BuildTool, using the provided BuildToolEnum
-func (t *FlinkProject_BuildTool) MergeBuildToolEnum(v BuildToolEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsBlankEnum returns the union data inside the FlinkProject_BuildTool as a BlankEnum
-func (t FlinkProject_BuildTool) AsBlankEnum() (BlankEnum, error) {
-	var body BlankEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromBlankEnum overwrites any union data inside the FlinkProject_BuildTool as the provided BlankEnum
-func (t *FlinkProject_BuildTool) FromBlankEnum(v BlankEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeBlankEnum performs a merge with any union data inside the FlinkProject_BuildTool, using the provided BlankEnum
-func (t *FlinkProject_BuildTool) MergeBlankEnum(v BlankEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsNullEnum returns the union data inside the FlinkProject_BuildTool as a NullEnum
-func (t FlinkProject_BuildTool) AsNullEnum() (NullEnum, error) {
-	var body NullEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromNullEnum overwrites any union data inside the FlinkProject_BuildTool as the provided NullEnum
-func (t *FlinkProject_BuildTool) FromNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeNullEnum performs a merge with any union data inside the FlinkProject_BuildTool, using the provided NullEnum
-func (t *FlinkProject_BuildTool) MergeNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t FlinkProject_BuildTool) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *FlinkProject_BuildTool) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsBuildToolEnum returns the union data inside the FlinkProjectCreated_BuildTool as a BuildToolEnum
-func (t FlinkProjectCreated_BuildTool) AsBuildToolEnum() (BuildToolEnum, error) {
-	var body BuildToolEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromBuildToolEnum overwrites any union data inside the FlinkProjectCreated_BuildTool as the provided BuildToolEnum
-func (t *FlinkProjectCreated_BuildTool) FromBuildToolEnum(v BuildToolEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeBuildToolEnum performs a merge with any union data inside the FlinkProjectCreated_BuildTool, using the provided BuildToolEnum
-func (t *FlinkProjectCreated_BuildTool) MergeBuildToolEnum(v BuildToolEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsBlankEnum returns the union data inside the FlinkProjectCreated_BuildTool as a BlankEnum
-func (t FlinkProjectCreated_BuildTool) AsBlankEnum() (BlankEnum, error) {
-	var body BlankEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromBlankEnum overwrites any union data inside the FlinkProjectCreated_BuildTool as the provided BlankEnum
-func (t *FlinkProjectCreated_BuildTool) FromBlankEnum(v BlankEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeBlankEnum performs a merge with any union data inside the FlinkProjectCreated_BuildTool, using the provided BlankEnum
-func (t *FlinkProjectCreated_BuildTool) MergeBlankEnum(v BlankEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsNullEnum returns the union data inside the FlinkProjectCreated_BuildTool as a NullEnum
-func (t FlinkProjectCreated_BuildTool) AsNullEnum() (NullEnum, error) {
-	var body NullEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromNullEnum overwrites any union data inside the FlinkProjectCreated_BuildTool as the provided NullEnum
-func (t *FlinkProjectCreated_BuildTool) FromNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeNullEnum performs a merge with any union data inside the FlinkProjectCreated_BuildTool, using the provided NullEnum
-func (t *FlinkProjectCreated_BuildTool) MergeNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t FlinkProjectCreated_BuildTool) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *FlinkProjectCreated_BuildTool) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -11715,218 +11669,6 @@ func (t PatchedAlert_ResourceType) MarshalJSON() ([]byte, error) {
 }
 
 func (t *PatchedAlert_ResourceType) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsClusterHealthStatusEnum returns the union data inside the PatchedClusterHealth_ClusterHealthStatus as a ClusterHealthStatusEnum
-func (t PatchedClusterHealth_ClusterHealthStatus) AsClusterHealthStatusEnum() (ClusterHealthStatusEnum, error) {
-	var body ClusterHealthStatusEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromClusterHealthStatusEnum overwrites any union data inside the PatchedClusterHealth_ClusterHealthStatus as the provided ClusterHealthStatusEnum
-func (t *PatchedClusterHealth_ClusterHealthStatus) FromClusterHealthStatusEnum(v ClusterHealthStatusEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeClusterHealthStatusEnum performs a merge with any union data inside the PatchedClusterHealth_ClusterHealthStatus, using the provided ClusterHealthStatusEnum
-func (t *PatchedClusterHealth_ClusterHealthStatus) MergeClusterHealthStatusEnum(v ClusterHealthStatusEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsNullEnum returns the union data inside the PatchedClusterHealth_ClusterHealthStatus as a NullEnum
-func (t PatchedClusterHealth_ClusterHealthStatus) AsNullEnum() (NullEnum, error) {
-	var body NullEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromNullEnum overwrites any union data inside the PatchedClusterHealth_ClusterHealthStatus as the provided NullEnum
-func (t *PatchedClusterHealth_ClusterHealthStatus) FromNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeNullEnum performs a merge with any union data inside the PatchedClusterHealth_ClusterHealthStatus, using the provided NullEnum
-func (t *PatchedClusterHealth_ClusterHealthStatus) MergeNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t PatchedClusterHealth_ClusterHealthStatus) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *PatchedClusterHealth_ClusterHealthStatus) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsIssueSeverityEnum returns the union data inside the PatchedClusterHealth_IssueSeverity as a IssueSeverityEnum
-func (t PatchedClusterHealth_IssueSeverity) AsIssueSeverityEnum() (IssueSeverityEnum, error) {
-	var body IssueSeverityEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromIssueSeverityEnum overwrites any union data inside the PatchedClusterHealth_IssueSeverity as the provided IssueSeverityEnum
-func (t *PatchedClusterHealth_IssueSeverity) FromIssueSeverityEnum(v IssueSeverityEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeIssueSeverityEnum performs a merge with any union data inside the PatchedClusterHealth_IssueSeverity, using the provided IssueSeverityEnum
-func (t *PatchedClusterHealth_IssueSeverity) MergeIssueSeverityEnum(v IssueSeverityEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsNullEnum returns the union data inside the PatchedClusterHealth_IssueSeverity as a NullEnum
-func (t PatchedClusterHealth_IssueSeverity) AsNullEnum() (NullEnum, error) {
-	var body NullEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromNullEnum overwrites any union data inside the PatchedClusterHealth_IssueSeverity as the provided NullEnum
-func (t *PatchedClusterHealth_IssueSeverity) FromNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeNullEnum performs a merge with any union data inside the PatchedClusterHealth_IssueSeverity, using the provided NullEnum
-func (t *PatchedClusterHealth_IssueSeverity) MergeNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t PatchedClusterHealth_IssueSeverity) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *PatchedClusterHealth_IssueSeverity) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsBuildToolEnum returns the union data inside the PatchedFlinkProject_BuildTool as a BuildToolEnum
-func (t PatchedFlinkProject_BuildTool) AsBuildToolEnum() (BuildToolEnum, error) {
-	var body BuildToolEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromBuildToolEnum overwrites any union data inside the PatchedFlinkProject_BuildTool as the provided BuildToolEnum
-func (t *PatchedFlinkProject_BuildTool) FromBuildToolEnum(v BuildToolEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeBuildToolEnum performs a merge with any union data inside the PatchedFlinkProject_BuildTool, using the provided BuildToolEnum
-func (t *PatchedFlinkProject_BuildTool) MergeBuildToolEnum(v BuildToolEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsBlankEnum returns the union data inside the PatchedFlinkProject_BuildTool as a BlankEnum
-func (t PatchedFlinkProject_BuildTool) AsBlankEnum() (BlankEnum, error) {
-	var body BlankEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromBlankEnum overwrites any union data inside the PatchedFlinkProject_BuildTool as the provided BlankEnum
-func (t *PatchedFlinkProject_BuildTool) FromBlankEnum(v BlankEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeBlankEnum performs a merge with any union data inside the PatchedFlinkProject_BuildTool, using the provided BlankEnum
-func (t *PatchedFlinkProject_BuildTool) MergeBlankEnum(v BlankEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsNullEnum returns the union data inside the PatchedFlinkProject_BuildTool as a NullEnum
-func (t PatchedFlinkProject_BuildTool) AsNullEnum() (NullEnum, error) {
-	var body NullEnum
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromNullEnum overwrites any union data inside the PatchedFlinkProject_BuildTool as the provided NullEnum
-func (t *PatchedFlinkProject_BuildTool) FromNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeNullEnum performs a merge with any union data inside the PatchedFlinkProject_BuildTool, using the provided NullEnum
-func (t *PatchedFlinkProject_BuildTool) MergeNullEnum(v NullEnum) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t PatchedFlinkProject_BuildTool) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *PatchedFlinkProject_BuildTool) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -12520,9 +12262,6 @@ type ClientInterface interface {
 	// OrganizationsClickhousesStatusCreate request
 	OrganizationsClickhousesStatusCreate(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// OrganizationsClusterHealthReportsList request
-	OrganizationsClusterHealthReportsList(ctx context.Context, orgIdentifier string, params *OrganizationsClusterHealthReportsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// OrganizationsClusterHistoryList request
 	OrganizationsClusterHistoryList(ctx context.Context, orgIdentifier string, params *OrganizationsClusterHistoryListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -12557,6 +12296,9 @@ type ClientInterface interface {
 
 	// OrganizationsCommandsTerminateDestroy request
 	OrganizationsCommandsTerminateDestroy(ctx context.Context, orgIdentifier string, runId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetComponentCatalog request
+	GetComponentCatalog(ctx context.Context, orgIdentifier string, params *GetComponentCatalogParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsContainerRegistryDestroy request
 	OrganizationsContainerRegistryDestroy(ctx context.Context, orgIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -12947,23 +12689,24 @@ type ClientInterface interface {
 	// FlinkProjectsCiTemplate request
 	FlinkProjectsCiTemplate(ctx context.Context, orgIdentifier string, identifier string, params *FlinkProjectsCiTemplateParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FlinkProjectsDeployWithBody request with any body
-	FlinkProjectsDeployWithBody(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	FlinkProjectsDeploy(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsDeployJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// FlinkProjectsDeploymentsList request
 	FlinkProjectsDeploymentsList(ctx context.Context, orgIdentifier string, identifier string, params *FlinkProjectsDeploymentsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FlinkProjectsDevEnv request
+	FlinkProjectsDevEnv(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FlinkProjectsHeadRetrieve request
+	FlinkProjectsHeadRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FlinkProjectsHeadUpdateWithBody request with any body
+	FlinkProjectsHeadUpdateWithBody(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	FlinkProjectsHeadUpdate(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsHeadUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// FlinkProjectReleasesRegisterWithBody request with any body
 	FlinkProjectReleasesRegisterWithBody(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	FlinkProjectReleasesRegister(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectReleasesRegisterJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FlinkProjectsRollbackWithBody request with any body
-	FlinkProjectsRollbackWithBody(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	FlinkProjectsRollback(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsRollbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// FlinkProjectsRotateKey request
 	FlinkProjectsRotateKey(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -13062,6 +12805,12 @@ type ClientInterface interface {
 	// OrganizationsFlinkJobsFinalizeDestroy request
 	OrganizationsFlinkJobsFinalizeDestroy(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FlinkJobLogsRetrieve request
+	FlinkJobLogsRetrieve(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, params *FlinkJobLogsRetrieveParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FlinkJobReadinessRetrieve request
+	FlinkJobReadinessRetrieve(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// FlinkJobStoreCredentialRetrieve request
 	FlinkJobStoreCredentialRetrieve(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -13137,10 +12886,16 @@ type ClientInterface interface {
 	// OrganizationsFlinkFinalizeDestroy request
 	OrganizationsFlinkFinalizeDestroy(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FlinkLogsRetrieve request
+	FlinkLogsRetrieve(ctx context.Context, orgIdentifier string, identifier string, params *FlinkLogsRetrieveParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// OrganizationsFlinkReconcileCreateWithBody request with any body
 	OrganizationsFlinkReconcileCreateWithBody(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFlinkReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	OrganizationsFlinkReconcileCreate(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFlinkReconcileCreateParams, body OrganizationsFlinkReconcileCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FlinkStateCredentialRetrieve request
+	FlinkStateCredentialRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsFlinkStatusRetrieve request
 	OrganizationsFlinkStatusRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -13636,33 +13391,6 @@ type ClientInterface interface {
 	// OrganizationsKafkaFiringAlertsRetrieve request
 	OrganizationsKafkaFiringAlertsRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// OrganizationsKafkaHealthList request
-	OrganizationsKafkaHealthList(ctx context.Context, orgIdentifier string, kafkaId string, params *OrganizationsKafkaHealthListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OrganizationsKafkaHealthCreateWithBody request with any body
-	OrganizationsKafkaHealthCreateWithBody(ctx context.Context, orgIdentifier string, kafkaId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	OrganizationsKafkaHealthCreate(ctx context.Context, orgIdentifier string, kafkaId string, body OrganizationsKafkaHealthCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OrganizationsKafkaHealthUploadCreate request
-	OrganizationsKafkaHealthUploadCreate(ctx context.Context, orgIdentifier string, kafkaId string, healthId string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OrganizationsKafkaHealthDestroy request
-	OrganizationsKafkaHealthDestroy(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OrganizationsKafkaHealthRetrieve request
-	OrganizationsKafkaHealthRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OrganizationsKafkaHealthPartialUpdateWithBody request with any body
-	OrganizationsKafkaHealthPartialUpdateWithBody(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	OrganizationsKafkaHealthPartialUpdate(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthPartialUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OrganizationsKafkaHealthUpdateWithBody request with any body
-	OrganizationsKafkaHealthUpdateWithBody(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	OrganizationsKafkaHealthUpdate(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// OrganizationsKafkaInstalledComponentsRetrieve request
 	OrganizationsKafkaInstalledComponentsRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -13695,9 +13423,6 @@ type ClientInterface interface {
 
 	// OrganizationsKafkaLogsRetrieve request
 	OrganizationsKafkaLogsRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OrganizationsKafkaManifestsRetrieve request
-	OrganizationsKafkaManifestsRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KafkaMetricsList request
 	KafkaMetricsList(ctx context.Context, orgIdentifier string, kafkaId string, params *KafkaMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -13785,8 +13510,10 @@ type ClientInterface interface {
 
 	OrganizationsMembersCreate(ctx context.Context, orgIdentifier string, body OrganizationsMembersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// OrganizationsMembersInviteCreate request
-	OrganizationsMembersInviteCreate(ctx context.Context, orgIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// OrganizationsMembersInviteCreateWithBody request with any body
+	OrganizationsMembersInviteCreateWithBody(ctx context.Context, orgIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	OrganizationsMembersInviteCreate(ctx context.Context, orgIdentifier string, body OrganizationsMembersInviteCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsMembersDestroy request
 	OrganizationsMembersDestroy(ctx context.Context, orgIdentifier string, email string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -16600,18 +16327,6 @@ func (c *Client) OrganizationsClickhousesStatusCreate(ctx context.Context, orgId
 	return c.Client.Do(req)
 }
 
-func (c *Client) OrganizationsClusterHealthReportsList(ctx context.Context, orgIdentifier string, params *OrganizationsClusterHealthReportsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsClusterHealthReportsListRequest(c.Server, orgIdentifier, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 func (c *Client) OrganizationsClusterHistoryList(ctx context.Context, orgIdentifier string, params *OrganizationsClusterHistoryListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsClusterHistoryListRequest(c.Server, orgIdentifier, params)
 	if err != nil {
@@ -16758,6 +16473,18 @@ func (c *Client) OrganizationsCommandsSignalCreate(ctx context.Context, orgIdent
 
 func (c *Client) OrganizationsCommandsTerminateDestroy(ctx context.Context, orgIdentifier string, runId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsCommandsTerminateDestroyRequest(c.Server, orgIdentifier, runId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetComponentCatalog(ctx context.Context, orgIdentifier string, params *GetComponentCatalogParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetComponentCatalogRequest(c.Server, orgIdentifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -18448,32 +18175,56 @@ func (c *Client) FlinkProjectsCiTemplate(ctx context.Context, orgIdentifier stri
 	return c.Client.Do(req)
 }
 
-func (c *Client) FlinkProjectsDeployWithBody(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFlinkProjectsDeployRequestWithBody(c.Server, orgIdentifier, identifier, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FlinkProjectsDeploy(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsDeployJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFlinkProjectsDeployRequest(c.Server, orgIdentifier, identifier, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 func (c *Client) FlinkProjectsDeploymentsList(ctx context.Context, orgIdentifier string, identifier string, params *FlinkProjectsDeploymentsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewFlinkProjectsDeploymentsListRequest(c.Server, orgIdentifier, identifier, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FlinkProjectsDevEnv(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFlinkProjectsDevEnvRequest(c.Server, orgIdentifier, identifier)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FlinkProjectsHeadRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFlinkProjectsHeadRetrieveRequest(c.Server, orgIdentifier, identifier)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FlinkProjectsHeadUpdateWithBody(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFlinkProjectsHeadUpdateRequestWithBody(c.Server, orgIdentifier, identifier, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FlinkProjectsHeadUpdate(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsHeadUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFlinkProjectsHeadUpdateRequest(c.Server, orgIdentifier, identifier, body)
 	if err != nil {
 		return nil, err
 	}
@@ -18498,30 +18249,6 @@ func (c *Client) FlinkProjectReleasesRegisterWithBody(ctx context.Context, orgId
 
 func (c *Client) FlinkProjectReleasesRegister(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectReleasesRegisterJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewFlinkProjectReleasesRegisterRequest(c.Server, orgIdentifier, identifier, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FlinkProjectsRollbackWithBody(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFlinkProjectsRollbackRequestWithBody(c.Server, orgIdentifier, identifier, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FlinkProjectsRollback(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsRollbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFlinkProjectsRollbackRequest(c.Server, orgIdentifier, identifier, body)
 	if err != nil {
 		return nil, err
 	}
@@ -18940,6 +18667,30 @@ func (c *Client) OrganizationsFlinkJobsFinalizeDestroy(ctx context.Context, orgI
 	return c.Client.Do(req)
 }
 
+func (c *Client) FlinkJobLogsRetrieve(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, params *FlinkJobLogsRetrieveParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFlinkJobLogsRetrieveRequest(c.Server, orgIdentifier, flinkIdentifier, identifier, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FlinkJobReadinessRetrieve(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFlinkJobReadinessRetrieveRequest(c.Server, orgIdentifier, flinkIdentifier, identifier)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) FlinkJobStoreCredentialRetrieve(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewFlinkJobStoreCredentialRetrieveRequest(c.Server, orgIdentifier, flinkIdentifier, identifier)
 	if err != nil {
@@ -19252,6 +19003,18 @@ func (c *Client) OrganizationsFlinkFinalizeDestroy(ctx context.Context, orgIdent
 	return c.Client.Do(req)
 }
 
+func (c *Client) FlinkLogsRetrieve(ctx context.Context, orgIdentifier string, identifier string, params *FlinkLogsRetrieveParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFlinkLogsRetrieveRequest(c.Server, orgIdentifier, identifier, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) OrganizationsFlinkReconcileCreateWithBody(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFlinkReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsFlinkReconcileCreateRequestWithBody(c.Server, orgIdentifier, identifier, params, contentType, body)
 	if err != nil {
@@ -19266,6 +19029,18 @@ func (c *Client) OrganizationsFlinkReconcileCreateWithBody(ctx context.Context, 
 
 func (c *Client) OrganizationsFlinkReconcileCreate(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFlinkReconcileCreateParams, body OrganizationsFlinkReconcileCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsFlinkReconcileCreateRequest(c.Server, orgIdentifier, identifier, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FlinkStateCredentialRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFlinkStateCredentialRetrieveRequest(c.Server, orgIdentifier, identifier)
 	if err != nil {
 		return nil, err
 	}
@@ -21400,126 +21175,6 @@ func (c *Client) OrganizationsKafkaFiringAlertsRetrieve(ctx context.Context, org
 	return c.Client.Do(req)
 }
 
-func (c *Client) OrganizationsKafkaHealthList(ctx context.Context, orgIdentifier string, kafkaId string, params *OrganizationsKafkaHealthListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthListRequest(c.Server, orgIdentifier, kafkaId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthCreateWithBody(ctx context.Context, orgIdentifier string, kafkaId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthCreateRequestWithBody(c.Server, orgIdentifier, kafkaId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthCreate(ctx context.Context, orgIdentifier string, kafkaId string, body OrganizationsKafkaHealthCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthCreateRequest(c.Server, orgIdentifier, kafkaId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthUploadCreate(ctx context.Context, orgIdentifier string, kafkaId string, healthId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthUploadCreateRequest(c.Server, orgIdentifier, kafkaId, healthId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthDestroy(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthDestroyRequest(c.Server, orgIdentifier, kafkaId, identifier)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthRetrieveRequest(c.Server, orgIdentifier, kafkaId, identifier)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthPartialUpdateWithBody(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthPartialUpdateRequestWithBody(c.Server, orgIdentifier, kafkaId, identifier, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthPartialUpdate(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthPartialUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthPartialUpdateRequest(c.Server, orgIdentifier, kafkaId, identifier, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthUpdateWithBody(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthUpdateRequestWithBody(c.Server, orgIdentifier, kafkaId, identifier, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaHealthUpdate(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaHealthUpdateRequest(c.Server, orgIdentifier, kafkaId, identifier, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 func (c *Client) OrganizationsKafkaInstalledComponentsRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsKafkaInstalledComponentsRetrieveRequest(c.Server, orgIdentifier, kafkaId)
 	if err != nil {
@@ -21654,18 +21309,6 @@ func (c *Client) OrganizationsKafkaLabelsUpdate(ctx context.Context, orgIdentifi
 
 func (c *Client) OrganizationsKafkaLogsRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsKafkaLogsRetrieveRequest(c.Server, orgIdentifier, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) OrganizationsKafkaManifestsRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsKafkaManifestsRetrieveRequest(c.Server, orgIdentifier, kafkaId)
 	if err != nil {
 		return nil, err
 	}
@@ -22036,8 +21679,20 @@ func (c *Client) OrganizationsMembersCreate(ctx context.Context, orgIdentifier s
 	return c.Client.Do(req)
 }
 
-func (c *Client) OrganizationsMembersInviteCreate(ctx context.Context, orgIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsMembersInviteCreateRequest(c.Server, orgIdentifier)
+func (c *Client) OrganizationsMembersInviteCreateWithBody(ctx context.Context, orgIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOrganizationsMembersInviteCreateRequestWithBody(c.Server, orgIdentifier, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) OrganizationsMembersInviteCreate(ctx context.Context, orgIdentifier string, body OrganizationsMembersInviteCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOrganizationsMembersInviteCreateRequest(c.Server, orgIdentifier, body)
 	if err != nil {
 		return nil, err
 	}
@@ -31319,78 +30974,6 @@ func NewOrganizationsClickhousesStatusCreateRequest(server string, orgIdentifier
 	return req, nil
 }
 
-// NewOrganizationsClusterHealthReportsListRequest generates requests for OrganizationsClusterHealthReportsList
-func NewOrganizationsClusterHealthReportsListRequest(server string, orgIdentifier string, params *OrganizationsClusterHealthReportsListParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/cluster-health-reports/", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		queryValues := queryURL.Query()
-
-		if params.Page != nil {
-
-			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.PageSize != nil {
-
-			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page_size", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		queryURL.RawQuery = queryValues.Encode()
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewOrganizationsClusterHistoryListRequest generates requests for OrganizationsClusterHistoryList
 func NewOrganizationsClusterHistoryListRequest(server string, orgIdentifier string, params *OrganizationsClusterHistoryListParams) (*http.Request, error) {
 	var err error
@@ -31876,6 +31459,106 @@ func NewOrganizationsCommandsTerminateDestroyRequest(server string, orgIdentifie
 	}
 
 	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetComponentCatalogRequest generates requests for GetComponentCatalog
+func NewGetComponentCatalogRequest(server string, orgIdentifier string, params *GetComponentCatalogParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/component-catalog/", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeUnsupported != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "include_unsupported", runtime.ParamLocationQuery, *params.IncludeUnsupported); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Provider != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "provider", runtime.ParamLocationQuery, *params.Provider); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Sku != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sku", runtime.ParamLocationQuery, *params.Sku); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "target", runtime.ParamLocationQuery, params.Target); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -37112,22 +36795,6 @@ func NewFlinkProjectsListRequest(server string, orgIdentifier string, params *Fl
 
 		}
 
-		if params.SourceProvider != nil {
-
-			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "source_provider", runtime.ParamLocationQuery, *params.SourceProvider); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -37455,60 +37122,6 @@ func NewFlinkProjectsCiTemplateRequest(server string, orgIdentifier string, iden
 	return req, nil
 }
 
-// NewFlinkProjectsDeployRequest calls the generic FlinkProjectsDeploy builder with application/json body
-func NewFlinkProjectsDeployRequest(server string, orgIdentifier string, identifier string, body FlinkProjectsDeployJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewFlinkProjectsDeployRequestWithBody(server, orgIdentifier, identifier, "application/json", bodyReader)
-}
-
-// NewFlinkProjectsDeployRequestWithBody generates requests for FlinkProjectsDeploy with any type of body
-func NewFlinkProjectsDeployRequestWithBody(server string, orgIdentifier string, identifier string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/flink-projects/%s/deploy/", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
 // NewFlinkProjectsDeploymentsListRequest generates requests for FlinkProjectsDeploymentsList
 func NewFlinkProjectsDeploymentsListRequest(server string, orgIdentifier string, identifier string, params *FlinkProjectsDeploymentsListParams) (*http.Request, error) {
 	var err error
@@ -37604,6 +37217,142 @@ func NewFlinkProjectsDeploymentsListRequest(server string, orgIdentifier string,
 	return req, nil
 }
 
+// NewFlinkProjectsDevEnvRequest generates requests for FlinkProjectsDevEnv
+func NewFlinkProjectsDevEnvRequest(server string, orgIdentifier string, identifier string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/flink-projects/%s/dev-env/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFlinkProjectsHeadRetrieveRequest generates requests for FlinkProjectsHeadRetrieve
+func NewFlinkProjectsHeadRetrieveRequest(server string, orgIdentifier string, identifier string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/flink-projects/%s/head/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFlinkProjectsHeadUpdateRequest calls the generic FlinkProjectsHeadUpdate builder with application/json body
+func NewFlinkProjectsHeadUpdateRequest(server string, orgIdentifier string, identifier string, body FlinkProjectsHeadUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewFlinkProjectsHeadUpdateRequestWithBody(server, orgIdentifier, identifier, "application/json", bodyReader)
+}
+
+// NewFlinkProjectsHeadUpdateRequestWithBody generates requests for FlinkProjectsHeadUpdate with any type of body
+func NewFlinkProjectsHeadUpdateRequestWithBody(server string, orgIdentifier string, identifier string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/flink-projects/%s/head/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewFlinkProjectReleasesRegisterRequest calls the generic FlinkProjectReleasesRegister builder with application/json body
 func NewFlinkProjectReleasesRegisterRequest(server string, orgIdentifier string, identifier string, body FlinkProjectReleasesRegisterJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -37639,60 +37388,6 @@ func NewFlinkProjectReleasesRegisterRequestWithBody(server string, orgIdentifier
 	}
 
 	operationPath := fmt.Sprintf("/organizations/%s/flink-projects/%s/releases/", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewFlinkProjectsRollbackRequest calls the generic FlinkProjectsRollback builder with application/json body
-func NewFlinkProjectsRollbackRequest(server string, orgIdentifier string, identifier string, body FlinkProjectsRollbackJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewFlinkProjectsRollbackRequestWithBody(server, orgIdentifier, identifier, "application/json", bodyReader)
-}
-
-// NewFlinkProjectsRollbackRequestWithBody generates requests for FlinkProjectsRollback with any type of body
-func NewFlinkProjectsRollbackRequestWithBody(server string, orgIdentifier string, identifier string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/flink-projects/%s/rollback/", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -39121,6 +38816,140 @@ func NewOrganizationsFlinkJobsFinalizeDestroyRequest(server string, orgIdentifie
 	return req, nil
 }
 
+// NewFlinkJobLogsRetrieveRequest generates requests for FlinkJobLogsRetrieve
+func NewFlinkJobLogsRetrieveRequest(server string, orgIdentifier string, flinkIdentifier string, identifier string, params *FlinkJobLogsRetrieveParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "flink_identifier", runtime.ParamLocationPath, flinkIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/flink/%s/jobs/%s/logs/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Component != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "component", runtime.ParamLocationQuery, *params.Component); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Lines != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "lines", runtime.ParamLocationQuery, *params.Lines); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFlinkJobReadinessRetrieveRequest generates requests for FlinkJobReadinessRetrieve
+func NewFlinkJobReadinessRetrieveRequest(server string, orgIdentifier string, flinkIdentifier string, identifier string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "flink_identifier", runtime.ParamLocationPath, flinkIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/flink/%s/jobs/%s/readiness/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewFlinkJobStoreCredentialRetrieveRequest generates requests for FlinkJobStoreCredentialRetrieve
 func NewFlinkJobStoreCredentialRetrieveRequest(server string, orgIdentifier string, flinkIdentifier string, identifier string) (*http.Request, error) {
 	var err error
@@ -40124,6 +39953,85 @@ func NewOrganizationsFlinkFinalizeDestroyRequest(server string, orgIdentifier st
 	return req, nil
 }
 
+// NewFlinkLogsRetrieveRequest generates requests for FlinkLogsRetrieve
+func NewFlinkLogsRetrieveRequest(server string, orgIdentifier string, identifier string, params *FlinkLogsRetrieveParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/flink/%s/logs/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Component != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "component", runtime.ParamLocationQuery, *params.Component); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Lines != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "lines", runtime.ParamLocationQuery, *params.Lines); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewOrganizationsFlinkReconcileCreateRequest calls the generic OrganizationsFlinkReconcileCreate builder with application/json body
 func NewOrganizationsFlinkReconcileCreateRequest(server string, orgIdentifier string, identifier string, params *OrganizationsFlinkReconcileCreateParams, body OrganizationsFlinkReconcileCreateJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -40186,6 +40094,47 @@ func NewOrganizationsFlinkReconcileCreateRequestWithBody(server string, orgIdent
 
 		req.Header.Set("Idempotency-Key", headerParam0)
 
+	}
+
+	return req, nil
+}
+
+// NewFlinkStateCredentialRetrieveRequest generates requests for FlinkStateCredentialRetrieve
+func NewFlinkStateCredentialRetrieveRequest(server string, orgIdentifier string, identifier string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/flink/%s/state-credential/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
 	}
 
 	return req, nil
@@ -46870,405 +46819,6 @@ func NewOrganizationsKafkaFiringAlertsRetrieveRequest(server string, orgIdentifi
 	return req, nil
 }
 
-// NewOrganizationsKafkaHealthListRequest generates requests for OrganizationsKafkaHealthList
-func NewOrganizationsKafkaHealthListRequest(server string, orgIdentifier string, kafkaId string, params *OrganizationsKafkaHealthListParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/health/", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		queryValues := queryURL.Query()
-
-		if params.Page != nil {
-
-			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.PageSize != nil {
-
-			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page_size", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		queryURL.RawQuery = queryValues.Encode()
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewOrganizationsKafkaHealthCreateRequest calls the generic OrganizationsKafkaHealthCreate builder with application/json body
-func NewOrganizationsKafkaHealthCreateRequest(server string, orgIdentifier string, kafkaId string, body OrganizationsKafkaHealthCreateJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewOrganizationsKafkaHealthCreateRequestWithBody(server, orgIdentifier, kafkaId, "application/json", bodyReader)
-}
-
-// NewOrganizationsKafkaHealthCreateRequestWithBody generates requests for OrganizationsKafkaHealthCreate with any type of body
-func NewOrganizationsKafkaHealthCreateRequestWithBody(server string, orgIdentifier string, kafkaId string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/health/", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewOrganizationsKafkaHealthUploadCreateRequest generates requests for OrganizationsKafkaHealthUploadCreate
-func NewOrganizationsKafkaHealthUploadCreateRequest(server string, orgIdentifier string, kafkaId string, healthId string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam2 string
-
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "health_id", runtime.ParamLocationPath, healthId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/health/%s/upload/", pathParam0, pathParam1, pathParam2)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewOrganizationsKafkaHealthDestroyRequest generates requests for OrganizationsKafkaHealthDestroy
-func NewOrganizationsKafkaHealthDestroyRequest(server string, orgIdentifier string, kafkaId string, identifier string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam2 string
-
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/health/%s/", pathParam0, pathParam1, pathParam2)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewOrganizationsKafkaHealthRetrieveRequest generates requests for OrganizationsKafkaHealthRetrieve
-func NewOrganizationsKafkaHealthRetrieveRequest(server string, orgIdentifier string, kafkaId string, identifier string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam2 string
-
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/health/%s/", pathParam0, pathParam1, pathParam2)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewOrganizationsKafkaHealthPartialUpdateRequest calls the generic OrganizationsKafkaHealthPartialUpdate builder with application/json body
-func NewOrganizationsKafkaHealthPartialUpdateRequest(server string, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthPartialUpdateJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewOrganizationsKafkaHealthPartialUpdateRequestWithBody(server, orgIdentifier, kafkaId, identifier, "application/json", bodyReader)
-}
-
-// NewOrganizationsKafkaHealthPartialUpdateRequestWithBody generates requests for OrganizationsKafkaHealthPartialUpdate with any type of body
-func NewOrganizationsKafkaHealthPartialUpdateRequestWithBody(server string, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam2 string
-
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/health/%s/", pathParam0, pathParam1, pathParam2)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PATCH", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewOrganizationsKafkaHealthUpdateRequest calls the generic OrganizationsKafkaHealthUpdate builder with application/json body
-func NewOrganizationsKafkaHealthUpdateRequest(server string, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthUpdateJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewOrganizationsKafkaHealthUpdateRequestWithBody(server, orgIdentifier, kafkaId, identifier, "application/json", bodyReader)
-}
-
-// NewOrganizationsKafkaHealthUpdateRequestWithBody generates requests for OrganizationsKafkaHealthUpdate with any type of body
-func NewOrganizationsKafkaHealthUpdateRequestWithBody(server string, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam2 string
-
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/health/%s/", pathParam0, pathParam1, pathParam2)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
 // NewOrganizationsKafkaInstalledComponentsRetrieveRequest generates requests for OrganizationsKafkaInstalledComponentsRetrieve
 func NewOrganizationsKafkaInstalledComponentsRetrieveRequest(server string, orgIdentifier string, kafkaId string) (*http.Request, error) {
 	var err error
@@ -47660,47 +47210,6 @@ func NewOrganizationsKafkaLogsRetrieveRequest(server string, orgIdentifier strin
 	}
 
 	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/logs/", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewOrganizationsKafkaManifestsRetrieveRequest generates requests for OrganizationsKafkaManifestsRetrieve
-func NewOrganizationsKafkaManifestsRetrieveRequest(server string, orgIdentifier string, kafkaId string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/manifests/", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -49192,8 +48701,19 @@ func NewOrganizationsMembersCreateRequestWithBody(server string, orgIdentifier s
 	return req, nil
 }
 
-// NewOrganizationsMembersInviteCreateRequest generates requests for OrganizationsMembersInviteCreate
-func NewOrganizationsMembersInviteCreateRequest(server string, orgIdentifier string) (*http.Request, error) {
+// NewOrganizationsMembersInviteCreateRequest calls the generic OrganizationsMembersInviteCreate builder with application/json body
+func NewOrganizationsMembersInviteCreateRequest(server string, orgIdentifier string, body OrganizationsMembersInviteCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewOrganizationsMembersInviteCreateRequestWithBody(server, orgIdentifier, "application/json", bodyReader)
+}
+
+// NewOrganizationsMembersInviteCreateRequestWithBody generates requests for OrganizationsMembersInviteCreate with any type of body
+func NewOrganizationsMembersInviteCreateRequestWithBody(server string, orgIdentifier string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -49218,10 +48738,12 @@ func NewOrganizationsMembersInviteCreateRequest(server string, orgIdentifier str
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -56512,9 +56034,6 @@ type ClientWithResponsesInterface interface {
 	// OrganizationsClickhousesStatusCreateWithResponse request
 	OrganizationsClickhousesStatusCreateWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsClickhousesStatusCreateResponse, error)
 
-	// OrganizationsClusterHealthReportsListWithResponse request
-	OrganizationsClusterHealthReportsListWithResponse(ctx context.Context, orgIdentifier string, params *OrganizationsClusterHealthReportsListParams, reqEditors ...RequestEditorFn) (*OrganizationsClusterHealthReportsListResponse, error)
-
 	// OrganizationsClusterHistoryListWithResponse request
 	OrganizationsClusterHistoryListWithResponse(ctx context.Context, orgIdentifier string, params *OrganizationsClusterHistoryListParams, reqEditors ...RequestEditorFn) (*OrganizationsClusterHistoryListResponse, error)
 
@@ -56549,6 +56068,9 @@ type ClientWithResponsesInterface interface {
 
 	// OrganizationsCommandsTerminateDestroyWithResponse request
 	OrganizationsCommandsTerminateDestroyWithResponse(ctx context.Context, orgIdentifier string, runId string, reqEditors ...RequestEditorFn) (*OrganizationsCommandsTerminateDestroyResponse, error)
+
+	// GetComponentCatalogWithResponse request
+	GetComponentCatalogWithResponse(ctx context.Context, orgIdentifier string, params *GetComponentCatalogParams, reqEditors ...RequestEditorFn) (*GetComponentCatalogResponse, error)
 
 	// OrganizationsContainerRegistryDestroyWithResponse request
 	OrganizationsContainerRegistryDestroyWithResponse(ctx context.Context, orgIdentifier string, reqEditors ...RequestEditorFn) (*OrganizationsContainerRegistryDestroyResponse, error)
@@ -56939,23 +56461,24 @@ type ClientWithResponsesInterface interface {
 	// FlinkProjectsCiTemplateWithResponse request
 	FlinkProjectsCiTemplateWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *FlinkProjectsCiTemplateParams, reqEditors ...RequestEditorFn) (*FlinkProjectsCiTemplateResponse, error)
 
-	// FlinkProjectsDeployWithBodyWithResponse request with any body
-	FlinkProjectsDeployWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FlinkProjectsDeployResponse, error)
-
-	FlinkProjectsDeployWithResponse(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsDeployJSONRequestBody, reqEditors ...RequestEditorFn) (*FlinkProjectsDeployResponse, error)
-
 	// FlinkProjectsDeploymentsListWithResponse request
 	FlinkProjectsDeploymentsListWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *FlinkProjectsDeploymentsListParams, reqEditors ...RequestEditorFn) (*FlinkProjectsDeploymentsListResponse, error)
+
+	// FlinkProjectsDevEnvWithResponse request
+	FlinkProjectsDevEnvWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkProjectsDevEnvResponse, error)
+
+	// FlinkProjectsHeadRetrieveWithResponse request
+	FlinkProjectsHeadRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkProjectsHeadRetrieveResponse, error)
+
+	// FlinkProjectsHeadUpdateWithBodyWithResponse request with any body
+	FlinkProjectsHeadUpdateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FlinkProjectsHeadUpdateResponse, error)
+
+	FlinkProjectsHeadUpdateWithResponse(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsHeadUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*FlinkProjectsHeadUpdateResponse, error)
 
 	// FlinkProjectReleasesRegisterWithBodyWithResponse request with any body
 	FlinkProjectReleasesRegisterWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FlinkProjectReleasesRegisterResponse, error)
 
 	FlinkProjectReleasesRegisterWithResponse(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectReleasesRegisterJSONRequestBody, reqEditors ...RequestEditorFn) (*FlinkProjectReleasesRegisterResponse, error)
-
-	// FlinkProjectsRollbackWithBodyWithResponse request with any body
-	FlinkProjectsRollbackWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FlinkProjectsRollbackResponse, error)
-
-	FlinkProjectsRollbackWithResponse(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsRollbackJSONRequestBody, reqEditors ...RequestEditorFn) (*FlinkProjectsRollbackResponse, error)
 
 	// FlinkProjectsRotateKeyWithResponse request
 	FlinkProjectsRotateKeyWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkProjectsRotateKeyResponse, error)
@@ -57054,6 +56577,12 @@ type ClientWithResponsesInterface interface {
 	// OrganizationsFlinkJobsFinalizeDestroyWithResponse request
 	OrganizationsFlinkJobsFinalizeDestroyWithResponse(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsFlinkJobsFinalizeDestroyResponse, error)
 
+	// FlinkJobLogsRetrieveWithResponse request
+	FlinkJobLogsRetrieveWithResponse(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, params *FlinkJobLogsRetrieveParams, reqEditors ...RequestEditorFn) (*FlinkJobLogsRetrieveResponse, error)
+
+	// FlinkJobReadinessRetrieveWithResponse request
+	FlinkJobReadinessRetrieveWithResponse(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkJobReadinessRetrieveResponse, error)
+
 	// FlinkJobStoreCredentialRetrieveWithResponse request
 	FlinkJobStoreCredentialRetrieveWithResponse(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkJobStoreCredentialRetrieveResponse, error)
 
@@ -57129,10 +56658,16 @@ type ClientWithResponsesInterface interface {
 	// OrganizationsFlinkFinalizeDestroyWithResponse request
 	OrganizationsFlinkFinalizeDestroyWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsFlinkFinalizeDestroyResponse, error)
 
+	// FlinkLogsRetrieveWithResponse request
+	FlinkLogsRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *FlinkLogsRetrieveParams, reqEditors ...RequestEditorFn) (*FlinkLogsRetrieveResponse, error)
+
 	// OrganizationsFlinkReconcileCreateWithBodyWithResponse request with any body
 	OrganizationsFlinkReconcileCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFlinkReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsFlinkReconcileCreateResponse, error)
 
 	OrganizationsFlinkReconcileCreateWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFlinkReconcileCreateParams, body OrganizationsFlinkReconcileCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsFlinkReconcileCreateResponse, error)
+
+	// FlinkStateCredentialRetrieveWithResponse request
+	FlinkStateCredentialRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkStateCredentialRetrieveResponse, error)
 
 	// OrganizationsFlinkStatusRetrieveWithResponse request
 	OrganizationsFlinkStatusRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsFlinkStatusRetrieveResponse, error)
@@ -57628,33 +57163,6 @@ type ClientWithResponsesInterface interface {
 	// OrganizationsKafkaFiringAlertsRetrieveWithResponse request
 	OrganizationsKafkaFiringAlertsRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaFiringAlertsRetrieveResponse, error)
 
-	// OrganizationsKafkaHealthListWithResponse request
-	OrganizationsKafkaHealthListWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, params *OrganizationsKafkaHealthListParams, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthListResponse, error)
-
-	// OrganizationsKafkaHealthCreateWithBodyWithResponse request with any body
-	OrganizationsKafkaHealthCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthCreateResponse, error)
-
-	OrganizationsKafkaHealthCreateWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, body OrganizationsKafkaHealthCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthCreateResponse, error)
-
-	// OrganizationsKafkaHealthUploadCreateWithResponse request
-	OrganizationsKafkaHealthUploadCreateWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, healthId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthUploadCreateResponse, error)
-
-	// OrganizationsKafkaHealthDestroyWithResponse request
-	OrganizationsKafkaHealthDestroyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthDestroyResponse, error)
-
-	// OrganizationsKafkaHealthRetrieveWithResponse request
-	OrganizationsKafkaHealthRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthRetrieveResponse, error)
-
-	// OrganizationsKafkaHealthPartialUpdateWithBodyWithResponse request with any body
-	OrganizationsKafkaHealthPartialUpdateWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthPartialUpdateResponse, error)
-
-	OrganizationsKafkaHealthPartialUpdateWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthPartialUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthPartialUpdateResponse, error)
-
-	// OrganizationsKafkaHealthUpdateWithBodyWithResponse request with any body
-	OrganizationsKafkaHealthUpdateWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthUpdateResponse, error)
-
-	OrganizationsKafkaHealthUpdateWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthUpdateResponse, error)
-
 	// OrganizationsKafkaInstalledComponentsRetrieveWithResponse request
 	OrganizationsKafkaInstalledComponentsRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaInstalledComponentsRetrieveResponse, error)
 
@@ -57687,9 +57195,6 @@ type ClientWithResponsesInterface interface {
 
 	// OrganizationsKafkaLogsRetrieveWithResponse request
 	OrganizationsKafkaLogsRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaLogsRetrieveResponse, error)
-
-	// OrganizationsKafkaManifestsRetrieveWithResponse request
-	OrganizationsKafkaManifestsRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaManifestsRetrieveResponse, error)
 
 	// KafkaMetricsListWithResponse request
 	KafkaMetricsListWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, params *KafkaMetricsListParams, reqEditors ...RequestEditorFn) (*KafkaMetricsListResponse, error)
@@ -57777,8 +57282,10 @@ type ClientWithResponsesInterface interface {
 
 	OrganizationsMembersCreateWithResponse(ctx context.Context, orgIdentifier string, body OrganizationsMembersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsMembersCreateResponse, error)
 
-	// OrganizationsMembersInviteCreateWithResponse request
-	OrganizationsMembersInviteCreateWithResponse(ctx context.Context, orgIdentifier string, reqEditors ...RequestEditorFn) (*OrganizationsMembersInviteCreateResponse, error)
+	// OrganizationsMembersInviteCreateWithBodyWithResponse request with any body
+	OrganizationsMembersInviteCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsMembersInviteCreateResponse, error)
+
+	OrganizationsMembersInviteCreateWithResponse(ctx context.Context, orgIdentifier string, body OrganizationsMembersInviteCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsMembersInviteCreateResponse, error)
 
 	// OrganizationsMembersDestroyWithResponse request
 	OrganizationsMembersDestroyWithResponse(ctx context.Context, orgIdentifier string, email string, reqEditors ...RequestEditorFn) (*OrganizationsMembersDestroyResponse, error)
@@ -61252,8 +60759,7 @@ func (r OrganizationsClickhousesInstalledComponentsTrackingRetrieveResponse) Sta
 type OrganizationsClickhousesDestroyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON202      *interface{}
-	JSON204      *interface{}
+	JSON202      *Operation
 }
 
 // Status returns HTTPResponse.Status
@@ -61367,8 +60873,7 @@ func (r OrganizationsClickhousesComputeComponentsRetrieveResponse) StatusCode() 
 type OrganizationsClickhousesFinalizeDestroyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON202      *interface{}
-	JSON204      *interface{}
+	JSON202      *Operation
 }
 
 // Status returns HTTPResponse.Status
@@ -61455,28 +60960,6 @@ func (r OrganizationsClickhousesStatusCreateResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r OrganizationsClickhousesStatusCreateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type OrganizationsClusterHealthReportsListResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *PaginatedClusterHealthList
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsClusterHealthReportsListResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsClusterHealthReportsListResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -61695,6 +61178,29 @@ func (r OrganizationsCommandsTerminateDestroyResponse) StatusCode() int {
 	return 0
 }
 
+type GetComponentCatalogResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ComponentCatalog
+	JSON400      *ErrorDetail
+}
+
+// Status returns HTTPResponse.Status
+func (r GetComponentCatalogResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetComponentCatalogResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type OrganizationsContainerRegistryDestroyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -61856,6 +61362,7 @@ func (r OrganizationsFleetCreateResponse) StatusCode() int {
 type OrganizationsFleetConfigurationProfilesRetrieveResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *[]FleetConfigurationProfileSummary
 }
 
 // Status returns HTTPResponse.Status
@@ -61877,6 +61384,10 @@ func (r OrganizationsFleetConfigurationProfilesRetrieveResponse) StatusCode() in
 type OrganizationsFleetConfigurationProfilesRetrieve2Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *FleetConfigurationProfile
+	JSON400      *FleetConfigDetailResponse
+	JSON403      *FleetConfigDetailResponse
+	JSON404      *FleetConfigDetailResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -63976,7 +63487,7 @@ func (r FlinkProjectsListResponse) StatusCode() int {
 type FlinkProjectsCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *FlinkProjectCreated
+	JSON201      *FlinkProject
 }
 
 // Status returns HTTPResponse.Status
@@ -64103,28 +63614,6 @@ func (r FlinkProjectsCiTemplateResponse) StatusCode() int {
 	return 0
 }
 
-type FlinkProjectsDeployResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON202      *FlinkProjectDeployResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r FlinkProjectsDeployResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r FlinkProjectsDeployResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type FlinkProjectsDeploymentsListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -64141,6 +63630,72 @@ func (r FlinkProjectsDeploymentsListResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r FlinkProjectsDeploymentsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FlinkProjectsDevEnvResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DevEnv
+}
+
+// Status returns HTTPResponse.Status
+func (r FlinkProjectsDevEnvResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FlinkProjectsDevEnvResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FlinkProjectsHeadRetrieveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *FlinkProjectHead
+}
+
+// Status returns HTTPResponse.Status
+func (r FlinkProjectsHeadRetrieveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FlinkProjectsHeadRetrieveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FlinkProjectsHeadUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON202      *FlinkProjectHeadMoveResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r FlinkProjectsHeadUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FlinkProjectsHeadUpdateResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -64164,28 +63719,6 @@ func (r FlinkProjectReleasesRegisterResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r FlinkProjectReleasesRegisterResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type FlinkProjectsRollbackResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON202      *FlinkProjectDeployResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r FlinkProjectsRollbackResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r FlinkProjectsRollbackResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -64824,6 +64357,55 @@ func (r OrganizationsFlinkJobsFinalizeDestroyResponse) StatusCode() int {
 	return 0
 }
 
+type FlinkJobLogsRetrieveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+	JSON400      *interface{}
+	JSON403      *interface{}
+	JSON404      *interface{}
+	JSON503      *interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r FlinkJobLogsRetrieveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FlinkJobLogsRetrieveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FlinkJobReadinessRetrieveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+	JSON404      *interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r FlinkJobReadinessRetrieveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FlinkJobReadinessRetrieveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type FlinkJobStoreCredentialRetrieveResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -65185,7 +64767,7 @@ func (r OrganizationsFlinkInstalledComponentsTrackingRetrieveResponse) StatusCod
 type OrganizationsFlinkDestroyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON204      *interface{}
+	JSON202      *Operation
 }
 
 // Status returns HTTPResponse.Status
@@ -65299,7 +64881,7 @@ func (r OrganizationsFlinkComputeComponentsRetrieveResponse) StatusCode() int {
 type OrganizationsFlinkFinalizeDestroyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON204      *interface{}
+	JSON202      *Operation
 }
 
 // Status returns HTTPResponse.Status
@@ -65312,6 +64894,32 @@ func (r OrganizationsFlinkFinalizeDestroyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r OrganizationsFlinkFinalizeDestroyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FlinkLogsRetrieveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *interface{}
+	JSON400      *interface{}
+	JSON403      *interface{}
+	JSON404      *interface{}
+	JSON503      *interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r FlinkLogsRetrieveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FlinkLogsRetrieveResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -65340,6 +64948,27 @@ func (r OrganizationsFlinkReconcileCreateResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r OrganizationsFlinkReconcileCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FlinkStateCredentialRetrieveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r FlinkStateCredentialRetrieveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FlinkStateCredentialRetrieveResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -68421,158 +68050,6 @@ func (r OrganizationsKafkaFiringAlertsRetrieveResponse) StatusCode() int {
 	return 0
 }
 
-type OrganizationsKafkaHealthListResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *PaginatedClusterHealthList
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsKafkaHealthListResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsKafkaHealthListResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type OrganizationsKafkaHealthCreateResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *ClusterHealth
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsKafkaHealthCreateResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsKafkaHealthCreateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type OrganizationsKafkaHealthUploadCreateResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsKafkaHealthUploadCreateResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsKafkaHealthUploadCreateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type OrganizationsKafkaHealthDestroyResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsKafkaHealthDestroyResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsKafkaHealthDestroyResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type OrganizationsKafkaHealthRetrieveResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *ClusterHealth
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsKafkaHealthRetrieveResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsKafkaHealthRetrieveResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type OrganizationsKafkaHealthPartialUpdateResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *ClusterHealth
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsKafkaHealthPartialUpdateResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsKafkaHealthPartialUpdateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type OrganizationsKafkaHealthUpdateResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *ClusterHealth
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsKafkaHealthUpdateResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsKafkaHealthUpdateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type OrganizationsKafkaInstalledComponentsRetrieveResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -68760,27 +68237,6 @@ func (r OrganizationsKafkaLogsRetrieveResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r OrganizationsKafkaLogsRetrieveResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type OrganizationsKafkaManifestsRetrieveResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r OrganizationsKafkaManifestsRetrieveResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OrganizationsKafkaManifestsRetrieveResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -69052,7 +68508,7 @@ func (r GetKafkaTopicConfigurationResponse) StatusCode() int {
 type ListKafkaTopicsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *map[string]interface{}
+	JSON200      *TopicListResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -69074,7 +68530,7 @@ func (r ListKafkaTopicsResponse) StatusCode() int {
 type CreateKafkaTopicResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *map[string]interface{}
+	JSON201      *Topic
 }
 
 // Status returns HTTPResponse.Status
@@ -69096,7 +68552,7 @@ func (r CreateKafkaTopicResponse) StatusCode() int {
 type DeleteKafkaTopicResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *map[string]interface{}
+	JSON200      *TopicDeleteResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -69118,7 +68574,7 @@ func (r DeleteKafkaTopicResponse) StatusCode() int {
 type GetKafkaTopicResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *map[string]interface{}
+	JSON200      *Topic
 }
 
 // Status returns HTTPResponse.Status
@@ -69140,7 +68596,7 @@ func (r GetKafkaTopicResponse) StatusCode() int {
 type UpdateKafkaTopicResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *map[string]interface{}
+	JSON200      *Topic
 }
 
 // Status returns HTTPResponse.Status
@@ -69356,6 +68812,7 @@ func (r OrganizationsMembersCreateResponse) StatusCode() int {
 type OrganizationsMembersInviteCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *OrganizationMemberInviteResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -74453,15 +73910,6 @@ func (c *ClientWithResponses) OrganizationsClickhousesStatusCreateWithResponse(c
 	return ParseOrganizationsClickhousesStatusCreateResponse(rsp)
 }
 
-// OrganizationsClusterHealthReportsListWithResponse request returning *OrganizationsClusterHealthReportsListResponse
-func (c *ClientWithResponses) OrganizationsClusterHealthReportsListWithResponse(ctx context.Context, orgIdentifier string, params *OrganizationsClusterHealthReportsListParams, reqEditors ...RequestEditorFn) (*OrganizationsClusterHealthReportsListResponse, error) {
-	rsp, err := c.OrganizationsClusterHealthReportsList(ctx, orgIdentifier, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsClusterHealthReportsListResponse(rsp)
-}
-
 // OrganizationsClusterHistoryListWithResponse request returning *OrganizationsClusterHistoryListResponse
 func (c *ClientWithResponses) OrganizationsClusterHistoryListWithResponse(ctx context.Context, orgIdentifier string, params *OrganizationsClusterHistoryListParams, reqEditors ...RequestEditorFn) (*OrganizationsClusterHistoryListResponse, error) {
 	rsp, err := c.OrganizationsClusterHistoryList(ctx, orgIdentifier, params, reqEditors...)
@@ -74573,6 +74021,15 @@ func (c *ClientWithResponses) OrganizationsCommandsTerminateDestroyWithResponse(
 		return nil, err
 	}
 	return ParseOrganizationsCommandsTerminateDestroyResponse(rsp)
+}
+
+// GetComponentCatalogWithResponse request returning *GetComponentCatalogResponse
+func (c *ClientWithResponses) GetComponentCatalogWithResponse(ctx context.Context, orgIdentifier string, params *GetComponentCatalogParams, reqEditors ...RequestEditorFn) (*GetComponentCatalogResponse, error) {
+	rsp, err := c.GetComponentCatalog(ctx, orgIdentifier, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetComponentCatalogResponse(rsp)
 }
 
 // OrganizationsContainerRegistryDestroyWithResponse request returning *OrganizationsContainerRegistryDestroyResponse
@@ -75804,23 +75261,6 @@ func (c *ClientWithResponses) FlinkProjectsCiTemplateWithResponse(ctx context.Co
 	return ParseFlinkProjectsCiTemplateResponse(rsp)
 }
 
-// FlinkProjectsDeployWithBodyWithResponse request with arbitrary body returning *FlinkProjectsDeployResponse
-func (c *ClientWithResponses) FlinkProjectsDeployWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FlinkProjectsDeployResponse, error) {
-	rsp, err := c.FlinkProjectsDeployWithBody(ctx, orgIdentifier, identifier, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFlinkProjectsDeployResponse(rsp)
-}
-
-func (c *ClientWithResponses) FlinkProjectsDeployWithResponse(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsDeployJSONRequestBody, reqEditors ...RequestEditorFn) (*FlinkProjectsDeployResponse, error) {
-	rsp, err := c.FlinkProjectsDeploy(ctx, orgIdentifier, identifier, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFlinkProjectsDeployResponse(rsp)
-}
-
 // FlinkProjectsDeploymentsListWithResponse request returning *FlinkProjectsDeploymentsListResponse
 func (c *ClientWithResponses) FlinkProjectsDeploymentsListWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *FlinkProjectsDeploymentsListParams, reqEditors ...RequestEditorFn) (*FlinkProjectsDeploymentsListResponse, error) {
 	rsp, err := c.FlinkProjectsDeploymentsList(ctx, orgIdentifier, identifier, params, reqEditors...)
@@ -75828,6 +75268,41 @@ func (c *ClientWithResponses) FlinkProjectsDeploymentsListWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseFlinkProjectsDeploymentsListResponse(rsp)
+}
+
+// FlinkProjectsDevEnvWithResponse request returning *FlinkProjectsDevEnvResponse
+func (c *ClientWithResponses) FlinkProjectsDevEnvWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkProjectsDevEnvResponse, error) {
+	rsp, err := c.FlinkProjectsDevEnv(ctx, orgIdentifier, identifier, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFlinkProjectsDevEnvResponse(rsp)
+}
+
+// FlinkProjectsHeadRetrieveWithResponse request returning *FlinkProjectsHeadRetrieveResponse
+func (c *ClientWithResponses) FlinkProjectsHeadRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkProjectsHeadRetrieveResponse, error) {
+	rsp, err := c.FlinkProjectsHeadRetrieve(ctx, orgIdentifier, identifier, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFlinkProjectsHeadRetrieveResponse(rsp)
+}
+
+// FlinkProjectsHeadUpdateWithBodyWithResponse request with arbitrary body returning *FlinkProjectsHeadUpdateResponse
+func (c *ClientWithResponses) FlinkProjectsHeadUpdateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FlinkProjectsHeadUpdateResponse, error) {
+	rsp, err := c.FlinkProjectsHeadUpdateWithBody(ctx, orgIdentifier, identifier, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFlinkProjectsHeadUpdateResponse(rsp)
+}
+
+func (c *ClientWithResponses) FlinkProjectsHeadUpdateWithResponse(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsHeadUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*FlinkProjectsHeadUpdateResponse, error) {
+	rsp, err := c.FlinkProjectsHeadUpdate(ctx, orgIdentifier, identifier, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFlinkProjectsHeadUpdateResponse(rsp)
 }
 
 // FlinkProjectReleasesRegisterWithBodyWithResponse request with arbitrary body returning *FlinkProjectReleasesRegisterResponse
@@ -75845,23 +75320,6 @@ func (c *ClientWithResponses) FlinkProjectReleasesRegisterWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseFlinkProjectReleasesRegisterResponse(rsp)
-}
-
-// FlinkProjectsRollbackWithBodyWithResponse request with arbitrary body returning *FlinkProjectsRollbackResponse
-func (c *ClientWithResponses) FlinkProjectsRollbackWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FlinkProjectsRollbackResponse, error) {
-	rsp, err := c.FlinkProjectsRollbackWithBody(ctx, orgIdentifier, identifier, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFlinkProjectsRollbackResponse(rsp)
-}
-
-func (c *ClientWithResponses) FlinkProjectsRollbackWithResponse(ctx context.Context, orgIdentifier string, identifier string, body FlinkProjectsRollbackJSONRequestBody, reqEditors ...RequestEditorFn) (*FlinkProjectsRollbackResponse, error) {
-	rsp, err := c.FlinkProjectsRollback(ctx, orgIdentifier, identifier, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFlinkProjectsRollbackResponse(rsp)
 }
 
 // FlinkProjectsRotateKeyWithResponse request returning *FlinkProjectsRotateKeyResponse
@@ -76165,6 +75623,24 @@ func (c *ClientWithResponses) OrganizationsFlinkJobsFinalizeDestroyWithResponse(
 	return ParseOrganizationsFlinkJobsFinalizeDestroyResponse(rsp)
 }
 
+// FlinkJobLogsRetrieveWithResponse request returning *FlinkJobLogsRetrieveResponse
+func (c *ClientWithResponses) FlinkJobLogsRetrieveWithResponse(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, params *FlinkJobLogsRetrieveParams, reqEditors ...RequestEditorFn) (*FlinkJobLogsRetrieveResponse, error) {
+	rsp, err := c.FlinkJobLogsRetrieve(ctx, orgIdentifier, flinkIdentifier, identifier, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFlinkJobLogsRetrieveResponse(rsp)
+}
+
+// FlinkJobReadinessRetrieveWithResponse request returning *FlinkJobReadinessRetrieveResponse
+func (c *ClientWithResponses) FlinkJobReadinessRetrieveWithResponse(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkJobReadinessRetrieveResponse, error) {
+	rsp, err := c.FlinkJobReadinessRetrieve(ctx, orgIdentifier, flinkIdentifier, identifier, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFlinkJobReadinessRetrieveResponse(rsp)
+}
+
 // FlinkJobStoreCredentialRetrieveWithResponse request returning *FlinkJobStoreCredentialRetrieveResponse
 func (c *ClientWithResponses) FlinkJobStoreCredentialRetrieveWithResponse(ctx context.Context, orgIdentifier string, flinkIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkJobStoreCredentialRetrieveResponse, error) {
 	rsp, err := c.FlinkJobStoreCredentialRetrieve(ctx, orgIdentifier, flinkIdentifier, identifier, reqEditors...)
@@ -76396,6 +75872,15 @@ func (c *ClientWithResponses) OrganizationsFlinkFinalizeDestroyWithResponse(ctx 
 	return ParseOrganizationsFlinkFinalizeDestroyResponse(rsp)
 }
 
+// FlinkLogsRetrieveWithResponse request returning *FlinkLogsRetrieveResponse
+func (c *ClientWithResponses) FlinkLogsRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *FlinkLogsRetrieveParams, reqEditors ...RequestEditorFn) (*FlinkLogsRetrieveResponse, error) {
+	rsp, err := c.FlinkLogsRetrieve(ctx, orgIdentifier, identifier, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFlinkLogsRetrieveResponse(rsp)
+}
+
 // OrganizationsFlinkReconcileCreateWithBodyWithResponse request with arbitrary body returning *OrganizationsFlinkReconcileCreateResponse
 func (c *ClientWithResponses) OrganizationsFlinkReconcileCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFlinkReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsFlinkReconcileCreateResponse, error) {
 	rsp, err := c.OrganizationsFlinkReconcileCreateWithBody(ctx, orgIdentifier, identifier, params, contentType, body, reqEditors...)
@@ -76411,6 +75896,15 @@ func (c *ClientWithResponses) OrganizationsFlinkReconcileCreateWithResponse(ctx 
 		return nil, err
 	}
 	return ParseOrganizationsFlinkReconcileCreateResponse(rsp)
+}
+
+// FlinkStateCredentialRetrieveWithResponse request returning *FlinkStateCredentialRetrieveResponse
+func (c *ClientWithResponses) FlinkStateCredentialRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*FlinkStateCredentialRetrieveResponse, error) {
+	rsp, err := c.FlinkStateCredentialRetrieve(ctx, orgIdentifier, identifier, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFlinkStateCredentialRetrieveResponse(rsp)
 }
 
 // OrganizationsFlinkStatusRetrieveWithResponse request returning *OrganizationsFlinkStatusRetrieveResponse
@@ -77969,93 +77463,6 @@ func (c *ClientWithResponses) OrganizationsKafkaFiringAlertsRetrieveWithResponse
 	return ParseOrganizationsKafkaFiringAlertsRetrieveResponse(rsp)
 }
 
-// OrganizationsKafkaHealthListWithResponse request returning *OrganizationsKafkaHealthListResponse
-func (c *ClientWithResponses) OrganizationsKafkaHealthListWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, params *OrganizationsKafkaHealthListParams, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthListResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthList(ctx, orgIdentifier, kafkaId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthListResponse(rsp)
-}
-
-// OrganizationsKafkaHealthCreateWithBodyWithResponse request with arbitrary body returning *OrganizationsKafkaHealthCreateResponse
-func (c *ClientWithResponses) OrganizationsKafkaHealthCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthCreateResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthCreateWithBody(ctx, orgIdentifier, kafkaId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthCreateResponse(rsp)
-}
-
-func (c *ClientWithResponses) OrganizationsKafkaHealthCreateWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, body OrganizationsKafkaHealthCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthCreateResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthCreate(ctx, orgIdentifier, kafkaId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthCreateResponse(rsp)
-}
-
-// OrganizationsKafkaHealthUploadCreateWithResponse request returning *OrganizationsKafkaHealthUploadCreateResponse
-func (c *ClientWithResponses) OrganizationsKafkaHealthUploadCreateWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, healthId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthUploadCreateResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthUploadCreate(ctx, orgIdentifier, kafkaId, healthId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthUploadCreateResponse(rsp)
-}
-
-// OrganizationsKafkaHealthDestroyWithResponse request returning *OrganizationsKafkaHealthDestroyResponse
-func (c *ClientWithResponses) OrganizationsKafkaHealthDestroyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthDestroyResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthDestroy(ctx, orgIdentifier, kafkaId, identifier, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthDestroyResponse(rsp)
-}
-
-// OrganizationsKafkaHealthRetrieveWithResponse request returning *OrganizationsKafkaHealthRetrieveResponse
-func (c *ClientWithResponses) OrganizationsKafkaHealthRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthRetrieveResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthRetrieve(ctx, orgIdentifier, kafkaId, identifier, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthRetrieveResponse(rsp)
-}
-
-// OrganizationsKafkaHealthPartialUpdateWithBodyWithResponse request with arbitrary body returning *OrganizationsKafkaHealthPartialUpdateResponse
-func (c *ClientWithResponses) OrganizationsKafkaHealthPartialUpdateWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthPartialUpdateResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthPartialUpdateWithBody(ctx, orgIdentifier, kafkaId, identifier, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthPartialUpdateResponse(rsp)
-}
-
-func (c *ClientWithResponses) OrganizationsKafkaHealthPartialUpdateWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthPartialUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthPartialUpdateResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthPartialUpdate(ctx, orgIdentifier, kafkaId, identifier, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthPartialUpdateResponse(rsp)
-}
-
-// OrganizationsKafkaHealthUpdateWithBodyWithResponse request with arbitrary body returning *OrganizationsKafkaHealthUpdateResponse
-func (c *ClientWithResponses) OrganizationsKafkaHealthUpdateWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthUpdateResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthUpdateWithBody(ctx, orgIdentifier, kafkaId, identifier, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthUpdateResponse(rsp)
-}
-
-func (c *ClientWithResponses) OrganizationsKafkaHealthUpdateWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, identifier string, body OrganizationsKafkaHealthUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsKafkaHealthUpdateResponse, error) {
-	rsp, err := c.OrganizationsKafkaHealthUpdate(ctx, orgIdentifier, kafkaId, identifier, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaHealthUpdateResponse(rsp)
-}
-
 // OrganizationsKafkaInstalledComponentsRetrieveWithResponse request returning *OrganizationsKafkaInstalledComponentsRetrieveResponse
 func (c *ClientWithResponses) OrganizationsKafkaInstalledComponentsRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaInstalledComponentsRetrieveResponse, error) {
 	rsp, err := c.OrganizationsKafkaInstalledComponentsRetrieve(ctx, orgIdentifier, kafkaId, reqEditors...)
@@ -78159,15 +77566,6 @@ func (c *ClientWithResponses) OrganizationsKafkaLogsRetrieveWithResponse(ctx con
 		return nil, err
 	}
 	return ParseOrganizationsKafkaLogsRetrieveResponse(rsp)
-}
-
-// OrganizationsKafkaManifestsRetrieveWithResponse request returning *OrganizationsKafkaManifestsRetrieveResponse
-func (c *ClientWithResponses) OrganizationsKafkaManifestsRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaManifestsRetrieveResponse, error) {
-	rsp, err := c.OrganizationsKafkaManifestsRetrieve(ctx, orgIdentifier, kafkaId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOrganizationsKafkaManifestsRetrieveResponse(rsp)
 }
 
 // KafkaMetricsListWithResponse request returning *KafkaMetricsListResponse
@@ -78436,9 +77834,17 @@ func (c *ClientWithResponses) OrganizationsMembersCreateWithResponse(ctx context
 	return ParseOrganizationsMembersCreateResponse(rsp)
 }
 
-// OrganizationsMembersInviteCreateWithResponse request returning *OrganizationsMembersInviteCreateResponse
-func (c *ClientWithResponses) OrganizationsMembersInviteCreateWithResponse(ctx context.Context, orgIdentifier string, reqEditors ...RequestEditorFn) (*OrganizationsMembersInviteCreateResponse, error) {
-	rsp, err := c.OrganizationsMembersInviteCreate(ctx, orgIdentifier, reqEditors...)
+// OrganizationsMembersInviteCreateWithBodyWithResponse request with arbitrary body returning *OrganizationsMembersInviteCreateResponse
+func (c *ClientWithResponses) OrganizationsMembersInviteCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsMembersInviteCreateResponse, error) {
+	rsp, err := c.OrganizationsMembersInviteCreateWithBody(ctx, orgIdentifier, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOrganizationsMembersInviteCreateResponse(rsp)
+}
+
+func (c *ClientWithResponses) OrganizationsMembersInviteCreateWithResponse(ctx context.Context, orgIdentifier string, body OrganizationsMembersInviteCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsMembersInviteCreateResponse, error) {
+	rsp, err := c.OrganizationsMembersInviteCreate(ctx, orgIdentifier, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -83354,18 +82760,11 @@ func ParseOrganizationsClickhousesDestroyResponse(rsp *http.Response) (*Organiza
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
-		var dest interface{}
+		var dest Operation
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON202 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 204:
-		var dest interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON204 = &dest
 
 	}
 
@@ -83519,18 +82918,11 @@ func ParseOrganizationsClickhousesFinalizeDestroyResponse(rsp *http.Response) (*
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
-		var dest interface{}
+		var dest Operation
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON202 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 204:
-		var dest interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON204 = &dest
 
 	}
 
@@ -83665,32 +83057,6 @@ func ParseOrganizationsClickhousesStatusCreateResponse(rsp *http.Response) (*Org
 			return nil, err
 		}
 		response.JSON404 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseOrganizationsClusterHealthReportsListResponse parses an HTTP response from a OrganizationsClusterHealthReportsListWithResponse call
-func ParseOrganizationsClusterHealthReportsListResponse(rsp *http.Response) (*OrganizationsClusterHealthReportsListResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsClusterHealthReportsListResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PaginatedClusterHealthList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
 
 	}
 
@@ -84029,6 +83395,39 @@ func ParseOrganizationsCommandsTerminateDestroyResponse(rsp *http.Response) (*Or
 	return response, nil
 }
 
+// ParseGetComponentCatalogResponse parses an HTTP response from a GetComponentCatalogWithResponse call
+func ParseGetComponentCatalogResponse(rsp *http.Response) (*GetComponentCatalogResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetComponentCatalogResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ComponentCatalog
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorDetail
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseOrganizationsContainerRegistryDestroyResponse parses an HTTP response from a OrganizationsContainerRegistryDestroyWithResponse call
 func ParseOrganizationsContainerRegistryDestroyResponse(rsp *http.Response) (*OrganizationsContainerRegistryDestroyResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -84252,6 +83651,16 @@ func ParseOrganizationsFleetConfigurationProfilesRetrieveResponse(rsp *http.Resp
 		HTTPResponse: rsp,
 	}
 
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []FleetConfigurationProfileSummary
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
 	return response, nil
 }
 
@@ -84266,6 +83675,37 @@ func ParseOrganizationsFleetConfigurationProfilesRetrieve2Response(rsp *http.Res
 	response := &OrganizationsFleetConfigurationProfilesRetrieve2Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest FleetConfigurationProfile
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest FleetConfigDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest FleetConfigDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest FleetConfigDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	}
 
 	return response, nil
@@ -86671,7 +86111,7 @@ func ParseFlinkProjectsCreateResponse(rsp *http.Response) (*FlinkProjectsCreateR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest FlinkProjectCreated
+		var dest FlinkProject
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -86792,32 +86232,6 @@ func ParseFlinkProjectsCiTemplateResponse(rsp *http.Response) (*FlinkProjectsCiT
 	return response, nil
 }
 
-// ParseFlinkProjectsDeployResponse parses an HTTP response from a FlinkProjectsDeployWithResponse call
-func ParseFlinkProjectsDeployResponse(rsp *http.Response) (*FlinkProjectsDeployResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &FlinkProjectsDeployResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
-		var dest FlinkProjectDeployResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON202 = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseFlinkProjectsDeploymentsListResponse parses an HTTP response from a FlinkProjectsDeploymentsListWithResponse call
 func ParseFlinkProjectsDeploymentsListResponse(rsp *http.Response) (*FlinkProjectsDeploymentsListResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -86838,6 +86252,84 @@ func ParseFlinkProjectsDeploymentsListResponse(rsp *http.Response) (*FlinkProjec
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFlinkProjectsDevEnvResponse parses an HTTP response from a FlinkProjectsDevEnvWithResponse call
+func ParseFlinkProjectsDevEnvResponse(rsp *http.Response) (*FlinkProjectsDevEnvResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FlinkProjectsDevEnvResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DevEnv
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFlinkProjectsHeadRetrieveResponse parses an HTTP response from a FlinkProjectsHeadRetrieveWithResponse call
+func ParseFlinkProjectsHeadRetrieveResponse(rsp *http.Response) (*FlinkProjectsHeadRetrieveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FlinkProjectsHeadRetrieveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest FlinkProjectHead
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFlinkProjectsHeadUpdateResponse parses an HTTP response from a FlinkProjectsHeadUpdateWithResponse call
+func ParseFlinkProjectsHeadUpdateResponse(rsp *http.Response) (*FlinkProjectsHeadUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FlinkProjectsHeadUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest FlinkProjectHeadMoveResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
 
 	}
 
@@ -86871,32 +86363,6 @@ func ParseFlinkProjectReleasesRegisterResponse(rsp *http.Response) (*FlinkProjec
 			return nil, err
 		}
 		response.JSON201 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseFlinkProjectsRollbackResponse parses an HTTP response from a FlinkProjectsRollbackWithResponse call
-func ParseFlinkProjectsRollbackResponse(rsp *http.Response) (*FlinkProjectsRollbackResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &FlinkProjectsRollbackResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
-		var dest FlinkProjectDeployResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON202 = &dest
 
 	}
 
@@ -87576,6 +87042,93 @@ func ParseOrganizationsFlinkJobsFinalizeDestroyResponse(rsp *http.Response) (*Or
 	return response, nil
 }
 
+// ParseFlinkJobLogsRetrieveResponse parses an HTTP response from a FlinkJobLogsRetrieveWithResponse call
+func ParseFlinkJobLogsRetrieveResponse(rsp *http.Response) (*FlinkJobLogsRetrieveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FlinkJobLogsRetrieveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFlinkJobReadinessRetrieveResponse parses an HTTP response from a FlinkJobReadinessRetrieveWithResponse call
+func ParseFlinkJobReadinessRetrieveResponse(rsp *http.Response) (*FlinkJobReadinessRetrieveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FlinkJobReadinessRetrieveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseFlinkJobStoreCredentialRetrieveResponse parses an HTTP response from a FlinkJobStoreCredentialRetrieveWithResponse call
 func ParseFlinkJobStoreCredentialRetrieveResponse(rsp *http.Response) (*FlinkJobStoreCredentialRetrieveResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -87872,12 +87425,12 @@ func ParseOrganizationsFlinkDestroyResponse(rsp *http.Response) (*OrganizationsF
 	}
 
 	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 204:
-		var dest interface{}
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Operation
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
-		response.JSON204 = &dest
+		response.JSON202 = &dest
 
 	}
 
@@ -88030,12 +87583,66 @@ func ParseOrganizationsFlinkFinalizeDestroyResponse(rsp *http.Response) (*Organi
 	}
 
 	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 204:
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Operation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFlinkLogsRetrieveResponse parses an HTTP response from a FlinkLogsRetrieveWithResponse call
+func ParseFlinkLogsRetrieveResponse(rsp *http.Response) (*FlinkLogsRetrieveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FlinkLogsRetrieveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest interface{}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
-		response.JSON204 = &dest
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
 
 	}
 
@@ -88105,6 +87712,22 @@ func ParseOrganizationsFlinkReconcileCreateResponse(rsp *http.Response) (*Organi
 		}
 		response.JSON422 = &dest
 
+	}
+
+	return response, nil
+}
+
+// ParseFlinkStateCredentialRetrieveResponse parses an HTTP response from a FlinkStateCredentialRetrieveWithResponse call
+func ParseFlinkStateCredentialRetrieveResponse(rsp *http.Response) (*FlinkStateCredentialRetrieveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FlinkStateCredentialRetrieveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
 	}
 
 	return response, nil
@@ -91526,168 +91149,6 @@ func ParseOrganizationsKafkaFiringAlertsRetrieveResponse(rsp *http.Response) (*O
 	return response, nil
 }
 
-// ParseOrganizationsKafkaHealthListResponse parses an HTTP response from a OrganizationsKafkaHealthListWithResponse call
-func ParseOrganizationsKafkaHealthListResponse(rsp *http.Response) (*OrganizationsKafkaHealthListResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsKafkaHealthListResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PaginatedClusterHealthList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseOrganizationsKafkaHealthCreateResponse parses an HTTP response from a OrganizationsKafkaHealthCreateWithResponse call
-func ParseOrganizationsKafkaHealthCreateResponse(rsp *http.Response) (*OrganizationsKafkaHealthCreateResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsKafkaHealthCreateResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ClusterHealth
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseOrganizationsKafkaHealthUploadCreateResponse parses an HTTP response from a OrganizationsKafkaHealthUploadCreateWithResponse call
-func ParseOrganizationsKafkaHealthUploadCreateResponse(rsp *http.Response) (*OrganizationsKafkaHealthUploadCreateResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsKafkaHealthUploadCreateResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseOrganizationsKafkaHealthDestroyResponse parses an HTTP response from a OrganizationsKafkaHealthDestroyWithResponse call
-func ParseOrganizationsKafkaHealthDestroyResponse(rsp *http.Response) (*OrganizationsKafkaHealthDestroyResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsKafkaHealthDestroyResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseOrganizationsKafkaHealthRetrieveResponse parses an HTTP response from a OrganizationsKafkaHealthRetrieveWithResponse call
-func ParseOrganizationsKafkaHealthRetrieveResponse(rsp *http.Response) (*OrganizationsKafkaHealthRetrieveResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsKafkaHealthRetrieveResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ClusterHealth
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseOrganizationsKafkaHealthPartialUpdateResponse parses an HTTP response from a OrganizationsKafkaHealthPartialUpdateWithResponse call
-func ParseOrganizationsKafkaHealthPartialUpdateResponse(rsp *http.Response) (*OrganizationsKafkaHealthPartialUpdateResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsKafkaHealthPartialUpdateResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ClusterHealth
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseOrganizationsKafkaHealthUpdateResponse parses an HTTP response from a OrganizationsKafkaHealthUpdateWithResponse call
-func ParseOrganizationsKafkaHealthUpdateResponse(rsp *http.Response) (*OrganizationsKafkaHealthUpdateResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsKafkaHealthUpdateResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ClusterHealth
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseOrganizationsKafkaInstalledComponentsRetrieveResponse parses an HTTP response from a OrganizationsKafkaInstalledComponentsRetrieveWithResponse call
 func ParseOrganizationsKafkaInstalledComponentsRetrieveResponse(rsp *http.Response) (*OrganizationsKafkaInstalledComponentsRetrieveResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -91865,22 +91326,6 @@ func ParseOrganizationsKafkaLogsRetrieveResponse(rsp *http.Response) (*Organizat
 	}
 
 	response := &OrganizationsKafkaLogsRetrieveResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseOrganizationsKafkaManifestsRetrieveResponse parses an HTTP response from a OrganizationsKafkaManifestsRetrieveWithResponse call
-func ParseOrganizationsKafkaManifestsRetrieveResponse(rsp *http.Response) (*OrganizationsKafkaManifestsRetrieveResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OrganizationsKafkaManifestsRetrieveResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -92183,7 +91628,7 @@ func ParseListKafkaTopicsResponse(rsp *http.Response) (*ListKafkaTopicsResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest map[string]interface{}
+		var dest TopicListResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -92209,7 +91654,7 @@ func ParseCreateKafkaTopicResponse(rsp *http.Response) (*CreateKafkaTopicRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest map[string]interface{}
+		var dest Topic
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -92235,7 +91680,7 @@ func ParseDeleteKafkaTopicResponse(rsp *http.Response) (*DeleteKafkaTopicRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest map[string]interface{}
+		var dest TopicDeleteResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -92261,7 +91706,7 @@ func ParseGetKafkaTopicResponse(rsp *http.Response) (*GetKafkaTopicResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest map[string]interface{}
+		var dest Topic
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -92287,7 +91732,7 @@ func ParseUpdateKafkaTopicResponse(rsp *http.Response) (*UpdateKafkaTopicRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest map[string]interface{}
+		var dest Topic
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -92503,6 +91948,16 @@ func ParseOrganizationsMembersInviteCreateResponse(rsp *http.Response) (*Organiz
 	response := &OrganizationsMembersInviteCreateResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OrganizationMemberInviteResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	}
 
 	return response, nil
