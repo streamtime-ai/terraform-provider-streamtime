@@ -9063,6 +9063,12 @@ type FleetMetricsListParams struct {
 	Step *string `form:"step,omitempty" json:"step,omitempty"`
 }
 
+// OrganizationsFleetRetrieveParams defines parameters for OrganizationsFleetRetrieve.
+type OrganizationsFleetRetrieveParams struct {
+	// Embed Set to `schema` to embed the live placement and advanced-config schemas in `_forms`. Omitted by default because building them queries the cloud provider and can take tens of seconds.
+	Embed *string `form:"embed,omitempty" json:"embed,omitempty"`
+}
+
 // OrganizationsFleetReconcileCreateParams defines parameters for OrganizationsFleetReconcileCreate.
 type OrganizationsFleetReconcileCreateParams struct {
 	// IdempotencyKey Unique string identifying this reconcile attempt. Retrying with the same key returns the original result; use a new key to retry a failed operation.
@@ -12624,7 +12630,7 @@ type ClientInterface interface {
 	OrganizationsFleetDestroy(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsFleetRetrieve request
-	OrganizationsFleetRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	OrganizationsFleetRetrieve(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFleetRetrieveParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsFleetPartialUpdateWithBody request with any body
 	OrganizationsFleetPartialUpdateWithBody(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -17887,8 +17893,8 @@ func (c *Client) OrganizationsFleetDestroy(ctx context.Context, orgIdentifier st
 	return c.Client.Do(req)
 }
 
-func (c *Client) OrganizationsFleetRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOrganizationsFleetRetrieveRequest(c.Server, orgIdentifier, identifier)
+func (c *Client) OrganizationsFleetRetrieve(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFleetRetrieveParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOrganizationsFleetRetrieveRequest(c.Server, orgIdentifier, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -36216,7 +36222,7 @@ func NewOrganizationsFleetDestroyRequest(server string, orgIdentifier string, id
 }
 
 // NewOrganizationsFleetRetrieveRequest generates requests for OrganizationsFleetRetrieve
-func NewOrganizationsFleetRetrieveRequest(server string, orgIdentifier string, identifier string) (*http.Request, error) {
+func NewOrganizationsFleetRetrieveRequest(server string, orgIdentifier string, identifier string, params *OrganizationsFleetRetrieveParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -36246,6 +36252,28 @@ func NewOrganizationsFleetRetrieveRequest(server string, orgIdentifier string, i
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Embed != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "embed", runtime.ParamLocationQuery, *params.Embed); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -56396,7 +56424,7 @@ type ClientWithResponsesInterface interface {
 	OrganizationsFleetDestroyWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsFleetDestroyResponse, error)
 
 	// OrganizationsFleetRetrieveWithResponse request
-	OrganizationsFleetRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsFleetRetrieveResponse, error)
+	OrganizationsFleetRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFleetRetrieveParams, reqEditors ...RequestEditorFn) (*OrganizationsFleetRetrieveResponse, error)
 
 	// OrganizationsFleetPartialUpdateWithBodyWithResponse request with any body
 	OrganizationsFleetPartialUpdateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsFleetPartialUpdateResponse, error)
@@ -75052,8 +75080,8 @@ func (c *ClientWithResponses) OrganizationsFleetDestroyWithResponse(ctx context.
 }
 
 // OrganizationsFleetRetrieveWithResponse request returning *OrganizationsFleetRetrieveResponse
-func (c *ClientWithResponses) OrganizationsFleetRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsFleetRetrieveResponse, error) {
-	rsp, err := c.OrganizationsFleetRetrieve(ctx, orgIdentifier, identifier, reqEditors...)
+func (c *ClientWithResponses) OrganizationsFleetRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsFleetRetrieveParams, reqEditors ...RequestEditorFn) (*OrganizationsFleetRetrieveResponse, error) {
+	rsp, err := c.OrganizationsFleetRetrieve(ctx, orgIdentifier, identifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
