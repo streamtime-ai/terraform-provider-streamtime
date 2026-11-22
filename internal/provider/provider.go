@@ -109,7 +109,7 @@ func (p *streamtimeProvider) Resources(context.Context) []func() resource.Resour
 	return []func() resource.Resource{
 		resources.NewSecret, resources.NewBaseDomain,
 		resources.NewCloudAccount, resources.NewNetwork, resources.NewFleet,
-		resources.NewKafka, resources.NewKafkaTopic,
+		resources.NewKafka, resources.NewKafkaTopic, resources.NewKafkaSchema,
 		resources.NewKafkaConnect, resources.NewKafkaReplicator, resources.NewVirtualKafka,
 		resources.NewFlink, resources.NewFlinkProject, resources.NewClickHouse,
 		resources.NewMember, resources.NewAPIKey, resources.NewOAuthProvider, resources.NewOAuthClient,

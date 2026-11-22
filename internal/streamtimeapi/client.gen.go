@@ -223,6 +223,17 @@ const (
 	ClusterTypeEnumKafka ClusterTypeEnum = "Kafka"
 )
 
+// Defines values for CompatibilityLevel.
+const (
+	BACKWARD           CompatibilityLevel = "BACKWARD"
+	BACKWARDTRANSITIVE CompatibilityLevel = "BACKWARD_TRANSITIVE"
+	FORWARD            CompatibilityLevel = "FORWARD"
+	FORWARDTRANSITIVE  CompatibilityLevel = "FORWARD_TRANSITIVE"
+	FULL               CompatibilityLevel = "FULL"
+	FULLTRANSITIVE     CompatibilityLevel = "FULL_TRANSITIVE"
+	NONE               CompatibilityLevel = "NONE"
+)
+
 // Defines values for ConfigurationState7a4Enum.
 const (
 	ConfigurationState7a4EnumIncomplete ConfigurationState7a4Enum = "incomplete"
@@ -290,12 +301,6 @@ const (
 const (
 	FlinkAdvancedConfigSchemaRuntimeJava   FlinkAdvancedConfigSchemaRuntime = "java"
 	FlinkAdvancedConfigSchemaRuntimePython FlinkAdvancedConfigSchemaRuntime = "python"
-)
-
-// Defines values for FlinkAuthSchemaTypeEnum.
-const (
-	Basic FlinkAuthSchemaTypeEnum = "basic"
-	Oauth FlinkAuthSchemaTypeEnum = "oauth"
 )
 
 // Defines values for FlinkCreateSchemaModeEnum.
@@ -440,10 +445,11 @@ const (
 	KafkaReplicatorProviderEnumMirrorMaker2 KafkaReplicatorProviderEnum = "MirrorMaker2"
 )
 
-// Defines values for Kind6deEnum.
+// Defines values for KindBe3Enum.
 const (
-	Kind6deEnumAlertInvestigation Kind6deEnum = "alert_investigation"
-	Kind6deEnumUser               Kind6deEnum = "user"
+	KindBe3EnumAlertInvestigation      KindBe3Enum = "alert_investigation"
+	KindBe3EnumInvestigationEvaluation KindBe3Enum = "investigation_evaluation"
+	KindBe3EnumUser                    KindBe3Enum = "user"
 )
 
 // Defines values for LagAlertThresholdUnitEnum.
@@ -705,6 +711,13 @@ const (
 	SCRAMSHA512 SASLMechanism = "SCRAM-SHA-512"
 )
 
+// Defines values for SchemaType.
+const (
+	SchemaTypeAvro     SchemaType = "avro"
+	SchemaTypeJson     SchemaType = "json"
+	SchemaTypeProtobuf SchemaType = "protobuf"
+)
+
 // Defines values for ScopeEnum.
 const (
 	ScopeEnumFleet ScopeEnum = "fleet"
@@ -833,6 +846,13 @@ const (
 	ReadWrite StreamtimeAiAccessEnum = "read_write"
 )
 
+// Defines values for SubjectNameStrategy.
+const (
+	SubjectNameStrategyRecord      SubjectNameStrategy = "record"
+	SubjectNameStrategyTopic       SubjectNameStrategy = "topic"
+	SubjectNameStrategyTopicRecord SubjectNameStrategy = "topic_record"
+)
+
 // Defines values for TargetEnum.
 const (
 	TargetEnumFleet    TargetEnum = "fleet"
@@ -844,6 +864,19 @@ const (
 	TenancyModeEnumDedicated TenancyModeEnum = "Dedicated"
 	TenancyModeEnumIsolated  TenancyModeEnum = "Isolated"
 	TenancyModeEnumShared    TenancyModeEnum = "Shared"
+)
+
+// Defines values for TopicSubjectMatch.
+const (
+	Exact  TopicSubjectMatch = "exact"
+	Prefix TopicSubjectMatch = "prefix"
+)
+
+// Defines values for TopicSubjectRole.
+const (
+	TopicSubjectRoleKey    TopicSubjectRole = "key"
+	TopicSubjectRoleRecord TopicSubjectRole = "record"
+	TopicSubjectRoleValue  TopicSubjectRole = "value"
 )
 
 // Defines values for TunnelProviderEnum.
@@ -1003,8 +1036,8 @@ const (
 
 // Defines values for FlinkProjectsCiTemplateParamsFormat.
 const (
-	File FlinkProjectsCiTemplateParamsFormat = "file"
-	Json FlinkProjectsCiTemplateParamsFormat = "json"
+	FlinkProjectsCiTemplateParamsFormatFile FlinkProjectsCiTemplateParamsFormat = "file"
+	FlinkProjectsCiTemplateParamsFormatJson FlinkProjectsCiTemplateParamsFormat = "json"
 )
 
 // Defines values for FlinkProjectsCiTemplateParamsProvider.
@@ -1208,10 +1241,16 @@ type AgentConnectionStatusEnum string
 type Alert struct {
 	Annotations interface{} `json:"annotations,omitempty"`
 
+	// CanInvestigateNow Whether to offer investigating the alert now, ahead of the queue (POST …/investigation/prioritize/): its investigation is waiting in the queue, or the alert is firing and has no investigation or one closed before it started.
+	CanInvestigateNow *bool `json:"can_investigate_now,omitempty"`
+
 	// ClusterId Deprecated: use resource_type and resource_identifier.
 	ClusterId *string    `json:"cluster_id,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
-	EndsAt    time.Time  `json:"ends_at"`
+
+	// EffectiveSeverity The investigation's assessed severity where a report exists, else the alert's own: critical, major, warning, info or unknown.
+	EffectiveSeverity *string   `json:"effective_severity,omitempty"`
+	EndsAt            time.Time `json:"ends_at"`
 
 	// Fingerprint Alertmanager fingerprint when provided by the webhook payload.
 	Fingerprint         *string             `json:"fingerprint,omitempty"`
@@ -1236,7 +1275,10 @@ type Alert struct {
 	ResourceType *Alert_ResourceType `json:"resource_type"`
 	StartsAt     time.Time           `json:"starts_at"`
 	Status       string              `json:"status"`
-	UpdatedAt    *time.Time          `json:"updated_at,omitempty"`
+
+	// TriageState investigated, investigating, awaiting_triage or closed.
+	TriageState *string    `json:"triage_state,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 }
 
 // Alert_ResourceType Kind of resource the alert is about: fleet, kafka, clickhouse or flink.
@@ -1282,11 +1324,20 @@ type AlertInvestigationCancelRequest struct {
 
 // AlertInvestigationFinalizeRequest defines model for AlertInvestigationFinalizeRequest.
 type AlertInvestigationFinalizeRequest struct {
-	ConversationId string                   `json:"conversation_id"`
-	Error          *string                  `json:"error"`
-	Messages       []map[string]interface{} `json:"messages"`
-	Model          *map[string]interface{}  `json:"model"`
-	Usage          *map[string]interface{}  `json:"usage"`
+	ConversationId string  `json:"conversation_id"`
+	Error          *string `json:"error"`
+
+	// EvidenceSources Checked evidence the report cites: id, step, tool and the quoted tool output.
+	EvidenceSources *[]map[string]interface{} `json:"evidence_sources,omitempty"`
+
+	// Grounding What the evidence checks kept and removed, and which tools failed.
+	Grounding *map[string]interface{} `json:"grounding"`
+
+	// Interrupted True when the investigation was stopped because it was closed or its alert resolved.
+	Interrupted *bool                    `json:"interrupted,omitempty"`
+	Messages    []map[string]interface{} `json:"messages"`
+	Model       *map[string]interface{}  `json:"model"`
+	Usage       *map[string]interface{}  `json:"usage"`
 }
 
 // AlertInvestigationStepRequest defines model for AlertInvestigationStepRequest.
@@ -1340,7 +1391,7 @@ type AssistantConversation struct {
 
 	// Identifier URL/workflow handle for this conversation
 	Identifier   *string        `json:"identifier,omitempty"`
-	Kind         *Kind6deEnum   `json:"kind,omitempty"`
+	Kind         *KindBe3Enum   `json:"kind,omitempty"`
 	MessageCount *int           `json:"message_count,omitempty"`
 	Metadata     interface{}    `json:"metadata,omitempty"`
 	Status       *StatusF0dEnum `json:"status,omitempty"`
@@ -1349,11 +1400,36 @@ type AssistantConversation struct {
 	WorkflowId   *string        `json:"workflow_id"`
 }
 
+// AssistantConversationCompactRequest defines model for AssistantConversationCompactRequest.
+type AssistantConversationCompactRequest struct {
+	StartNew *bool `json:"start_new,omitempty"`
+}
+
+// AssistantConversationCompactResult defines model for AssistantConversationCompactResult.
+type AssistantConversationCompactResult struct {
+	// Conversation The chat to continue in
+	Conversation string `json:"conversation"`
+}
+
+// AssistantConversationContext defines model for AssistantConversationContext.
+type AssistantConversationContext struct {
+	// EstimatedTokens Estimated tokens the next turn sends
+	EstimatedTokens int `json:"estimated_tokens"`
+
+	// LimitTokens Chat context budget
+	LimitTokens int `json:"limit_tokens"`
+
+	// SummarizedMessages Earlier messages replaced by the summary
+	SummarizedMessages int     `json:"summarized_messages"`
+	SummaryUpdatedAt   *string `json:"summary_updated_at"`
+	TotalMessages      int     `json:"total_messages"`
+}
+
 // AssistantConversationCreate Base serializer for all non-model serializers.
 type AssistantConversationCreate struct {
 	// Alert Alert UUID — required when kind=alert_investigation (manual link for testing)
 	Alert *openapi_types.UUID `json:"alert"`
-	Kind  *Kind6deEnum        `json:"kind,omitempty"`
+	Kind  *KindBe3Enum        `json:"kind,omitempty"`
 	Title *string             `json:"title,omitempty"`
 }
 
@@ -2051,6 +2127,14 @@ type ClickHouseInstalledComponentsRequest struct {
 // ClickHouseInstalledComponentsRequestComponentTypeEnum * `clickhouse_workload` - clickhouse_workload
 type ClickHouseInstalledComponentsRequestComponentTypeEnum string
 
+// ClickHouseMetricsResponse defines model for ClickHouseMetricsResponse.
+type ClickHouseMetricsResponse struct {
+	Cache      map[string]interface{} `json:"cache"`
+	Clickhouse map[string]interface{} `json:"clickhouse"`
+	Panels     []Panel                `json:"panels"`
+	TimeRange  map[string]interface{} `json:"time_range"`
+}
+
 // ClickHouseProviderEnum * `altinity` - Altinity
 type ClickHouseProviderEnum string
 
@@ -2360,10 +2444,7 @@ type ClusterHistory struct {
 // ClusterLinkAdvancedSettingsSchema Pydantic model for Cluster Link advanced settings (provider-specific configuration).
 type ClusterLinkAdvancedSettingsSchema struct {
 	// ChartConfig Chart override configuration for Kafka Replicator.
-	ChartConfig                 *KafkaReplicatorChartConfigSchema `json:"chart_config,omitempty"`
-	ClusterLinkHelmChartName    *string                           `json:"cluster_link_helm_chart_name"`
-	ClusterLinkHelmChartRepoUrl *string                           `json:"cluster_link_helm_chart_repo_url"`
-	ClusterLinkHelmChartVersion *string                           `json:"cluster_link_helm_chart_version"`
+	ChartConfig *KafkaReplicatorChartConfigSchema `json:"chart_config,omitempty"`
 
 	// CompressionType Compression type (none, gzip, snappy, lz4, zstd)
 	CompressionType *string `json:"compression_type"`
@@ -2417,6 +2498,9 @@ type CommandDispatchResponse struct {
 	// WorkflowId Temporal workflow ID
 	WorkflowId string `json:"workflow_id"`
 }
+
+// CompatibilityLevel defines model for CompatibilityLevel.
+type CompatibilityLevel string
 
 // ComponentCatalog defines model for ComponentCatalog.
 type ComponentCatalog struct {
@@ -3157,6 +3241,9 @@ type Flink struct {
 	// * `failed` - Failed
 	ReconciliationState *ReconciliationStateFb0Enum `json:"reconciliation_state,omitempty"`
 
+	// Sizing Slots, TaskManager replicas, resources and state backend Streamtime derives from the Flink Units of an Apache Flink cluster. Read-only; null for Confluent Flink and for a cluster with no Flink Units.
+	Sizing *map[string]interface{} `json:"sizing"`
+
 	// Status Current lifecycle status of the Flink instance.
 	//
 	// * `Incomplete` - Incomplete
@@ -3182,6 +3269,11 @@ type Flink struct {
 // This is the canonical shape stored as JSONB in the Flink model.
 // All fields are validated on create and update. Extra keys are rejected.
 //
+// Apache Flink Job Workspaces take only the kept fields: the platform sizes them and chooses their state
+// locations, so the serializer refuses the sizing, Flink configuration, savepoint, web UI and parallelism
+// fields for that provider (see “core.services.flink_managed_fields“). They stay here for Confluent Manager
+// for Flink, which still reads them.
+//
 // Example payload::
 //
 //	{
@@ -3193,13 +3285,6 @@ type Flink struct {
 //	        "enabled": true,
 //	        "retention_policy": "retain",
 //	        "location": "s3a://my-bucket/savepoints"
-//	    },
-//	    "security": {
-//	        "provider": "kafka",
-//	        "auth": {
-//	            "type": "basic",
-//	            "details": {"username": "flink-user", "password": "<secret-ref>"}
-//	        }
 //	    },
 //	    "flink_conf": {
 //	        "state.backend": "rocksdb",
@@ -3222,29 +3307,14 @@ type FlinkAdvancedConfigSchema struct {
 	// CmfRestClass Confluent Manager for Flink (CMF) REST Class. Only applicable when provider is 'cmf'.
 	CmfRestClass *string `json:"cmf_rest_class"`
 
-	// EnableLatencyTracking Enable Flink's record/event latency-marker mechanism (metrics.latency.interval), reporting p50/p95/p99 wall-clock latency per source/operator (flink_taskmanager_job_latency). Measurable overhead at high parallelism — opt-in, off by default.
-	EnableLatencyTracking *bool `json:"enable_latency_tracking,omitempty"`
-
-	// EnableRocksdbLatencyMetrics Enable RocksDB read/write latency histograms (state.backend.rocksdb.latency-track-enabled). Non-negligible overhead per the RocksDB docs — opt-in, off by default.
-	EnableRocksdbLatencyMetrics *bool `json:"enable_rocksdb_latency_metrics,omitempty"`
-
 	// EntryClass Optional main entrypoint class name if the JAR contains multiple main classes.
 	EntryClass *string `json:"entry_class"`
-
-	// ExtraVolumeMounts Additional volumeMounts to attach to JobManager and TaskManager containers.
-	ExtraVolumeMounts *[]map[string]interface{} `json:"extraVolumeMounts,omitempty"`
-
-	// ExtraVolumes Additional volumes to attach to JobManager and TaskManager pods.
-	ExtraVolumes *[]map[string]interface{} `json:"extraVolumes,omitempty"`
 
 	// FlinkConf Key-value overrides for flink-conf.yaml. Maps directly to chart values.advanced_configuration.flink_conf.
 	FlinkConf *map[string]string `json:"flink_conf,omitempty"`
 
 	// FlinkEnvironment CMF FlinkEnvironment reference. Only applicable when provider is 'cmf'.
 	FlinkEnvironment *string `json:"flink_environment"`
-
-	// Image Optional container image URI or tag (e.g., 'flink:1.17').
-	Image *string `json:"image"`
 
 	// Jobmanager JobManager configuration (resources, nodeSelector, etc.).
 	Jobmanager *map[string]interface{} `json:"jobmanager"`
@@ -3273,9 +3343,6 @@ type FlinkAdvancedConfigSchema struct {
 	// SavepointStrategy Savepoint strategy for the Flink job.
 	SavepointStrategy *FlinkSavepointStrategySchema `json:"savepoint_strategy,omitempty"`
 
-	// Security Security and authentication settings for the Flink job.
-	Security *FlinkSecuritySchema `json:"security,omitempty"`
-
 	// StateTier State backend & memory tiering: 'Stateless', 'Light', 'Heavy', or 'Heavy-RocksDB'.
 	StateTier *StateTierEnum `json:"state_tier,omitempty"`
 
@@ -3297,61 +3364,6 @@ type FlinkAdvancedConfigSchema struct {
 
 // FlinkAdvancedConfigSchemaRuntime For a Job Workspace: the kind of jobs it runs. 'python' installs the Flink image that runs Python jobs; 'java' (or not set) uses the plain Flink image. Needs no project. A workspace that already holds a Python version runs Python whatever this says.
 type FlinkAdvancedConfigSchemaRuntime string
-
-// FlinkAuthDetailsSchema Provider-specific auth detail fields.
-//
-// For type='basic': username, password.
-// For type='oauth': clientId, clientSecret, tokenUri (and other optional fields).
-// Extra keys are allowed to support provider-specific requirements.
-type FlinkAuthDetailsSchema struct {
-	Audience *string `json:"audience"`
-
-	// AuthorizeEndpoint Authorize Endpoint
-	AuthorizeEndpoint *string `json:"authorizeEndpoint"`
-
-	// ClientId OAuth2 client ID.
-	ClientId *string `json:"clientId"`
-
-	// ClientSecret OAuth2 client secret (consider using a secret reference).
-	ClientSecret *string `json:"clientSecret"`
-	EmailClaim   *string `json:"emailClaim,omitempty"`
-	GroupsClaim  *string `json:"groupsClaim,omitempty"`
-	GroupsScope  *string `json:"groupsScope"`
-
-	// Issuer Issuer
-	Issuer *string `json:"issuer"`
-
-	// JwksEndpoint JWKS Endpoint
-	JwksEndpoint *string `json:"jwksEndpoint"`
-
-	// Password Password for basic auth (consider using a secret reference).
-	Password *string `json:"password"`
-	Scope    *string `json:"scope"`
-	SubClaim *string `json:"subClaim,omitempty"`
-
-	// TokenEndpoint OAuth2 token endpoint URL.
-	TokenEndpoint *string `json:"tokenEndpoint"`
-
-	// Username Username for basic auth.
-	Username             *string                `json:"username"`
-	AdditionalProperties map[string]interface{} `json:"-"`
-}
-
-// FlinkAuthSchema Authentication configuration for the Flink cluster or backing data source.
-type FlinkAuthSchema struct {
-	// Details Provider-specific auth detail fields.
-	//
-	// For type='basic': username, password.
-	// For type='oauth': clientId, clientSecret, tokenUri (and other optional fields).
-	// Extra keys are allowed to support provider-specific requirements.
-	Details *FlinkAuthDetailsSchema `json:"details,omitempty"`
-
-	// Type Authentication type. 'basic' uses username/password; 'oauth' uses client credentials.
-	Type FlinkAuthSchemaTypeEnum `json:"type"`
-}
-
-// FlinkAuthSchemaTypeEnum defines model for FlinkAuthSchemaTypeEnum.
-type FlinkAuthSchemaTypeEnum string
 
 // FlinkChartConfigSchema Chart config map containing main Flink chart settings.
 type FlinkChartConfigSchema struct {
@@ -3378,6 +3390,11 @@ type FlinkCreateSchema struct {
 	// This is the canonical shape stored as JSONB in the Flink model.
 	// All fields are validated on create and update. Extra keys are rejected.
 	//
+	// Apache Flink Job Workspaces take only the kept fields: the platform sizes them and chooses their state
+	// locations, so the serializer refuses the sizing, Flink configuration, savepoint, web UI and parallelism
+	// fields for that provider (see ``core.services.flink_managed_fields``). They stay here for Confluent Manager
+	// for Flink, which still reads them.
+	//
 	// Example payload::
 	//
 	//     {
@@ -3389,13 +3406,6 @@ type FlinkCreateSchema struct {
 	//             "enabled": true,
 	//             "retention_policy": "retain",
 	//             "location": "s3a://my-bucket/savepoints"
-	//         },
-	//         "security": {
-	//             "provider": "kafka",
-	//             "auth": {
-	//                 "type": "basic",
-	//                 "details": {"username": "flink-user", "password": "<secret-ref>"}
-	//             }
 	//         },
 	//         "flink_conf": {
 	//             "state.backend": "rocksdb",
@@ -3511,6 +3521,9 @@ type FlinkJob struct {
 // This is the canonical shape stored as JSONB in the FlinkJob model.
 // All fields are validated on create and update. Extra keys are rejected.
 //
+// A job runs as wide as the Flink Units it was given, and its state locations come from its
+// cluster, so it carries no parallelism, savepoint strategy or Flink configuration of its own.
+//
 // A FlinkJob always targets a session-mode Flink cluster (parent FK).
 // A job takes its JAR from exactly one place: application_jar here, or a Flink
 // project version (FlinkJob.project_version). That rule needs the model, so it is
@@ -3519,18 +3532,9 @@ type FlinkJob struct {
 // Example payload::
 //
 //	{
-//	    "application_jar": "local:///opt/flink/usrlib/my-job.jar",
+//	    "application_jar": "s3://my-bucket/jars/my-job.jar",
 //	    "application_args": ["--input-topic", "raw-events"],
-//	    "parallelism": 4,
 //	    "upgrade_mode": "savepoint",
-//	    "savepoint_strategy": {
-//	        "enabled": true,
-//	        "retention_policy": "retain",
-//	        "location": "s3a://my-bucket/savepoints"
-//	    },
-//	    "flink_conf": {
-//	        "state.checkpoints.dir": "s3a://my-bucket/checkpoints"
-//	    },
 //	    "chart_config": {
 //	        "main": {"version": "0.3.1", "registry_url": "ghcr.io"}
 //	    }
@@ -3539,7 +3543,7 @@ type FlinkJobAdvancedConfigSchema struct {
 	// ApplicationArgs Arguments to pass to the Flink application main class.
 	ApplicationArgs *[]string `json:"application_args,omitempty"`
 
-	// ApplicationJar Path or URL to the Flink application JAR. Use 'local:///' for JARs baked into the image, or an HTTP(S)/S3 URL for remote JARs. Required unless the job runs a Flink project version.
+	// ApplicationJar Location of the Flink application JAR, downloaded when the job starts: an https:// or s3:// URL. A path inside the image (local://) is not supported for a session job; deploy the JAR as a project version instead. Required unless the job runs a Flink project version.
 	ApplicationJar *string `json:"application_jar"`
 
 	// ChartConfig Chart config map containing session-job chart settings.
@@ -3548,17 +3552,11 @@ type FlinkJobAdvancedConfigSchema struct {
 	// EntryClass Optional main entrypoint class name if the JAR contains multiple main classes.
 	EntryClass *string `json:"entry_class"`
 
-	// FlinkConf Key-value overrides for flink-conf.yaml at the job level. Applied on top of the parent cluster flink_conf.
-	FlinkConf *map[string]string `json:"flink_conf,omitempty"`
-
-	// Parallelism Default parallelism for this session job.
-	Parallelism *int `json:"parallelism,omitempty"`
-
 	// PythonEntryFile For a Python project version: the Python file that starts the job, relative to the archive root. Defaults to the file found when the archive was uploaded (main.py).
 	PythonEntryFile *string `json:"python_entry_file"`
 
-	// SavepointStrategy Savepoint strategy for the Flink session job.
-	SavepointStrategy *FlinkJobSavepointStrategySchema `json:"savepoint_strategy,omitempty"`
+	// Statement Continuous streaming Flink SQL statement executed on a CMF Shared Compute Pool.
+	Statement *string `json:"statement"`
 
 	// UpgradeMode Flink job upgrade mode: 'stateless' restarts without state, 'savepoint' triggers a savepoint before upgrade, 'last-state' resumes from the last checkpoint.
 	UpgradeMode *UpgradeModeEnum `json:"upgrade_mode,omitempty"`
@@ -3575,9 +3573,6 @@ type FlinkJobChartMainSchema struct {
 	// RegistryUrl Selected chart registry host (e.g., 'ghcr.io', 'registry:5000').
 	RegistryUrl *string `json:"registry_url"`
 
-	// Values Optional Helm values patch to merge into generated values.
-	Values *map[string]interface{} `json:"values"`
-
 	// Version Selected chart version/tag.
 	Version *string `json:"version"`
 }
@@ -3589,6 +3584,9 @@ type FlinkJobCreateSchema struct {
 	// This is the canonical shape stored as JSONB in the FlinkJob model.
 	// All fields are validated on create and update. Extra keys are rejected.
 	//
+	// A job runs as wide as the Flink Units it was given, and its state locations come from its
+	// cluster, so it carries no parallelism, savepoint strategy or Flink configuration of its own.
+	//
 	// A FlinkJob always targets a session-mode Flink cluster (parent FK).
 	// A job takes its JAR from exactly one place: application_jar here, or a Flink
 	// project version (FlinkJob.project_version). That rule needs the model, so it is
@@ -3597,18 +3595,9 @@ type FlinkJobCreateSchema struct {
 	// Example payload::
 	//
 	//     {
-	//         "application_jar": "local:///opt/flink/usrlib/my-job.jar",
+	//         "application_jar": "s3://my-bucket/jars/my-job.jar",
 	//         "application_args": ["--input-topic", "raw-events"],
-	//         "parallelism": 4,
 	//         "upgrade_mode": "savepoint",
-	//         "savepoint_strategy": {
-	//             "enabled": true,
-	//             "retention_policy": "retain",
-	//             "location": "s3a://my-bucket/savepoints"
-	//         },
-	//         "flink_conf": {
-	//             "state.checkpoints.dir": "s3a://my-bucket/checkpoints"
-	//         },
 	//         "chart_config": {
 	//             "main": {"version": "0.3.1", "registry_url": "ghcr.io"}
 	//         }
@@ -3668,18 +3657,6 @@ type FlinkJobResponseSchema struct {
 
 	// UpdatedAt Last update timestamp (ISO format).
 	UpdatedAt string `json:"updated_at"`
-}
-
-// FlinkJobSavepointStrategySchema Savepoint strategy for the Flink session job.
-type FlinkJobSavepointStrategySchema struct {
-	// Enabled Whether savepoints are enabled for this job.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Location Savepoint storage location URI (e.g., s3a://my-bucket/savepoints). Overrides state.savepoints.dir in flink_conf if set.
-	Location *string `json:"location"`
-
-	// RetentionPolicy Savepoint retention policy on job stop: 'retain' keeps all savepoints, 'delete' removes them, 'none' defers to Flink defaults.
-	RetentionPolicy *RetentionPolicyEnum `json:"retention_policy,omitempty"`
 }
 
 // FlinkJobStatusEnum * `Pending` - Pending
@@ -3937,7 +3914,7 @@ type FlinkProjectVersion struct {
 	// Filename Stored file name (sanitised).
 	Filename *string             `json:"filename,omitempty"`
 	Id       *openapi_types.UUID `json:"id,omitempty"`
-	Manifest *string             `json:"manifest,omitempty"`
+	Manifest *string             `json:"manifest"`
 
 	// Project An alphanumeric string (< 24 characters) containing only lowercase characters and "-", starting with a letter or number.
 	Project *string `json:"project,omitempty"`
@@ -4110,21 +4087,17 @@ type FlinkSavepointStrategySchema struct {
 	RetentionPolicy *RetentionPolicyEnum `json:"retention_policy,omitempty"`
 }
 
-// FlinkSecuritySchema Security and authentication settings for the Flink job.
-type FlinkSecuritySchema struct {
-	// Auth Authentication configuration for the Flink cluster or backing data source.
-	Auth FlinkAuthSchema `json:"auth"`
-
-	// Provider Security provider name (e.g., 'kafka', 'aws', 'gcp', 'none'). Used to identify the target service or auth mechanism.
-	Provider string `json:"provider"`
-}
-
 // FlinkUpdateSchema Request body schema for updating a Flink instance (PUT/PATCH).
 type FlinkUpdateSchema struct {
 	// AdvancedConfiguration Strict Pydantic schema for Flink advanced_configuration.
 	//
 	// This is the canonical shape stored as JSONB in the Flink model.
 	// All fields are validated on create and update. Extra keys are rejected.
+	//
+	// Apache Flink Job Workspaces take only the kept fields: the platform sizes them and chooses their state
+	// locations, so the serializer refuses the sizing, Flink configuration, savepoint, web UI and parallelism
+	// fields for that provider (see ``core.services.flink_managed_fields``). They stay here for Confluent Manager
+	// for Flink, which still reads them.
 	//
 	// Example payload::
 	//
@@ -4137,13 +4110,6 @@ type FlinkUpdateSchema struct {
 	//             "enabled": true,
 	//             "retention_policy": "retain",
 	//             "location": "s3a://my-bucket/savepoints"
-	//         },
-	//         "security": {
-	//             "provider": "kafka",
-	//             "auth": {
-	//                 "type": "basic",
-	//                 "details": {"username": "flink-user", "password": "<secret-ref>"}
-	//             }
 	//         },
 	//         "flink_conf": {
 	//             "state.backend": "rocksdb",
@@ -4538,6 +4504,14 @@ type KafkaConnectCreateSchema struct {
 
 // KafkaConnectCreateSchemaProviderEnum defines model for KafkaConnectCreateSchemaProviderEnum.
 type KafkaConnectCreateSchemaProviderEnum string
+
+// KafkaConnectMetricsResponse defines model for KafkaConnectMetricsResponse.
+type KafkaConnectMetricsResponse struct {
+	Cache     map[string]interface{} `json:"cache"`
+	Connect   map[string]interface{} `json:"connect"`
+	Panels    []Panel                `json:"panels"`
+	TimeRange map[string]interface{} `json:"time_range"`
+}
 
 // KafkaConnectProviderEnum * `skc` - Strimzi Kafka Connect
 // * `cfk` - Confluent Kafka Connect
@@ -5050,11 +5024,11 @@ type KafkaReplicatorCreateSchema struct {
 	// DestinationConnectionDetails Pydantic model for Kafka connection details (external clusters).
 	DestinationConnectionDetails *KafkaConnectionDetailsSchema `json:"destination_connection_details,omitempty"`
 
-	// DestinationKafkaId Destination Kafka cluster ID (Streamtime)
-	DestinationKafkaId *string `json:"destination_kafka_id"`
+	// DestinationKafka Destination Kafka cluster identifier (Streamtime)
+	DestinationKafka *string `json:"destination_kafka"`
 
 	// DestinationSecretPath Destination secret URI (e.g., builtin:///replicators/my-replicator/destination-secret)
-	DestinationSecretPath *string `json:"destination_secret_path"`
+	DestinationSecretPath string `json:"destination_secret_path"`
 
 	// GroupsBlacklist Consumer groups blacklist (CSV or pattern)
 	GroupsBlacklist *string `json:"groups_blacklist"`
@@ -5089,17 +5063,25 @@ type KafkaReplicatorCreateSchema struct {
 	// SourceInitiatedLink Whether this is a source-initiated Cluster Link
 	SourceInitiatedLink *bool `json:"source_initiated_link,omitempty"`
 
-	// SourceKafkaId Source Kafka cluster ID (Streamtime)
-	SourceKafkaId *string `json:"source_kafka_id"`
+	// SourceKafka Source Kafka cluster identifier (Streamtime)
+	SourceKafka *string `json:"source_kafka"`
 
 	// SourceSecretPath Source secret URI (e.g., builtin:///replicators/my-replicator/source-secret)
-	SourceSecretPath *string `json:"source_secret_path"`
+	SourceSecretPath string `json:"source_secret_path"`
 
 	// TopicBlacklist Topic blacklist (CSV or pattern)
 	TopicBlacklist *string `json:"topic_blacklist"`
 
 	// TopicWhitelist Topic whitelist (CSV or pattern)
 	TopicWhitelist *string `json:"topic_whitelist"`
+}
+
+// KafkaReplicatorMetricsResponse defines model for KafkaReplicatorMetricsResponse.
+type KafkaReplicatorMetricsResponse struct {
+	Cache      map[string]interface{} `json:"cache"`
+	Panels     []Panel                `json:"panels"`
+	Replicator map[string]interface{} `json:"replicator"`
+	TimeRange  map[string]interface{} `json:"time_range"`
 }
 
 // KafkaReplicatorProviderEnum * `MirrorMaker2` - MirrorMaker2
@@ -5223,8 +5205,11 @@ type KafkaReplicatorUpdateSchema struct {
 	// DestinationConnectionDetails Pydantic model for Kafka connection details (external clusters).
 	DestinationConnectionDetails *KafkaConnectionDetailsSchema `json:"destination_connection_details,omitempty"`
 
-	// DestinationKafkaId Destination Kafka cluster ID
-	DestinationKafkaId *string `json:"destination_kafka_id"`
+	// DestinationKafka Destination Kafka cluster identifier
+	DestinationKafka *string `json:"destination_kafka"`
+
+	// DestinationSecretPath Destination secret URI
+	DestinationSecretPath *string `json:"destination_secret_path"`
 
 	// FleetId Fleet identifier
 	FleetId *string `json:"fleet_id"`
@@ -5259,8 +5244,11 @@ type KafkaReplicatorUpdateSchema struct {
 	// SourceInitiatedLink Source-initiated link flag
 	SourceInitiatedLink *bool `json:"source_initiated_link"`
 
-	// SourceKafkaId Source Kafka cluster ID
-	SourceKafkaId *string `json:"source_kafka_id"`
+	// SourceKafka Source Kafka cluster identifier
+	SourceKafka *string `json:"source_kafka"`
+
+	// SourceSecretPath Source secret URI
+	SourceSecretPath *string `json:"source_secret_path"`
 
 	// Status Replicator status options.
 	Status *StatusType `json:"status,omitempty"`
@@ -5280,6 +5268,18 @@ type KafkaResources struct {
 	Dashboards          *[]Dashboard `json:"dashboards"`
 	Endpoints           *[]Endpoint  `json:"endpoints"`
 	S3ManifestsFilePath *string      `json:"s3_manifests_file_path"`
+}
+
+// KafkaSchemaRegistryStatusResponse Whether the cluster has a schema registry, and whether schemas can be managed.
+//
+// When agent_update_required is true, schemas can be browsed but not changed
+// until the Agent on the cluster's fleet is updated.
+type KafkaSchemaRegistryStatusResponse struct {
+	AgentUpdateRequired *bool              `json:"agent_update_required,omitempty"`
+	Available           bool               `json:"available"`
+	Compatibility       CompatibilityLevel `json:"compatibility"`
+	Configured          bool               `json:"configured"`
+	Error               *string            `json:"error"`
 }
 
 // KafkaSizingPreviewRequest defines model for KafkaSizingPreviewRequest.
@@ -5337,9 +5337,10 @@ type KafkaSizingPreviewRequest struct {
 	Workload *WorkloadEnum `json:"workload,omitempty"`
 }
 
-// Kind6deEnum * `user` - User chat
+// KindBe3Enum * `user` - User chat
 // * `alert_investigation` - Alert investigation
-type Kind6deEnum string
+// * `investigation_evaluation` - Investigation evaluation
+type KindBe3Enum string
 
 // Label Base serializer for all ADRF model serializers.
 type Label struct {
@@ -5459,10 +5460,7 @@ type MirrorMaker2AdvancedSettingsSchema struct {
 	EmitHeartbeatsEnabled *bool `json:"emit_heartbeats_enabled"`
 
 	// EmitHeartbeatsIntervalSeconds Heartbeat interval in seconds
-	EmitHeartbeatsIntervalSeconds *int    `json:"emit_heartbeats_interval_seconds"`
-	Mirrormaker2HelmChartName     *string `json:"mirrormaker2_helm_chart_name"`
-	Mirrormaker2HelmChartRepoUrl  *string `json:"mirrormaker2_helm_chart_repo_url"`
-	Mirrormaker2HelmChartVersion  *string `json:"mirrormaker2_helm_chart_version"`
+	EmitHeartbeatsIntervalSeconds *int `json:"emit_heartbeats_interval_seconds"`
 
 	// OffsetSyncsTopicLocation Location for offset syncs topic (source or destination)
 	OffsetSyncsTopicLocation *string `json:"offset_syncs_topic_location"`
@@ -5806,7 +5804,13 @@ type Organization struct {
 type OrganizationAlertsStats struct {
 	// AvgTimeToCloseSeconds Mean time-to-close for closed investigations (seconds)
 	AvgTimeToCloseSeconds *float64 `json:"avg_time_to_close_seconds"`
-	Firing                int      `json:"firing"`
+
+	// ByTriageState Alerts per triage state, using the same rules as the triage_state filter
+	ByTriageState OrganizationAlertsTriageCounts `json:"by_triage_state"`
+
+	// CriticalFiring Firing alerts whose effective severity is critical
+	CriticalFiring int `json:"critical_firing"`
+	Firing         int `json:"firing"`
 
 	// InvestigationsClosed24h Investigations closed in the last 24 hours
 	InvestigationsClosed24h int `json:"investigations_closed_24h"`
@@ -5814,8 +5818,22 @@ type OrganizationAlertsStats struct {
 
 	// MedianTimeToCloseSeconds Median time-to-close for closed investigations (seconds)
 	MedianTimeToCloseSeconds *float64 `json:"median_time_to_close_seconds"`
-	OpenInvestigations       int      `json:"open_investigations"`
-	ResolvedWindowHours      int      `json:"resolved_window_hours"`
+
+	// NeedsAttention Alerts not closed or being investigated that are still firing or assessed critical or major
+	NeedsAttention     int `json:"needs_attention"`
+	OpenInvestigations int `json:"open_investigations"`
+
+	// P90TimeToCloseSeconds 90th percentile time-to-close for closed investigations (seconds)
+	P90TimeToCloseSeconds *float64 `json:"p90_time_to_close_seconds"`
+	ResolvedWindowHours   int      `json:"resolved_window_hours"`
+}
+
+// OrganizationAlertsTriageCounts defines model for OrganizationAlertsTriageCounts.
+type OrganizationAlertsTriageCounts struct {
+	AwaitingTriage int `json:"awaiting_triage"`
+	Closed         int `json:"closed"`
+	Investigated   int `json:"investigated"`
+	Investigating  int `json:"investigating"`
 }
 
 // OrganizationConfig Base serializer for all model serializers.
@@ -6002,6 +6020,20 @@ type PackageRule struct {
 	UpdatedAt         *time.Time         `json:"updated_at,omitempty"`
 	VersionConstraint *string            `json:"version_constraint,omitempty"`
 	VersionList       *[]string          `json:"version_list,omitempty"`
+}
+
+// PackageSyncInProgressResponse defines model for PackageSyncInProgressResponse.
+type PackageSyncInProgressResponse struct {
+	Detail     string `json:"detail"`
+	RunId      string `json:"run_id"`
+	WorkflowId string `json:"workflow_id"`
+}
+
+// PackageSyncStartedResponse defines model for PackageSyncStartedResponse.
+type PackageSyncStartedResponse struct {
+	RunId      string `json:"run_id"`
+	Status     string `json:"status"`
+	WorkflowId string `json:"workflow_id"`
 }
 
 // PaginatedAPIKeyList defines model for PaginatedAPIKeyList.
@@ -6466,10 +6498,16 @@ type PatchedAgentConnection_Status struct {
 type PatchedAlert struct {
 	Annotations interface{} `json:"annotations,omitempty"`
 
+	// CanInvestigateNow Whether to offer investigating the alert now, ahead of the queue (POST …/investigation/prioritize/): its investigation is waiting in the queue, or the alert is firing and has no investigation or one closed before it started.
+	CanInvestigateNow *bool `json:"can_investigate_now,omitempty"`
+
 	// ClusterId Deprecated: use resource_type and resource_identifier.
 	ClusterId *string    `json:"cluster_id,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
-	EndsAt    *time.Time `json:"ends_at,omitempty"`
+
+	// EffectiveSeverity The investigation's assessed severity where a report exists, else the alert's own: critical, major, warning, info or unknown.
+	EffectiveSeverity *string    `json:"effective_severity,omitempty"`
+	EndsAt            *time.Time `json:"ends_at,omitempty"`
 
 	// Fingerprint Alertmanager fingerprint when provided by the webhook payload.
 	Fingerprint         *string             `json:"fingerprint,omitempty"`
@@ -6494,7 +6532,10 @@ type PatchedAlert struct {
 	ResourceType *PatchedAlert_ResourceType `json:"resource_type"`
 	StartsAt     *time.Time                 `json:"starts_at,omitempty"`
 	Status       *string                    `json:"status,omitempty"`
-	UpdatedAt    *time.Time                 `json:"updated_at,omitempty"`
+
+	// TriageState investigated, investigating, awaiting_triage or closed.
+	TriageState *string    `json:"triage_state,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 }
 
 // PatchedAlert_ResourceType Kind of resource the alert is about: fleet, kafka, clickhouse or flink.
@@ -6848,6 +6889,9 @@ type PatchedFlinkJobUpdateSchema struct {
 	// This is the canonical shape stored as JSONB in the FlinkJob model.
 	// All fields are validated on create and update. Extra keys are rejected.
 	//
+	// A job runs as wide as the Flink Units it was given, and its state locations come from its
+	// cluster, so it carries no parallelism, savepoint strategy or Flink configuration of its own.
+	//
 	// A FlinkJob always targets a session-mode Flink cluster (parent FK).
 	// A job takes its JAR from exactly one place: application_jar here, or a Flink
 	// project version (FlinkJob.project_version). That rule needs the model, so it is
@@ -6856,18 +6900,9 @@ type PatchedFlinkJobUpdateSchema struct {
 	// Example payload::
 	//
 	//     {
-	//         "application_jar": "local:///opt/flink/usrlib/my-job.jar",
+	//         "application_jar": "s3://my-bucket/jars/my-job.jar",
 	//         "application_args": ["--input-topic", "raw-events"],
-	//         "parallelism": 4,
 	//         "upgrade_mode": "savepoint",
-	//         "savepoint_strategy": {
-	//             "enabled": true,
-	//             "retention_policy": "retain",
-	//             "location": "s3a://my-bucket/savepoints"
-	//         },
-	//         "flink_conf": {
-	//             "state.checkpoints.dir": "s3a://my-bucket/checkpoints"
-	//         },
 	//         "chart_config": {
 	//             "main": {"version": "0.3.1", "registry_url": "ghcr.io"}
 	//         }
@@ -6945,6 +6980,11 @@ type PatchedFlinkUpdateSchema struct {
 	// This is the canonical shape stored as JSONB in the Flink model.
 	// All fields are validated on create and update. Extra keys are rejected.
 	//
+	// Apache Flink Job Workspaces take only the kept fields: the platform sizes them and chooses their state
+	// locations, so the serializer refuses the sizing, Flink configuration, savepoint, web UI and parallelism
+	// fields for that provider (see ``core.services.flink_managed_fields``). They stay here for Confluent Manager
+	// for Flink, which still reads them.
+	//
 	// Example payload::
 	//
 	//     {
@@ -6956,13 +6996,6 @@ type PatchedFlinkUpdateSchema struct {
 	//             "enabled": true,
 	//             "retention_policy": "retain",
 	//             "location": "s3a://my-bucket/savepoints"
-	//         },
-	//         "security": {
-	//             "provider": "kafka",
-	//             "auth": {
-	//                 "type": "basic",
-	//                 "details": {"username": "flink-user", "password": "<secret-ref>"}
-	//             }
 	//         },
 	//         "flink_conf": {
 	//             "state.backend": "rocksdb",
@@ -7169,8 +7202,11 @@ type PatchedKafkaReplicatorUpdateSchema struct {
 	// DestinationConnectionDetails Pydantic model for Kafka connection details (external clusters).
 	DestinationConnectionDetails *KafkaConnectionDetailsSchema `json:"destination_connection_details,omitempty"`
 
-	// DestinationKafkaId Destination Kafka cluster ID
-	DestinationKafkaId *string `json:"destination_kafka_id"`
+	// DestinationKafka Destination Kafka cluster identifier
+	DestinationKafka *string `json:"destination_kafka"`
+
+	// DestinationSecretPath Destination secret URI
+	DestinationSecretPath *string `json:"destination_secret_path"`
 
 	// FleetId Fleet identifier
 	FleetId *string `json:"fleet_id"`
@@ -7205,8 +7241,11 @@ type PatchedKafkaReplicatorUpdateSchema struct {
 	// SourceInitiatedLink Source-initiated link flag
 	SourceInitiatedLink *bool `json:"source_initiated_link"`
 
-	// SourceKafkaId Source Kafka cluster ID
-	SourceKafkaId *string `json:"source_kafka_id"`
+	// SourceKafka Source Kafka cluster identifier
+	SourceKafka *string `json:"source_kafka"`
+
+	// SourceSecretPath Source secret URI
+	SourceSecretPath *string `json:"source_secret_path"`
 
 	// Status Replicator status options.
 	Status *StatusType `json:"status,omitempty"`
@@ -7746,6 +7785,47 @@ type STDNSDNSProviderSchema struct {
 	ZoneRecordId string `json:"zone_record_id"`
 }
 
+// SchemaCandidate A schema to register or check: the schema text, at most 1 MiB, and its type.
+//
+// Schema references are not supported.
+type SchemaCandidate struct {
+	Schema     string     `json:"schema"`
+	SchemaType SchemaType `json:"schema_type"`
+}
+
+// SchemaCompatibilityResponse defines model for SchemaCompatibilityResponse.
+type SchemaCompatibilityResponse struct {
+	Compatible bool     `json:"compatible"`
+	Messages   []string `json:"messages"`
+}
+
+// SchemaReference defines model for SchemaReference.
+type SchemaReference struct {
+	Name    string `json:"name"`
+	Subject string `json:"subject"`
+	Version int    `json:"version"`
+}
+
+// SchemaRegisterResponse defines model for SchemaRegisterResponse.
+type SchemaRegisterResponse struct {
+	Id      int    `json:"id"`
+	Subject string `json:"subject"`
+	Version int    `json:"version"`
+}
+
+// SchemaType defines model for SchemaType.
+type SchemaType string
+
+// SchemaVersion defines model for SchemaVersion.
+type SchemaVersion struct {
+	Id         int               `json:"id"`
+	References []SchemaReference `json:"references"`
+	Schema     string            `json:"schema"`
+	SchemaType SchemaType        `json:"schema_type"`
+	Subject    string            `json:"subject"`
+	Version    int               `json:"version"`
+}
+
 // ScopeEnum * `fleet` - Fleet
 // * `kafka` - Kafka
 type ScopeEnum string
@@ -8015,6 +8095,37 @@ type StreamtimeAIModelConfigUpdate struct {
 // * `read_write` - Read-only and write
 type StreamtimeAiAccessEnum string
 
+// SubjectCompatibility defines model for SubjectCompatibility.
+type SubjectCompatibility struct {
+	Compatibility CompatibilityLevel `json:"compatibility"`
+	Inherited     bool               `json:"inherited"`
+	Subject       string             `json:"subject"`
+}
+
+// SubjectCompatibilityRequest defines model for SubjectCompatibilityRequest.
+type SubjectCompatibilityRequest struct {
+	Compatibility CompatibilityLevel `json:"compatibility"`
+}
+
+// SubjectDeleteResponse defines model for SubjectDeleteResponse.
+type SubjectDeleteResponse struct {
+	Deleted   bool   `json:"deleted"`
+	Permanent bool   `json:"permanent"`
+	Subject   string `json:"subject"`
+	Versions  []int  `json:"versions"`
+}
+
+// SubjectNameStrategy defines model for SubjectNameStrategy.
+type SubjectNameStrategy string
+
+// SubjectVersionDeleteResponse defines model for SubjectVersionDeleteResponse.
+type SubjectVersionDeleteResponse struct {
+	Deleted   bool   `json:"deleted"`
+	Permanent bool   `json:"permanent"`
+	Subject   string `json:"subject"`
+	Version   int    `json:"version"`
+}
+
 // TailscaleSettings defines model for TailscaleSettings.
 type TailscaleSettings struct {
 	ClientId            string   `json:"client_id"`
@@ -8126,6 +8237,38 @@ type TopicListResponse struct {
 	Page     int            `json:"page"`
 	PageSize int            `json:"page_size"`
 	Total    int            `json:"total"`
+}
+
+// TopicSubject defines model for TopicSubject.
+type TopicSubject struct {
+	Match   TopicSubjectMatch `json:"match"`
+	Role    TopicSubjectRole  `json:"role"`
+	Subject string            `json:"subject"`
+}
+
+// TopicSubjectMatch defines model for TopicSubjectMatch.
+type TopicSubjectMatch string
+
+// TopicSubjectRole defines model for TopicSubjectRole.
+type TopicSubjectRole string
+
+// TopicSubjectStrategy How the topic's configuration says its key and value subjects are named.
+//
+// A side is null when the topic does not set it, or sets a naming that is
+// not recognised.
+type TopicSubjectStrategy struct {
+	Key   *SubjectNameStrategy `json:"key,omitempty"`
+	Value *SubjectNameStrategy `json:"value,omitempty"`
+}
+
+// TopicSubjectsResponse defines model for TopicSubjectsResponse.
+type TopicSubjectsResponse struct {
+	// Strategy How the topic's configuration says its key and value subjects are named.
+	//
+	// A side is null when the topic does not set it, or sets a naming that is
+	// not recognised.
+	Strategy *TopicSubjectStrategy `json:"strategy,omitempty"`
+	Subjects []TopicSubject        `json:"subjects"`
 }
 
 // TopicSummary defines model for TopicSummary.
@@ -8417,6 +8560,14 @@ type VirtualKafkaClusterCreateSchema struct {
 	Provider *string `json:"provider,omitempty"`
 }
 
+// VirtualKafkaClusterMetricsResponse defines model for VirtualKafkaClusterMetricsResponse.
+type VirtualKafkaClusterMetricsResponse struct {
+	Cache          map[string]interface{} `json:"cache"`
+	Panels         []Panel                `json:"panels"`
+	TimeRange      map[string]interface{} `json:"time_range"`
+	VirtualCluster map[string]interface{} `json:"virtual_cluster"`
+}
+
 // VirtualKafkaClusterProviderEnum * `kroxy` - Kroxylicious
 type VirtualKafkaClusterProviderEnum string
 
@@ -8662,11 +8813,38 @@ type OrganizationsAlertChannelsListParams struct {
 
 // OrganizationsAlertsListParams defines parameters for OrganizationsAlertsList.
 type OrganizationsAlertsListParams struct {
+	// InvestigationStatus none, pending, open or closed.
+	InvestigationStatus *string `form:"investigation_status,omitempty" json:"investigation_status,omitempty"`
+
+	// Limit Maximum number of alerts to return (1-100).
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// NeedsAttention true for alerts that are not closed or being investigated and are still firing or assessed critical or major.
+	NeedsAttention *bool `form:"needs_attention,omitempty" json:"needs_attention,omitempty"`
+
 	// Page A page number within the paginated result set.
 	Page *int `form:"page,omitempty" json:"page,omitempty"`
 
 	// PageSize Number of results to return per page.
 	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
+
+	// ResourceIdentifier Identifier of the resource.
+	ResourceIdentifier *string `form:"resource_identifier,omitempty" json:"resource_identifier,omitempty"`
+
+	// ResourceType fleet, kafka, clickhouse or flink.
+	ResourceType *string `form:"resource_type,omitempty" json:"resource_type,omitempty"`
+
+	// Severity Comma list of critical, major, warning, info, unknown. Matches the investigation's assessed severity where a report exists, else the alert's own.
+	Severity *string `form:"severity,omitempty" json:"severity,omitempty"`
+
+	// Sort created_at, -created_at, updated_at, -updated_at (default) or severity (critical first, then most recently updated).
+	Sort *string `form:"sort,omitempty" json:"sort,omitempty"`
+
+	// Status Alert status, e.g. firing or resolved.
+	Status *string `form:"status,omitempty" json:"status,omitempty"`
+
+	// TriageState Comma list of investigated, investigating, awaiting_triage, closed.
+	TriageState *string `form:"triage_state,omitempty" json:"triage_state,omitempty"`
 }
 
 // OrganizationsApiKeysListParams defines parameters for OrganizationsApiKeysList.
@@ -8872,6 +9050,27 @@ type OrganizationsClickhousesListParams struct {
 	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
 }
 
+// ClickhouseMetricsListParams defines parameters for ClickhouseMetricsList.
+type ClickhouseMetricsListParams struct {
+	// End Absolute end (RFC3339 or unix seconds). Requires start.
+	End *string `form:"end,omitempty" json:"end,omitempty"`
+
+	// Panels Comma-separated panel ids to fetch a subset.
+	Panels *string `form:"panels,omitempty" json:"panels,omitempty"`
+
+	// Range Relative window: 15m, 1h, 6h, 24h, 7d (default 1h).
+	Range *string `form:"range,omitempty" json:"range,omitempty"`
+
+	// Refresh Bypass response cache when true.
+	Refresh *bool `form:"refresh,omitempty" json:"refresh,omitempty"`
+
+	// Start Absolute start (RFC3339 or unix seconds). Requires end.
+	Start *string `form:"start,omitempty" json:"start,omitempty"`
+
+	// Step Prometheus step (e.g. 30s). Defaults to ~120 points.
+	Step *string `form:"step,omitempty" json:"step,omitempty"`
+}
+
 // OrganizationsClickhousesReconcileCreateParams defines parameters for OrganizationsClickhousesReconcileCreate.
 type OrganizationsClickhousesReconcileCreateParams struct {
 	// IdempotencyKey Unique string identifying this reconcile attempt. Retrying with the same key returns the original result; use a new key to retry a failed operation.
@@ -9034,6 +9233,27 @@ type OrganizationsFleetKafkaKvcListParams struct {
 
 	// PageSize Number of results to return per page.
 	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// VirtualKafkaClusterMetricsListParams defines parameters for VirtualKafkaClusterMetricsList.
+type VirtualKafkaClusterMetricsListParams struct {
+	// End Absolute end (RFC3339 or unix seconds). Requires start.
+	End *string `form:"end,omitempty" json:"end,omitempty"`
+
+	// Panels Comma-separated panel ids to fetch a subset.
+	Panels *string `form:"panels,omitempty" json:"panels,omitempty"`
+
+	// Range Relative window: 15m, 1h, 6h, 24h, 7d (default 1h).
+	Range *string `form:"range,omitempty" json:"range,omitempty"`
+
+	// Refresh Bypass the response cache when true.
+	Refresh *bool `form:"refresh,omitempty" json:"refresh,omitempty"`
+
+	// Start Absolute start (RFC3339 or unix seconds). Requires end.
+	Start *string `form:"start,omitempty" json:"start,omitempty"`
+
+	// Step Resolution between points (for example 30s). Defaults to about 120 points.
+	Step *string `form:"step,omitempty" json:"step,omitempty"`
 }
 
 // OrganizationsFleetKafkaKvcReconcileCreateParams defines parameters for OrganizationsFleetKafkaKvcReconcileCreate.
@@ -9216,6 +9436,27 @@ type OrganizationsKafkaConnectConnectorsValidateCreateJSONBody struct {
 	ConnectorClass string                 `json:"connector_class"`
 }
 
+// KafkaConnectMetricsListParams defines parameters for KafkaConnectMetricsList.
+type KafkaConnectMetricsListParams struct {
+	// End Absolute end (RFC3339 or unix seconds). Requires start.
+	End *string `form:"end,omitempty" json:"end,omitempty"`
+
+	// Panels Comma-separated panel ids to fetch a subset.
+	Panels *string `form:"panels,omitempty" json:"panels,omitempty"`
+
+	// Range Relative window: 15m, 1h, 6h, 24h, 7d (default 1h).
+	Range *string `form:"range,omitempty" json:"range,omitempty"`
+
+	// Refresh Bypass the response cache when true.
+	Refresh *bool `form:"refresh,omitempty" json:"refresh,omitempty"`
+
+	// Start Absolute start (RFC3339 or unix seconds). Requires end.
+	Start *string `form:"start,omitempty" json:"start,omitempty"`
+
+	// Step Resolution between points (for example 30s). Defaults to about 120 points.
+	Step *string `form:"step,omitempty" json:"step,omitempty"`
+}
+
 // OrganizationsKafkaConnectReconcileCreateParams defines parameters for OrganizationsKafkaConnectReconcileCreate.
 type OrganizationsKafkaConnectReconcileCreateParams struct {
 	// IdempotencyKey Unique string identifying this reconcile attempt. Retrying with the same key returns the original result; use a new key to retry a failed operation.
@@ -9229,6 +9470,27 @@ type OrganizationsKafkaReplicatorListParams struct {
 
 	// PageSize Number of results to return per page.
 	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty"`
+}
+
+// KafkaReplicatorMetricsListParams defines parameters for KafkaReplicatorMetricsList.
+type KafkaReplicatorMetricsListParams struct {
+	// End Absolute end (RFC3339 or unix seconds). Requires start.
+	End *string `form:"end,omitempty" json:"end,omitempty"`
+
+	// Panels Comma-separated panel ids to fetch a subset.
+	Panels *string `form:"panels,omitempty" json:"panels,omitempty"`
+
+	// Range Relative window: 15m, 1h, 6h, 24h, 7d (default 1h).
+	Range *string `form:"range,omitempty" json:"range,omitempty"`
+
+	// Refresh Bypass response cache when true.
+	Refresh *bool `form:"refresh,omitempty" json:"refresh,omitempty"`
+
+	// Start Absolute start (RFC3339 or unix seconds). Requires end.
+	Start *string `form:"start,omitempty" json:"start,omitempty"`
+
+	// Step Prometheus step (e.g. 30s). Defaults to ~120 points.
+	Step *string `form:"step,omitempty" json:"step,omitempty"`
 }
 
 // OrganizationsKafkaReplicatorReconcileCreateParams defines parameters for OrganizationsKafkaReplicatorReconcileCreate.
@@ -9349,6 +9611,36 @@ type KafkaMetricsListParams struct {
 
 	// Step Prometheus step (e.g. 30s). Defaults to ~120 points.
 	Step *string `form:"step,omitempty" json:"step,omitempty"`
+}
+
+// ListKafkaSchemaSubjectsParams defines parameters for ListKafkaSchemaSubjects.
+type ListKafkaSchemaSubjectsParams struct {
+	// Deleted When true, also lists soft-deleted entries in a separate array. Without it the response is unchanged.
+	Deleted *bool `form:"deleted,omitempty" json:"deleted,omitempty"`
+}
+
+// DeleteKafkaSchemaSubjectParams defines parameters for DeleteKafkaSchemaSubject.
+type DeleteKafkaSchemaSubjectParams struct {
+	// Confirm Must be true.
+	Confirm bool `form:"confirm" json:"confirm"`
+
+	// Permanent When true, permanently removes something already soft-deleted. It cannot be undone.
+	Permanent *bool `form:"permanent,omitempty" json:"permanent,omitempty"`
+}
+
+// ListKafkaSchemaSubjectVersionsParams defines parameters for ListKafkaSchemaSubjectVersions.
+type ListKafkaSchemaSubjectVersionsParams struct {
+	// Deleted When true, also lists soft-deleted entries in a separate array. Without it the response is unchanged.
+	Deleted *bool `form:"deleted,omitempty" json:"deleted,omitempty"`
+}
+
+// DeleteKafkaSchemaSubjectVersionParams defines parameters for DeleteKafkaSchemaSubjectVersion.
+type DeleteKafkaSchemaSubjectVersionParams struct {
+	// Confirm Must be true.
+	Confirm bool `form:"confirm" json:"confirm"`
+
+	// Permanent When true, permanently removes something already soft-deleted. It cannot be undone.
+	Permanent *bool `form:"permanent,omitempty" json:"permanent,omitempty"`
 }
 
 // GetKafkaTopicConfigurationParams defines parameters for GetKafkaTopicConfiguration.
@@ -9622,6 +9914,9 @@ type OrganizationsAssistantConversationsCreateJSONRequestBody = AssistantConvers
 
 // OrganizationsAssistantConversationsPartialUpdateJSONRequestBody defines body for OrganizationsAssistantConversationsPartialUpdate for application/json ContentType.
 type OrganizationsAssistantConversationsPartialUpdateJSONRequestBody = PatchedAssistantConversationUpdate
+
+// AssistantConversationContextCompactJSONRequestBody defines body for AssistantConversationContextCompact for application/json ContentType.
+type AssistantConversationContextCompactJSONRequestBody = AssistantConversationCompactRequest
 
 // InvestigationPlaybooksImportJSONRequestBody defines body for InvestigationPlaybooksImport for application/json ContentType.
 type InvestigationPlaybooksImportJSONRequestBody = InvestigationPlaybookYamlRequest
@@ -9956,6 +10251,15 @@ type OrganizationsKafkaLabelsPartialUpdateJSONRequestBody = PatchedLabel
 // OrganizationsKafkaLabelsUpdateJSONRequestBody defines body for OrganizationsKafkaLabelsUpdate for application/json ContentType.
 type OrganizationsKafkaLabelsUpdateJSONRequestBody = Label
 
+// CheckKafkaSchemaCompatibilityJSONRequestBody defines body for CheckKafkaSchemaCompatibility for application/json ContentType.
+type CheckKafkaSchemaCompatibilityJSONRequestBody = SchemaCandidate
+
+// SetKafkaSchemaSubjectCompatibilityJSONRequestBody defines body for SetKafkaSchemaSubjectCompatibility for application/json ContentType.
+type SetKafkaSchemaSubjectCompatibilityJSONRequestBody = SubjectCompatibilityRequest
+
+// RegisterKafkaSchemaJSONRequestBody defines body for RegisterKafkaSchema for application/json ContentType.
+type RegisterKafkaSchemaJSONRequestBody = SchemaCandidate
+
 // CreateKafkaTopicJSONRequestBody defines body for CreateKafkaTopic for application/json ContentType.
 type CreateKafkaTopicJSONRequestBody = TopicCreateRequest
 
@@ -10105,269 +10409,6 @@ type SetupTunnelConfigUpdateJSONRequestBody = SetupTunnelConfigWrite
 
 // SetupTunnelConfigTailscaleValidateCreateJSONRequestBody defines body for SetupTunnelConfigTailscaleValidateCreate for application/json ContentType.
 type SetupTunnelConfigTailscaleValidateCreateJSONRequestBody = TailscaleSettingsWrite
-
-// Getter for additional properties for FlinkAuthDetailsSchema. Returns the specified
-// element and whether it was found
-func (a FlinkAuthDetailsSchema) Get(fieldName string) (value interface{}, found bool) {
-	if a.AdditionalProperties != nil {
-		value, found = a.AdditionalProperties[fieldName]
-	}
-	return
-}
-
-// Setter for additional properties for FlinkAuthDetailsSchema
-func (a *FlinkAuthDetailsSchema) Set(fieldName string, value interface{}) {
-	if a.AdditionalProperties == nil {
-		a.AdditionalProperties = make(map[string]interface{})
-	}
-	a.AdditionalProperties[fieldName] = value
-}
-
-// Override default JSON handling for FlinkAuthDetailsSchema to handle AdditionalProperties
-func (a *FlinkAuthDetailsSchema) UnmarshalJSON(b []byte) error {
-	object := make(map[string]json.RawMessage)
-	err := json.Unmarshal(b, &object)
-	if err != nil {
-		return err
-	}
-
-	if raw, found := object["audience"]; found {
-		err = json.Unmarshal(raw, &a.Audience)
-		if err != nil {
-			return fmt.Errorf("error reading 'audience': %w", err)
-		}
-		delete(object, "audience")
-	}
-
-	if raw, found := object["authorizeEndpoint"]; found {
-		err = json.Unmarshal(raw, &a.AuthorizeEndpoint)
-		if err != nil {
-			return fmt.Errorf("error reading 'authorizeEndpoint': %w", err)
-		}
-		delete(object, "authorizeEndpoint")
-	}
-
-	if raw, found := object["clientId"]; found {
-		err = json.Unmarshal(raw, &a.ClientId)
-		if err != nil {
-			return fmt.Errorf("error reading 'clientId': %w", err)
-		}
-		delete(object, "clientId")
-	}
-
-	if raw, found := object["clientSecret"]; found {
-		err = json.Unmarshal(raw, &a.ClientSecret)
-		if err != nil {
-			return fmt.Errorf("error reading 'clientSecret': %w", err)
-		}
-		delete(object, "clientSecret")
-	}
-
-	if raw, found := object["emailClaim"]; found {
-		err = json.Unmarshal(raw, &a.EmailClaim)
-		if err != nil {
-			return fmt.Errorf("error reading 'emailClaim': %w", err)
-		}
-		delete(object, "emailClaim")
-	}
-
-	if raw, found := object["groupsClaim"]; found {
-		err = json.Unmarshal(raw, &a.GroupsClaim)
-		if err != nil {
-			return fmt.Errorf("error reading 'groupsClaim': %w", err)
-		}
-		delete(object, "groupsClaim")
-	}
-
-	if raw, found := object["groupsScope"]; found {
-		err = json.Unmarshal(raw, &a.GroupsScope)
-		if err != nil {
-			return fmt.Errorf("error reading 'groupsScope': %w", err)
-		}
-		delete(object, "groupsScope")
-	}
-
-	if raw, found := object["issuer"]; found {
-		err = json.Unmarshal(raw, &a.Issuer)
-		if err != nil {
-			return fmt.Errorf("error reading 'issuer': %w", err)
-		}
-		delete(object, "issuer")
-	}
-
-	if raw, found := object["jwksEndpoint"]; found {
-		err = json.Unmarshal(raw, &a.JwksEndpoint)
-		if err != nil {
-			return fmt.Errorf("error reading 'jwksEndpoint': %w", err)
-		}
-		delete(object, "jwksEndpoint")
-	}
-
-	if raw, found := object["password"]; found {
-		err = json.Unmarshal(raw, &a.Password)
-		if err != nil {
-			return fmt.Errorf("error reading 'password': %w", err)
-		}
-		delete(object, "password")
-	}
-
-	if raw, found := object["scope"]; found {
-		err = json.Unmarshal(raw, &a.Scope)
-		if err != nil {
-			return fmt.Errorf("error reading 'scope': %w", err)
-		}
-		delete(object, "scope")
-	}
-
-	if raw, found := object["subClaim"]; found {
-		err = json.Unmarshal(raw, &a.SubClaim)
-		if err != nil {
-			return fmt.Errorf("error reading 'subClaim': %w", err)
-		}
-		delete(object, "subClaim")
-	}
-
-	if raw, found := object["tokenEndpoint"]; found {
-		err = json.Unmarshal(raw, &a.TokenEndpoint)
-		if err != nil {
-			return fmt.Errorf("error reading 'tokenEndpoint': %w", err)
-		}
-		delete(object, "tokenEndpoint")
-	}
-
-	if raw, found := object["username"]; found {
-		err = json.Unmarshal(raw, &a.Username)
-		if err != nil {
-			return fmt.Errorf("error reading 'username': %w", err)
-		}
-		delete(object, "username")
-	}
-
-	if len(object) != 0 {
-		a.AdditionalProperties = make(map[string]interface{})
-		for fieldName, fieldBuf := range object {
-			var fieldVal interface{}
-			err := json.Unmarshal(fieldBuf, &fieldVal)
-			if err != nil {
-				return fmt.Errorf("error unmarshaling field %s: %w", fieldName, err)
-			}
-			a.AdditionalProperties[fieldName] = fieldVal
-		}
-	}
-	return nil
-}
-
-// Override default JSON handling for FlinkAuthDetailsSchema to handle AdditionalProperties
-func (a FlinkAuthDetailsSchema) MarshalJSON() ([]byte, error) {
-	var err error
-	object := make(map[string]json.RawMessage)
-
-	if a.Audience != nil {
-		object["audience"], err = json.Marshal(a.Audience)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'audience': %w", err)
-		}
-	}
-
-	if a.AuthorizeEndpoint != nil {
-		object["authorizeEndpoint"], err = json.Marshal(a.AuthorizeEndpoint)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'authorizeEndpoint': %w", err)
-		}
-	}
-
-	if a.ClientId != nil {
-		object["clientId"], err = json.Marshal(a.ClientId)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'clientId': %w", err)
-		}
-	}
-
-	if a.ClientSecret != nil {
-		object["clientSecret"], err = json.Marshal(a.ClientSecret)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'clientSecret': %w", err)
-		}
-	}
-
-	if a.EmailClaim != nil {
-		object["emailClaim"], err = json.Marshal(a.EmailClaim)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'emailClaim': %w", err)
-		}
-	}
-
-	if a.GroupsClaim != nil {
-		object["groupsClaim"], err = json.Marshal(a.GroupsClaim)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'groupsClaim': %w", err)
-		}
-	}
-
-	if a.GroupsScope != nil {
-		object["groupsScope"], err = json.Marshal(a.GroupsScope)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'groupsScope': %w", err)
-		}
-	}
-
-	if a.Issuer != nil {
-		object["issuer"], err = json.Marshal(a.Issuer)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'issuer': %w", err)
-		}
-	}
-
-	if a.JwksEndpoint != nil {
-		object["jwksEndpoint"], err = json.Marshal(a.JwksEndpoint)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'jwksEndpoint': %w", err)
-		}
-	}
-
-	if a.Password != nil {
-		object["password"], err = json.Marshal(a.Password)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'password': %w", err)
-		}
-	}
-
-	if a.Scope != nil {
-		object["scope"], err = json.Marshal(a.Scope)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'scope': %w", err)
-		}
-	}
-
-	if a.SubClaim != nil {
-		object["subClaim"], err = json.Marshal(a.SubClaim)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'subClaim': %w", err)
-		}
-	}
-
-	if a.TokenEndpoint != nil {
-		object["tokenEndpoint"], err = json.Marshal(a.TokenEndpoint)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'tokenEndpoint': %w", err)
-		}
-	}
-
-	if a.Username != nil {
-		object["username"], err = json.Marshal(a.Username)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling 'username': %w", err)
-		}
-	}
-
-	for fieldName, field := range a.AdditionalProperties {
-		object[fieldName], err = json.Marshal(field)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling '%s': %w", fieldName, err)
-		}
-	}
-	return json.Marshal(object)
-}
 
 // Getter for additional properties for KafkaReplicatorResponseSchema. Returns the specified
 // element and whether it was found
@@ -11866,6 +11907,9 @@ type ClientInterface interface {
 	// OrganizationsAlertsInvestigationPrepareRetrieve request
 	OrganizationsAlertsInvestigationPrepareRetrieve(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// AlertInvestigationPrioritize request
+	AlertInvestigationPrioritize(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// AlertInvestigationReopen request
 	AlertInvestigationReopen(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -11940,6 +11984,14 @@ type ClientInterface interface {
 	OrganizationsAssistantConversationsPartialUpdateWithBody(ctx context.Context, orgIdentifier string, conversationIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	OrganizationsAssistantConversationsPartialUpdate(ctx context.Context, orgIdentifier string, conversationIdentifier string, body OrganizationsAssistantConversationsPartialUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AssistantConversationContextRetrieve request
+	AssistantConversationContextRetrieve(ctx context.Context, orgIdentifier string, conversationIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AssistantConversationContextCompactWithBody request with any body
+	AssistantConversationContextCompactWithBody(ctx context.Context, orgIdentifier string, conversationIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AssistantConversationContextCompact(ctx context.Context, orgIdentifier string, conversationIdentifier string, body AssistantConversationContextCompactJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsAssistantConversationsMessagesList request
 	OrganizationsAssistantConversationsMessagesList(ctx context.Context, orgIdentifier string, conversationIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -12257,6 +12309,9 @@ type ClientInterface interface {
 	// OrganizationsClickhousesFinalizeDestroy request
 	OrganizationsClickhousesFinalizeDestroy(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ClickhouseMetricsList request
+	ClickhouseMetricsList(ctx context.Context, orgIdentifier string, identifier string, params *ClickhouseMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// OrganizationsClickhousesReconcileCreateWithBody request with any body
 	OrganizationsClickhousesReconcileCreateWithBody(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsClickhousesReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -12568,6 +12623,9 @@ type ClientInterface interface {
 
 	// OrganizationsFleetKafkaKvcLogsRetrieve request
 	OrganizationsFleetKafkaKvcLogsRetrieve(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VirtualKafkaClusterMetricsList request
+	VirtualKafkaClusterMetricsList(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, params *VirtualKafkaClusterMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsFleetKafkaKvcStatusRetrieve request
 	OrganizationsFleetKafkaKvcStatusRetrieve(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -13089,6 +13147,9 @@ type ClientInterface interface {
 	// OrganizationsKafkaConnectInstalledComponentsTrackingRetrieve request
 	OrganizationsKafkaConnectInstalledComponentsTrackingRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// KafkaConnectMetricsList request
+	KafkaConnectMetricsList(ctx context.Context, orgIdentifier string, identifier string, params *KafkaConnectMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// OrganizationsKafkaConnectReconcileCreateWithBody request with any body
 	OrganizationsKafkaConnectReconcileCreateWithBody(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsKafkaConnectReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -13148,6 +13209,9 @@ type ClientInterface interface {
 
 	// OrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieve request
 	OrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaReplicatorMetricsList request
+	KafkaReplicatorMetricsList(ctx context.Context, orgIdentifier string, identifier string, params *KafkaReplicatorMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsKafkaReplicatorReconcileCreateWithBody request with any body
 	OrganizationsKafkaReplicatorReconcileCreateWithBody(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsKafkaReplicatorReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -13445,11 +13509,41 @@ type ClientInterface interface {
 	// OrganizationsKafkaProviderRetrieve request
 	OrganizationsKafkaProviderRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetKafkaSchemaRegistry request
+	GetKafkaSchemaRegistry(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListKafkaSchemaSubjects request
-	ListKafkaSchemaSubjects(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ListKafkaSchemaSubjects(ctx context.Context, orgIdentifier string, kafkaId string, params *ListKafkaSchemaSubjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteKafkaSchemaSubject request
+	DeleteKafkaSchemaSubject(ctx context.Context, orgIdentifier string, kafkaId string, subject string, params *DeleteKafkaSchemaSubjectParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CheckKafkaSchemaCompatibilityWithBody request with any body
+	CheckKafkaSchemaCompatibilityWithBody(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CheckKafkaSchemaCompatibility(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body CheckKafkaSchemaCompatibilityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ClearKafkaSchemaSubjectCompatibility request
+	ClearKafkaSchemaSubjectCompatibility(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKafkaSchemaSubjectCompatibility request
+	GetKafkaSchemaSubjectCompatibility(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetKafkaSchemaSubjectCompatibilityWithBody request with any body
+	SetKafkaSchemaSubjectCompatibilityWithBody(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetKafkaSchemaSubjectCompatibility(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body SetKafkaSchemaSubjectCompatibilityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListKafkaSchemaSubjectVersions request
-	ListKafkaSchemaSubjectVersions(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ListKafkaSchemaSubjectVersions(ctx context.Context, orgIdentifier string, kafkaId string, subject string, params *ListKafkaSchemaSubjectVersionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RegisterKafkaSchemaWithBody request with any body
+	RegisterKafkaSchemaWithBody(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RegisterKafkaSchema(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body RegisterKafkaSchemaJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteKafkaSchemaSubjectVersion request
+	DeleteKafkaSchemaSubjectVersion(ctx context.Context, orgIdentifier string, kafkaId string, subject string, version string, params *DeleteKafkaSchemaSubjectVersionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetKafkaSchemaSubjectVersion request
 	GetKafkaSchemaSubjectVersion(ctx context.Context, orgIdentifier string, kafkaId string, subject string, version string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -13487,6 +13581,9 @@ type ClientInterface interface {
 
 	// ListKafkaTopicMessages request
 	ListKafkaTopicMessages(ctx context.Context, orgIdentifier string, kafkaId string, topic string, params *ListKafkaTopicMessagesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListKafkaTopicSchemaSubjects request
+	ListKafkaTopicSchemaSubjects(ctx context.Context, orgIdentifier string, kafkaId string, topic string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// OrganizationsKafkaUsageRetrieve request
 	OrganizationsKafkaUsageRetrieve(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14593,6 +14690,18 @@ func (c *Client) OrganizationsAlertsInvestigationPrepareRetrieve(ctx context.Con
 	return c.Client.Do(req)
 }
 
+func (c *Client) AlertInvestigationPrioritize(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAlertInvestigationPrioritizeRequest(c.Server, orgIdentifier, alertId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) AlertInvestigationReopen(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAlertInvestigationReopenRequest(c.Server, orgIdentifier, alertId)
 	if err != nil {
@@ -14919,6 +15028,42 @@ func (c *Client) OrganizationsAssistantConversationsPartialUpdateWithBody(ctx co
 
 func (c *Client) OrganizationsAssistantConversationsPartialUpdate(ctx context.Context, orgIdentifier string, conversationIdentifier string, body OrganizationsAssistantConversationsPartialUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsAssistantConversationsPartialUpdateRequest(c.Server, orgIdentifier, conversationIdentifier, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AssistantConversationContextRetrieve(ctx context.Context, orgIdentifier string, conversationIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssistantConversationContextRetrieveRequest(c.Server, orgIdentifier, conversationIdentifier)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AssistantConversationContextCompactWithBody(ctx context.Context, orgIdentifier string, conversationIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssistantConversationContextCompactRequestWithBody(c.Server, orgIdentifier, conversationIdentifier, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AssistantConversationContextCompact(ctx context.Context, orgIdentifier string, conversationIdentifier string, body AssistantConversationContextCompactJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssistantConversationContextCompactRequest(c.Server, orgIdentifier, conversationIdentifier, body)
 	if err != nil {
 		return nil, err
 	}
@@ -16285,6 +16430,18 @@ func (c *Client) OrganizationsClickhousesFinalizeDestroy(ctx context.Context, or
 	return c.Client.Do(req)
 }
 
+func (c *Client) ClickhouseMetricsList(ctx context.Context, orgIdentifier string, identifier string, params *ClickhouseMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewClickhouseMetricsListRequest(c.Server, orgIdentifier, identifier, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) OrganizationsClickhousesReconcileCreateWithBody(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsClickhousesReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsClickhousesReconcileCreateRequestWithBody(c.Server, orgIdentifier, identifier, params, contentType, body)
 	if err != nil {
@@ -17631,6 +17788,18 @@ func (c *Client) OrganizationsFleetKafkaKvcComputeComponentsCreate(ctx context.C
 
 func (c *Client) OrganizationsFleetKafkaKvcLogsRetrieve(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsFleetKafkaKvcLogsRetrieveRequest(c.Server, orgIdentifier, fleetId, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) VirtualKafkaClusterMetricsList(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, params *VirtualKafkaClusterMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVirtualKafkaClusterMetricsListRequest(c.Server, orgIdentifier, fleetId, clusterId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -19849,6 +20018,18 @@ func (c *Client) OrganizationsKafkaConnectInstalledComponentsTrackingRetrieve(ct
 	return c.Client.Do(req)
 }
 
+func (c *Client) KafkaConnectMetricsList(ctx context.Context, orgIdentifier string, identifier string, params *KafkaConnectMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaConnectMetricsListRequest(c.Server, orgIdentifier, identifier, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) OrganizationsKafkaConnectReconcileCreateWithBody(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsKafkaConnectReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsKafkaConnectReconcileCreateRequestWithBody(c.Server, orgIdentifier, identifier, params, contentType, body)
 	if err != nil {
@@ -20103,6 +20284,18 @@ func (c *Client) OrganizationsKafkaReplicatorInstalledComponentsCreate(ctx conte
 
 func (c *Client) OrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieve(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveRequest(c.Server, orgIdentifier, identifier)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) KafkaReplicatorMetricsList(ctx context.Context, orgIdentifier string, identifier string, params *KafkaReplicatorMetricsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaReplicatorMetricsListRequest(c.Server, orgIdentifier, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -21385,8 +21578,8 @@ func (c *Client) OrganizationsKafkaProviderRetrieve(ctx context.Context, orgIden
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListKafkaSchemaSubjects(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListKafkaSchemaSubjectsRequest(c.Server, orgIdentifier, kafkaId)
+func (c *Client) GetKafkaSchemaRegistry(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKafkaSchemaRegistryRequest(c.Server, orgIdentifier, kafkaId)
 	if err != nil {
 		return nil, err
 	}
@@ -21397,8 +21590,140 @@ func (c *Client) ListKafkaSchemaSubjects(ctx context.Context, orgIdentifier stri
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListKafkaSchemaSubjectVersions(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListKafkaSchemaSubjectVersionsRequest(c.Server, orgIdentifier, kafkaId, subject)
+func (c *Client) ListKafkaSchemaSubjects(ctx context.Context, orgIdentifier string, kafkaId string, params *ListKafkaSchemaSubjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListKafkaSchemaSubjectsRequest(c.Server, orgIdentifier, kafkaId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteKafkaSchemaSubject(ctx context.Context, orgIdentifier string, kafkaId string, subject string, params *DeleteKafkaSchemaSubjectParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteKafkaSchemaSubjectRequest(c.Server, orgIdentifier, kafkaId, subject, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CheckKafkaSchemaCompatibilityWithBody(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckKafkaSchemaCompatibilityRequestWithBody(c.Server, orgIdentifier, kafkaId, subject, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CheckKafkaSchemaCompatibility(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body CheckKafkaSchemaCompatibilityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckKafkaSchemaCompatibilityRequest(c.Server, orgIdentifier, kafkaId, subject, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ClearKafkaSchemaSubjectCompatibility(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewClearKafkaSchemaSubjectCompatibilityRequest(c.Server, orgIdentifier, kafkaId, subject)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKafkaSchemaSubjectCompatibility(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKafkaSchemaSubjectCompatibilityRequest(c.Server, orgIdentifier, kafkaId, subject)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetKafkaSchemaSubjectCompatibilityWithBody(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetKafkaSchemaSubjectCompatibilityRequestWithBody(c.Server, orgIdentifier, kafkaId, subject, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetKafkaSchemaSubjectCompatibility(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body SetKafkaSchemaSubjectCompatibilityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetKafkaSchemaSubjectCompatibilityRequest(c.Server, orgIdentifier, kafkaId, subject, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListKafkaSchemaSubjectVersions(ctx context.Context, orgIdentifier string, kafkaId string, subject string, params *ListKafkaSchemaSubjectVersionsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListKafkaSchemaSubjectVersionsRequest(c.Server, orgIdentifier, kafkaId, subject, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RegisterKafkaSchemaWithBody(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRegisterKafkaSchemaRequestWithBody(c.Server, orgIdentifier, kafkaId, subject, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RegisterKafkaSchema(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body RegisterKafkaSchemaJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRegisterKafkaSchemaRequest(c.Server, orgIdentifier, kafkaId, subject, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteKafkaSchemaSubjectVersion(ctx context.Context, orgIdentifier string, kafkaId string, subject string, version string, params *DeleteKafkaSchemaSubjectVersionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteKafkaSchemaSubjectVersionRequest(c.Server, orgIdentifier, kafkaId, subject, version, params)
 	if err != nil {
 		return nil, err
 	}
@@ -21555,6 +21880,18 @@ func (c *Client) UpdateKafkaTopic(ctx context.Context, orgIdentifier string, kaf
 
 func (c *Client) ListKafkaTopicMessages(ctx context.Context, orgIdentifier string, kafkaId string, topic string, params *ListKafkaTopicMessagesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListKafkaTopicMessagesRequest(c.Server, orgIdentifier, kafkaId, topic, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListKafkaTopicSchemaSubjects(ctx context.Context, orgIdentifier string, kafkaId string, topic string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListKafkaTopicSchemaSubjectsRequest(c.Server, orgIdentifier, kafkaId, topic)
 	if err != nil {
 		return nil, err
 	}
@@ -25211,6 +25548,54 @@ func NewOrganizationsAlertsListRequest(server string, orgIdentifier string, para
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.InvestigationStatus != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "investigation_status", runtime.ParamLocationQuery, *params.InvestigationStatus); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.NeedsAttention != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "needs_attention", runtime.ParamLocationQuery, *params.NeedsAttention); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Page != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
@@ -25230,6 +25615,102 @@ func NewOrganizationsAlertsListRequest(server string, orgIdentifier string, para
 		if params.PageSize != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page_size", runtime.ParamLocationQuery, *params.PageSize); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ResourceIdentifier != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "resource_identifier", runtime.ParamLocationQuery, *params.ResourceIdentifier); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ResourceType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "resource_type", runtime.ParamLocationQuery, *params.ResourceType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Severity != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "severity", runtime.ParamLocationQuery, *params.Severity); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Sort != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sort", runtime.ParamLocationQuery, *params.Sort); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "status", runtime.ParamLocationQuery, *params.Status); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.TriageState != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "triage_state", runtime.ParamLocationQuery, *params.TriageState); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -25607,6 +26088,47 @@ func NewOrganizationsAlertsInvestigationPrepareRetrieveRequest(server string, or
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAlertInvestigationPrioritizeRequest generates requests for AlertInvestigationPrioritize
+func NewAlertInvestigationPrioritizeRequest(server string, orgIdentifier string, alertId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "alert_id", runtime.ParamLocationPath, alertId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/alerts/%s/investigation/prioritize/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -26491,6 +27013,101 @@ func NewOrganizationsAssistantConversationsPartialUpdateRequestWithBody(server s
 	}
 
 	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAssistantConversationContextRetrieveRequest generates requests for AssistantConversationContextRetrieve
+func NewAssistantConversationContextRetrieveRequest(server string, orgIdentifier string, conversationIdentifier string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "conversation_identifier", runtime.ParamLocationPath, conversationIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/assistant/conversations/%s/context/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAssistantConversationContextCompactRequest calls the generic AssistantConversationContextCompact builder with application/json body
+func NewAssistantConversationContextCompactRequest(server string, orgIdentifier string, conversationIdentifier string, body AssistantConversationContextCompactJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAssistantConversationContextCompactRequestWithBody(server, orgIdentifier, conversationIdentifier, "application/json", bodyReader)
+}
+
+// NewAssistantConversationContextCompactRequestWithBody generates requests for AssistantConversationContextCompact with any type of body
+func NewAssistantConversationContextCompactRequestWithBody(server string, orgIdentifier string, conversationIdentifier string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "conversation_identifier", runtime.ParamLocationPath, conversationIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/assistant/conversations/%s/context/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -30824,6 +31441,149 @@ func NewOrganizationsClickhousesFinalizeDestroyRequest(server string, orgIdentif
 	}
 
 	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewClickhouseMetricsListRequest generates requests for ClickhouseMetricsList
+func NewClickhouseMetricsListRequest(server string, orgIdentifier string, identifier string, params *ClickhouseMetricsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/clickhouses/%s/metrics/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.End != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "end", runtime.ParamLocationQuery, *params.End); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Panels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "panels", runtime.ParamLocationQuery, *params.Panels); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Range != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "range", runtime.ParamLocationQuery, *params.Range); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Refresh != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "refresh", runtime.ParamLocationQuery, *params.Refresh); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Start != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "start", runtime.ParamLocationQuery, *params.Start); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Step != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "step", runtime.ParamLocationQuery, *params.Step); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -35270,6 +36030,156 @@ func NewOrganizationsFleetKafkaKvcLogsRetrieveRequest(server string, orgIdentifi
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVirtualKafkaClusterMetricsListRequest generates requests for VirtualKafkaClusterMetricsList
+func NewVirtualKafkaClusterMetricsListRequest(server string, orgIdentifier string, fleetId string, clusterId string, params *VirtualKafkaClusterMetricsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "fleet_id", runtime.ParamLocationPath, fleetId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "cluster_id", runtime.ParamLocationPath, clusterId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/fleet/%s/kafka/kvc/%s/metrics/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.End != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "end", runtime.ParamLocationQuery, *params.End); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Panels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "panels", runtime.ParamLocationQuery, *params.Panels); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Range != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "range", runtime.ParamLocationQuery, *params.Range); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Refresh != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "refresh", runtime.ParamLocationQuery, *params.Refresh); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Start != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "start", runtime.ParamLocationQuery, *params.Start); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Step != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "step", runtime.ParamLocationQuery, *params.Step); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -42596,6 +43506,149 @@ func NewOrganizationsKafkaConnectInstalledComponentsTrackingRetrieveRequest(serv
 	return req, nil
 }
 
+// NewKafkaConnectMetricsListRequest generates requests for KafkaConnectMetricsList
+func NewKafkaConnectMetricsListRequest(server string, orgIdentifier string, identifier string, params *KafkaConnectMetricsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka-connect/%s/metrics/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.End != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "end", runtime.ParamLocationQuery, *params.End); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Panels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "panels", runtime.ParamLocationQuery, *params.Panels); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Range != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "range", runtime.ParamLocationQuery, *params.Range); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Refresh != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "refresh", runtime.ParamLocationQuery, *params.Refresh); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Start != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "start", runtime.ParamLocationQuery, *params.Start); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Step != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "step", runtime.ParamLocationQuery, *params.Step); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewOrganizationsKafkaConnectReconcileCreateRequest calls the generic OrganizationsKafkaConnectReconcileCreate builder with application/json body
 func NewOrganizationsKafkaConnectReconcileCreateRequest(server string, orgIdentifier string, identifier string, params *OrganizationsKafkaConnectReconcileCreateParams, body OrganizationsKafkaConnectReconcileCreateJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -43343,6 +44396,149 @@ func NewOrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveRequest(s
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKafkaReplicatorMetricsListRequest generates requests for KafkaReplicatorMetricsList
+func NewKafkaReplicatorMetricsListRequest(server string, orgIdentifier string, identifier string, params *KafkaReplicatorMetricsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "identifier", runtime.ParamLocationPath, identifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka-replicator/%s/metrics/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.End != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "end", runtime.ParamLocationQuery, *params.End); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Panels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "panels", runtime.ParamLocationQuery, *params.Panels); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Range != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "range", runtime.ParamLocationQuery, *params.Range); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Refresh != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "refresh", runtime.ParamLocationQuery, *params.Refresh); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Start != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "start", runtime.ParamLocationQuery, *params.Start); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Step != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "step", runtime.ParamLocationQuery, *params.Step); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -47562,8 +48758,49 @@ func NewOrganizationsKafkaProviderRetrieveRequest(server string, orgIdentifier s
 	return req, nil
 }
 
+// NewGetKafkaSchemaRegistryRequest generates requests for GetKafkaSchemaRegistry
+func NewGetKafkaSchemaRegistryRequest(server string, orgIdentifier string, kafkaId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/schemas/", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListKafkaSchemaSubjectsRequest generates requests for ListKafkaSchemaSubjects
-func NewListKafkaSchemaSubjectsRequest(server string, orgIdentifier string, kafkaId string) (*http.Request, error) {
+func NewListKafkaSchemaSubjectsRequest(server string, orgIdentifier string, kafkaId string, params *ListKafkaSchemaSubjectsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -47595,6 +48832,28 @@ func NewListKafkaSchemaSubjectsRequest(server string, orgIdentifier string, kafk
 		return nil, err
 	}
 
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Deleted != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "deleted", runtime.ParamLocationQuery, *params.Deleted); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -47603,8 +48862,308 @@ func NewListKafkaSchemaSubjectsRequest(server string, orgIdentifier string, kafk
 	return req, nil
 }
 
+// NewDeleteKafkaSchemaSubjectRequest generates requests for DeleteKafkaSchemaSubject
+func NewDeleteKafkaSchemaSubjectRequest(server string, orgIdentifier string, kafkaId string, subject string, params *DeleteKafkaSchemaSubjectParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "subject", runtime.ParamLocationPath, subject)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/schemas/subjects/%s/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "confirm", runtime.ParamLocationQuery, params.Confirm); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		if params.Permanent != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "permanent", runtime.ParamLocationQuery, *params.Permanent); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCheckKafkaSchemaCompatibilityRequest calls the generic CheckKafkaSchemaCompatibility builder with application/json body
+func NewCheckKafkaSchemaCompatibilityRequest(server string, orgIdentifier string, kafkaId string, subject string, body CheckKafkaSchemaCompatibilityJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCheckKafkaSchemaCompatibilityRequestWithBody(server, orgIdentifier, kafkaId, subject, "application/json", bodyReader)
+}
+
+// NewCheckKafkaSchemaCompatibilityRequestWithBody generates requests for CheckKafkaSchemaCompatibility with any type of body
+func NewCheckKafkaSchemaCompatibilityRequestWithBody(server string, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "subject", runtime.ParamLocationPath, subject)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/schemas/subjects/%s/compatibility/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewClearKafkaSchemaSubjectCompatibilityRequest generates requests for ClearKafkaSchemaSubjectCompatibility
+func NewClearKafkaSchemaSubjectCompatibilityRequest(server string, orgIdentifier string, kafkaId string, subject string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "subject", runtime.ParamLocationPath, subject)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/schemas/subjects/%s/config/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetKafkaSchemaSubjectCompatibilityRequest generates requests for GetKafkaSchemaSubjectCompatibility
+func NewGetKafkaSchemaSubjectCompatibilityRequest(server string, orgIdentifier string, kafkaId string, subject string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "subject", runtime.ParamLocationPath, subject)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/schemas/subjects/%s/config/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetKafkaSchemaSubjectCompatibilityRequest calls the generic SetKafkaSchemaSubjectCompatibility builder with application/json body
+func NewSetKafkaSchemaSubjectCompatibilityRequest(server string, orgIdentifier string, kafkaId string, subject string, body SetKafkaSchemaSubjectCompatibilityJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetKafkaSchemaSubjectCompatibilityRequestWithBody(server, orgIdentifier, kafkaId, subject, "application/json", bodyReader)
+}
+
+// NewSetKafkaSchemaSubjectCompatibilityRequestWithBody generates requests for SetKafkaSchemaSubjectCompatibility with any type of body
+func NewSetKafkaSchemaSubjectCompatibilityRequestWithBody(server string, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "subject", runtime.ParamLocationPath, subject)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/schemas/subjects/%s/config/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListKafkaSchemaSubjectVersionsRequest generates requests for ListKafkaSchemaSubjectVersions
-func NewListKafkaSchemaSubjectVersionsRequest(server string, orgIdentifier string, kafkaId string, subject string) (*http.Request, error) {
+func NewListKafkaSchemaSubjectVersionsRequest(server string, orgIdentifier string, kafkaId string, subject string, params *ListKafkaSchemaSubjectVersionsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -47643,7 +49202,179 @@ func NewListKafkaSchemaSubjectVersionsRequest(server string, orgIdentifier strin
 		return nil, err
 	}
 
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Deleted != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "deleted", runtime.ParamLocationQuery, *params.Deleted); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRegisterKafkaSchemaRequest calls the generic RegisterKafkaSchema builder with application/json body
+func NewRegisterKafkaSchemaRequest(server string, orgIdentifier string, kafkaId string, subject string, body RegisterKafkaSchemaJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRegisterKafkaSchemaRequestWithBody(server, orgIdentifier, kafkaId, subject, "application/json", bodyReader)
+}
+
+// NewRegisterKafkaSchemaRequestWithBody generates requests for RegisterKafkaSchema with any type of body
+func NewRegisterKafkaSchemaRequestWithBody(server string, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "subject", runtime.ParamLocationPath, subject)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/schemas/subjects/%s/versions/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteKafkaSchemaSubjectVersionRequest generates requests for DeleteKafkaSchemaSubjectVersion
+func NewDeleteKafkaSchemaSubjectVersionRequest(server string, orgIdentifier string, kafkaId string, subject string, version string, params *DeleteKafkaSchemaSubjectVersionParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "subject", runtime.ParamLocationPath, subject)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam3 string
+
+	pathParam3, err = runtime.StyleParamWithLocation("simple", false, "version", runtime.ParamLocationPath, version)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/schemas/subjects/%s/versions/%s/", pathParam0, pathParam1, pathParam2, pathParam3)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "confirm", runtime.ParamLocationQuery, params.Confirm); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		if params.Permanent != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "permanent", runtime.ParamLocationQuery, *params.Permanent); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -48322,6 +50053,54 @@ func NewListKafkaTopicMessagesRequest(server string, orgIdentifier string, kafka
 		}
 
 		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListKafkaTopicSchemaSubjectsRequest generates requests for ListKafkaTopicSchemaSubjects
+func NewListKafkaTopicSchemaSubjectsRequest(server string, orgIdentifier string, kafkaId string, topic string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "org_identifier", runtime.ParamLocationPath, orgIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kafka_id", runtime.ParamLocationPath, kafkaId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "topic", runtime.ParamLocationPath, topic)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/organizations/%s/kafka/%s/topics/%s/schemas/", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -55660,6 +57439,9 @@ type ClientWithResponsesInterface interface {
 	// OrganizationsAlertsInvestigationPrepareRetrieveWithResponse request
 	OrganizationsAlertsInvestigationPrepareRetrieveWithResponse(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*OrganizationsAlertsInvestigationPrepareRetrieveResponse, error)
 
+	// AlertInvestigationPrioritizeWithResponse request
+	AlertInvestigationPrioritizeWithResponse(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*AlertInvestigationPrioritizeResponse, error)
+
 	// AlertInvestigationReopenWithResponse request
 	AlertInvestigationReopenWithResponse(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*AlertInvestigationReopenResponse, error)
 
@@ -55734,6 +57516,14 @@ type ClientWithResponsesInterface interface {
 	OrganizationsAssistantConversationsPartialUpdateWithBodyWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsAssistantConversationsPartialUpdateResponse, error)
 
 	OrganizationsAssistantConversationsPartialUpdateWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, body OrganizationsAssistantConversationsPartialUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*OrganizationsAssistantConversationsPartialUpdateResponse, error)
+
+	// AssistantConversationContextRetrieveWithResponse request
+	AssistantConversationContextRetrieveWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, reqEditors ...RequestEditorFn) (*AssistantConversationContextRetrieveResponse, error)
+
+	// AssistantConversationContextCompactWithBodyWithResponse request with any body
+	AssistantConversationContextCompactWithBodyWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssistantConversationContextCompactResponse, error)
+
+	AssistantConversationContextCompactWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, body AssistantConversationContextCompactJSONRequestBody, reqEditors ...RequestEditorFn) (*AssistantConversationContextCompactResponse, error)
 
 	// OrganizationsAssistantConversationsMessagesListWithResponse request
 	OrganizationsAssistantConversationsMessagesListWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, reqEditors ...RequestEditorFn) (*OrganizationsAssistantConversationsMessagesListResponse, error)
@@ -56051,6 +57841,9 @@ type ClientWithResponsesInterface interface {
 	// OrganizationsClickhousesFinalizeDestroyWithResponse request
 	OrganizationsClickhousesFinalizeDestroyWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsClickhousesFinalizeDestroyResponse, error)
 
+	// ClickhouseMetricsListWithResponse request
+	ClickhouseMetricsListWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *ClickhouseMetricsListParams, reqEditors ...RequestEditorFn) (*ClickhouseMetricsListResponse, error)
+
 	// OrganizationsClickhousesReconcileCreateWithBodyWithResponse request with any body
 	OrganizationsClickhousesReconcileCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsClickhousesReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsClickhousesReconcileCreateResponse, error)
 
@@ -56362,6 +58155,9 @@ type ClientWithResponsesInterface interface {
 
 	// OrganizationsFleetKafkaKvcLogsRetrieveWithResponse request
 	OrganizationsFleetKafkaKvcLogsRetrieveWithResponse(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, reqEditors ...RequestEditorFn) (*OrganizationsFleetKafkaKvcLogsRetrieveResponse, error)
+
+	// VirtualKafkaClusterMetricsListWithResponse request
+	VirtualKafkaClusterMetricsListWithResponse(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, params *VirtualKafkaClusterMetricsListParams, reqEditors ...RequestEditorFn) (*VirtualKafkaClusterMetricsListResponse, error)
 
 	// OrganizationsFleetKafkaKvcStatusRetrieveWithResponse request
 	OrganizationsFleetKafkaKvcStatusRetrieveWithResponse(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, reqEditors ...RequestEditorFn) (*OrganizationsFleetKafkaKvcStatusRetrieveResponse, error)
@@ -56883,6 +58679,9 @@ type ClientWithResponsesInterface interface {
 	// OrganizationsKafkaConnectInstalledComponentsTrackingRetrieveWithResponse request
 	OrganizationsKafkaConnectInstalledComponentsTrackingRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaConnectInstalledComponentsTrackingRetrieveResponse, error)
 
+	// KafkaConnectMetricsListWithResponse request
+	KafkaConnectMetricsListWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *KafkaConnectMetricsListParams, reqEditors ...RequestEditorFn) (*KafkaConnectMetricsListResponse, error)
+
 	// OrganizationsKafkaConnectReconcileCreateWithBodyWithResponse request with any body
 	OrganizationsKafkaConnectReconcileCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsKafkaConnectReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaConnectReconcileCreateResponse, error)
 
@@ -56942,6 +58741,9 @@ type ClientWithResponsesInterface interface {
 
 	// OrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveWithResponse request
 	OrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveWithResponse(ctx context.Context, orgIdentifier string, identifier string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveResponse, error)
+
+	// KafkaReplicatorMetricsListWithResponse request
+	KafkaReplicatorMetricsListWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *KafkaReplicatorMetricsListParams, reqEditors ...RequestEditorFn) (*KafkaReplicatorMetricsListResponse, error)
 
 	// OrganizationsKafkaReplicatorReconcileCreateWithBodyWithResponse request with any body
 	OrganizationsKafkaReplicatorReconcileCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsKafkaReplicatorReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaReplicatorReconcileCreateResponse, error)
@@ -57239,11 +59041,41 @@ type ClientWithResponsesInterface interface {
 	// OrganizationsKafkaProviderRetrieveWithResponse request
 	OrganizationsKafkaProviderRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaProviderRetrieveResponse, error)
 
+	// GetKafkaSchemaRegistryWithResponse request
+	GetKafkaSchemaRegistryWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*GetKafkaSchemaRegistryResponse, error)
+
 	// ListKafkaSchemaSubjectsWithResponse request
-	ListKafkaSchemaSubjectsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*ListKafkaSchemaSubjectsResponse, error)
+	ListKafkaSchemaSubjectsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, params *ListKafkaSchemaSubjectsParams, reqEditors ...RequestEditorFn) (*ListKafkaSchemaSubjectsResponse, error)
+
+	// DeleteKafkaSchemaSubjectWithResponse request
+	DeleteKafkaSchemaSubjectWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, params *DeleteKafkaSchemaSubjectParams, reqEditors ...RequestEditorFn) (*DeleteKafkaSchemaSubjectResponse, error)
+
+	// CheckKafkaSchemaCompatibilityWithBodyWithResponse request with any body
+	CheckKafkaSchemaCompatibilityWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CheckKafkaSchemaCompatibilityResponse, error)
+
+	CheckKafkaSchemaCompatibilityWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body CheckKafkaSchemaCompatibilityJSONRequestBody, reqEditors ...RequestEditorFn) (*CheckKafkaSchemaCompatibilityResponse, error)
+
+	// ClearKafkaSchemaSubjectCompatibilityWithResponse request
+	ClearKafkaSchemaSubjectCompatibilityWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*ClearKafkaSchemaSubjectCompatibilityResponse, error)
+
+	// GetKafkaSchemaSubjectCompatibilityWithResponse request
+	GetKafkaSchemaSubjectCompatibilityWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*GetKafkaSchemaSubjectCompatibilityResponse, error)
+
+	// SetKafkaSchemaSubjectCompatibilityWithBodyWithResponse request with any body
+	SetKafkaSchemaSubjectCompatibilityWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetKafkaSchemaSubjectCompatibilityResponse, error)
+
+	SetKafkaSchemaSubjectCompatibilityWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body SetKafkaSchemaSubjectCompatibilityJSONRequestBody, reqEditors ...RequestEditorFn) (*SetKafkaSchemaSubjectCompatibilityResponse, error)
 
 	// ListKafkaSchemaSubjectVersionsWithResponse request
-	ListKafkaSchemaSubjectVersionsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*ListKafkaSchemaSubjectVersionsResponse, error)
+	ListKafkaSchemaSubjectVersionsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, params *ListKafkaSchemaSubjectVersionsParams, reqEditors ...RequestEditorFn) (*ListKafkaSchemaSubjectVersionsResponse, error)
+
+	// RegisterKafkaSchemaWithBodyWithResponse request with any body
+	RegisterKafkaSchemaWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RegisterKafkaSchemaResponse, error)
+
+	RegisterKafkaSchemaWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body RegisterKafkaSchemaJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterKafkaSchemaResponse, error)
+
+	// DeleteKafkaSchemaSubjectVersionWithResponse request
+	DeleteKafkaSchemaSubjectVersionWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, version string, params *DeleteKafkaSchemaSubjectVersionParams, reqEditors ...RequestEditorFn) (*DeleteKafkaSchemaSubjectVersionResponse, error)
 
 	// GetKafkaSchemaSubjectVersionWithResponse request
 	GetKafkaSchemaSubjectVersionWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, version string, reqEditors ...RequestEditorFn) (*GetKafkaSchemaSubjectVersionResponse, error)
@@ -57281,6 +59113,9 @@ type ClientWithResponsesInterface interface {
 
 	// ListKafkaTopicMessagesWithResponse request
 	ListKafkaTopicMessagesWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, topic string, params *ListKafkaTopicMessagesParams, reqEditors ...RequestEditorFn) (*ListKafkaTopicMessagesResponse, error)
+
+	// ListKafkaTopicSchemaSubjectsWithResponse request
+	ListKafkaTopicSchemaSubjectsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, topic string, reqEditors ...RequestEditorFn) (*ListKafkaTopicSchemaSubjectsResponse, error)
 
 	// OrganizationsKafkaUsageRetrieveWithResponse request
 	OrganizationsKafkaUsageRetrieveWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*OrganizationsKafkaUsageRetrieveResponse, error)
@@ -58544,6 +60379,30 @@ func (r OrganizationsAlertsInvestigationPrepareRetrieveResponse) StatusCode() in
 	return 0
 }
 
+type AlertInvestigationPrioritizeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AssistantConversation
+	JSON404      *interface{}
+	JSON409      *interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r AlertInvestigationPrioritizeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AlertInvestigationPrioritizeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type AlertInvestigationReopenResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -58958,6 +60817,53 @@ func (r OrganizationsAssistantConversationsPartialUpdateResponse) Status() strin
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r OrganizationsAssistantConversationsPartialUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AssistantConversationContextRetrieveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AssistantConversationContext
+	JSON404      *interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r AssistantConversationContextRetrieveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AssistantConversationContextRetrieveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AssistantConversationContextCompactResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AssistantConversationCompactResult
+	JSON400      *interface{}
+	JSON404      *interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r AssistantConversationContextCompactResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AssistantConversationContextCompactResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -60920,6 +62826,28 @@ func (r OrganizationsClickhousesFinalizeDestroyResponse) StatusCode() int {
 	return 0
 }
 
+type ClickhouseMetricsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ClickHouseMetricsResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ClickhouseMetricsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ClickhouseMetricsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type OrganizationsClickhousesReconcileCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -62845,6 +64773,28 @@ func (r OrganizationsFleetKafkaKvcLogsRetrieveResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r OrganizationsFleetKafkaKvcLogsRetrieveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type VirtualKafkaClusterMetricsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *VirtualKafkaClusterMetricsResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r VirtualKafkaClusterMetricsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VirtualKafkaClusterMetricsListResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -65226,7 +67176,8 @@ func (r OrganizationsHelmRepositoriesUpdateResponse) StatusCode() int {
 type OrganizationsHelmRepositoriesSyncCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *HelmRepository
+	JSON200      *PackageSyncStartedResponse
+	JSON409      *PackageSyncInProgressResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -66191,6 +68142,28 @@ func (r OrganizationsKafkaConnectInstalledComponentsTrackingRetrieveResponse) St
 	return 0
 }
 
+type KafkaConnectMetricsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *KafkaConnectMetricsResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaConnectMetricsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaConnectMetricsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type OrganizationsKafkaConnectReconcileCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -66545,6 +68518,28 @@ func (r OrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveResponse)
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r OrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type KafkaReplicatorMetricsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *KafkaReplicatorMetricsResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaReplicatorMetricsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaReplicatorMetricsListResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -68377,6 +70372,28 @@ func (r OrganizationsKafkaProviderRetrieveResponse) StatusCode() int {
 	return 0
 }
 
+type GetKafkaSchemaRegistryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *KafkaSchemaRegistryStatusResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetKafkaSchemaRegistryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKafkaSchemaRegistryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListKafkaSchemaSubjectsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -68393,6 +70410,116 @@ func (r ListKafkaSchemaSubjectsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r ListKafkaSchemaSubjectsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteKafkaSchemaSubjectResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SubjectDeleteResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteKafkaSchemaSubjectResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteKafkaSchemaSubjectResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CheckKafkaSchemaCompatibilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SchemaCompatibilityResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r CheckKafkaSchemaCompatibilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CheckKafkaSchemaCompatibilityResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ClearKafkaSchemaSubjectCompatibilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SubjectCompatibility
+}
+
+// Status returns HTTPResponse.Status
+func (r ClearKafkaSchemaSubjectCompatibilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ClearKafkaSchemaSubjectCompatibilityResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetKafkaSchemaSubjectCompatibilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SubjectCompatibility
+}
+
+// Status returns HTTPResponse.Status
+func (r GetKafkaSchemaSubjectCompatibilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKafkaSchemaSubjectCompatibilityResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SetKafkaSchemaSubjectCompatibilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SubjectCompatibility
+}
+
+// Status returns HTTPResponse.Status
+func (r SetKafkaSchemaSubjectCompatibilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetKafkaSchemaSubjectCompatibilityResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -68421,10 +70548,54 @@ func (r ListKafkaSchemaSubjectVersionsResponse) StatusCode() int {
 	return 0
 }
 
+type RegisterKafkaSchemaResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SchemaRegisterResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r RegisterKafkaSchemaResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RegisterKafkaSchemaResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteKafkaSchemaSubjectVersionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SubjectVersionDeleteResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteKafkaSchemaSubjectVersionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteKafkaSchemaSubjectVersionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetKafkaSchemaSubjectVersionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *map[string]interface{}
+	JSON200      *SchemaVersion
 }
 
 // Status returns HTTPResponse.Status
@@ -68659,6 +70830,28 @@ func (r ListKafkaTopicMessagesResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r ListKafkaTopicMessagesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListKafkaTopicSchemaSubjectsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TopicSubjectsResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ListKafkaTopicSchemaSubjectsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListKafkaTopicSchemaSubjectsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -69014,7 +71207,7 @@ func (r OrganizationsNetworksListResponse) StatusCode() int {
 type OrganizationsNetworksCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Network
+	JSON201      *Network
 }
 
 // Status returns HTTPResponse.Status
@@ -70347,6 +72540,8 @@ func (r OrganizationsSmtpConfigTestCreateResponse) StatusCode() int {
 type OrganizationsSyncPackagesCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *PackageSyncStartedResponse
+	JSON409      *PackageSyncInProgressResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -70780,7 +72975,8 @@ func (r OrganizationsTrackedRepositoriesSetTemplateCreateResponse) StatusCode() 
 type OrganizationsTrackedRepositoriesSyncCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *TrackedRepository
+	JSON202      *PackageSyncStartedResponse
+	JSON409      *PackageSyncInProgressResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -72666,6 +74862,15 @@ func (c *ClientWithResponses) OrganizationsAlertsInvestigationPrepareRetrieveWit
 	return ParseOrganizationsAlertsInvestigationPrepareRetrieveResponse(rsp)
 }
 
+// AlertInvestigationPrioritizeWithResponse request returning *AlertInvestigationPrioritizeResponse
+func (c *ClientWithResponses) AlertInvestigationPrioritizeWithResponse(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*AlertInvestigationPrioritizeResponse, error) {
+	rsp, err := c.AlertInvestigationPrioritize(ctx, orgIdentifier, alertId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAlertInvestigationPrioritizeResponse(rsp)
+}
+
 // AlertInvestigationReopenWithResponse request returning *AlertInvestigationReopenResponse
 func (c *ClientWithResponses) AlertInvestigationReopenWithResponse(ctx context.Context, orgIdentifier string, alertId openapi_types.UUID, reqEditors ...RequestEditorFn) (*AlertInvestigationReopenResponse, error) {
 	rsp, err := c.AlertInvestigationReopen(ctx, orgIdentifier, alertId, reqEditors...)
@@ -72907,6 +75112,32 @@ func (c *ClientWithResponses) OrganizationsAssistantConversationsPartialUpdateWi
 		return nil, err
 	}
 	return ParseOrganizationsAssistantConversationsPartialUpdateResponse(rsp)
+}
+
+// AssistantConversationContextRetrieveWithResponse request returning *AssistantConversationContextRetrieveResponse
+func (c *ClientWithResponses) AssistantConversationContextRetrieveWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, reqEditors ...RequestEditorFn) (*AssistantConversationContextRetrieveResponse, error) {
+	rsp, err := c.AssistantConversationContextRetrieve(ctx, orgIdentifier, conversationIdentifier, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssistantConversationContextRetrieveResponse(rsp)
+}
+
+// AssistantConversationContextCompactWithBodyWithResponse request with arbitrary body returning *AssistantConversationContextCompactResponse
+func (c *ClientWithResponses) AssistantConversationContextCompactWithBodyWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssistantConversationContextCompactResponse, error) {
+	rsp, err := c.AssistantConversationContextCompactWithBody(ctx, orgIdentifier, conversationIdentifier, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssistantConversationContextCompactResponse(rsp)
+}
+
+func (c *ClientWithResponses) AssistantConversationContextCompactWithResponse(ctx context.Context, orgIdentifier string, conversationIdentifier string, body AssistantConversationContextCompactJSONRequestBody, reqEditors ...RequestEditorFn) (*AssistantConversationContextCompactResponse, error) {
+	rsp, err := c.AssistantConversationContextCompact(ctx, orgIdentifier, conversationIdentifier, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssistantConversationContextCompactResponse(rsp)
 }
 
 // OrganizationsAssistantConversationsMessagesListWithResponse request returning *OrganizationsAssistantConversationsMessagesListResponse
@@ -73903,6 +76134,15 @@ func (c *ClientWithResponses) OrganizationsClickhousesFinalizeDestroyWithRespons
 	return ParseOrganizationsClickhousesFinalizeDestroyResponse(rsp)
 }
 
+// ClickhouseMetricsListWithResponse request returning *ClickhouseMetricsListResponse
+func (c *ClientWithResponses) ClickhouseMetricsListWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *ClickhouseMetricsListParams, reqEditors ...RequestEditorFn) (*ClickhouseMetricsListResponse, error) {
+	rsp, err := c.ClickhouseMetricsList(ctx, orgIdentifier, identifier, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseClickhouseMetricsListResponse(rsp)
+}
+
 // OrganizationsClickhousesReconcileCreateWithBodyWithResponse request with arbitrary body returning *OrganizationsClickhousesReconcileCreateResponse
 func (c *ClientWithResponses) OrganizationsClickhousesReconcileCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsClickhousesReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsClickhousesReconcileCreateResponse, error) {
 	rsp, err := c.OrganizationsClickhousesReconcileCreateWithBody(ctx, orgIdentifier, identifier, params, contentType, body, reqEditors...)
@@ -74891,6 +77131,15 @@ func (c *ClientWithResponses) OrganizationsFleetKafkaKvcLogsRetrieveWithResponse
 		return nil, err
 	}
 	return ParseOrganizationsFleetKafkaKvcLogsRetrieveResponse(rsp)
+}
+
+// VirtualKafkaClusterMetricsListWithResponse request returning *VirtualKafkaClusterMetricsListResponse
+func (c *ClientWithResponses) VirtualKafkaClusterMetricsListWithResponse(ctx context.Context, orgIdentifier string, fleetId string, clusterId string, params *VirtualKafkaClusterMetricsListParams, reqEditors ...RequestEditorFn) (*VirtualKafkaClusterMetricsListResponse, error) {
+	rsp, err := c.VirtualKafkaClusterMetricsList(ctx, orgIdentifier, fleetId, clusterId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVirtualKafkaClusterMetricsListResponse(rsp)
 }
 
 // OrganizationsFleetKafkaKvcStatusRetrieveWithResponse request returning *OrganizationsFleetKafkaKvcStatusRetrieveResponse
@@ -76517,6 +78766,15 @@ func (c *ClientWithResponses) OrganizationsKafkaConnectInstalledComponentsTracki
 	return ParseOrganizationsKafkaConnectInstalledComponentsTrackingRetrieveResponse(rsp)
 }
 
+// KafkaConnectMetricsListWithResponse request returning *KafkaConnectMetricsListResponse
+func (c *ClientWithResponses) KafkaConnectMetricsListWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *KafkaConnectMetricsListParams, reqEditors ...RequestEditorFn) (*KafkaConnectMetricsListResponse, error) {
+	rsp, err := c.KafkaConnectMetricsList(ctx, orgIdentifier, identifier, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaConnectMetricsListResponse(rsp)
+}
+
 // OrganizationsKafkaConnectReconcileCreateWithBodyWithResponse request with arbitrary body returning *OrganizationsKafkaConnectReconcileCreateResponse
 func (c *ClientWithResponses) OrganizationsKafkaConnectReconcileCreateWithBodyWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *OrganizationsKafkaConnectReconcileCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OrganizationsKafkaConnectReconcileCreateResponse, error) {
 	rsp, err := c.OrganizationsKafkaConnectReconcileCreateWithBody(ctx, orgIdentifier, identifier, params, contentType, body, reqEditors...)
@@ -76707,6 +78965,15 @@ func (c *ClientWithResponses) OrganizationsKafkaReplicatorInstalledComponentsTra
 		return nil, err
 	}
 	return ParseOrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveResponse(rsp)
+}
+
+// KafkaReplicatorMetricsListWithResponse request returning *KafkaReplicatorMetricsListResponse
+func (c *ClientWithResponses) KafkaReplicatorMetricsListWithResponse(ctx context.Context, orgIdentifier string, identifier string, params *KafkaReplicatorMetricsListParams, reqEditors ...RequestEditorFn) (*KafkaReplicatorMetricsListResponse, error) {
+	rsp, err := c.KafkaReplicatorMetricsList(ctx, orgIdentifier, identifier, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaReplicatorMetricsListResponse(rsp)
 }
 
 // OrganizationsKafkaReplicatorReconcileCreateWithBodyWithResponse request with arbitrary body returning *OrganizationsKafkaReplicatorReconcileCreateResponse
@@ -77641,22 +79908,118 @@ func (c *ClientWithResponses) OrganizationsKafkaProviderRetrieveWithResponse(ctx
 	return ParseOrganizationsKafkaProviderRetrieveResponse(rsp)
 }
 
+// GetKafkaSchemaRegistryWithResponse request returning *GetKafkaSchemaRegistryResponse
+func (c *ClientWithResponses) GetKafkaSchemaRegistryWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*GetKafkaSchemaRegistryResponse, error) {
+	rsp, err := c.GetKafkaSchemaRegistry(ctx, orgIdentifier, kafkaId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKafkaSchemaRegistryResponse(rsp)
+}
+
 // ListKafkaSchemaSubjectsWithResponse request returning *ListKafkaSchemaSubjectsResponse
-func (c *ClientWithResponses) ListKafkaSchemaSubjectsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, reqEditors ...RequestEditorFn) (*ListKafkaSchemaSubjectsResponse, error) {
-	rsp, err := c.ListKafkaSchemaSubjects(ctx, orgIdentifier, kafkaId, reqEditors...)
+func (c *ClientWithResponses) ListKafkaSchemaSubjectsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, params *ListKafkaSchemaSubjectsParams, reqEditors ...RequestEditorFn) (*ListKafkaSchemaSubjectsResponse, error) {
+	rsp, err := c.ListKafkaSchemaSubjects(ctx, orgIdentifier, kafkaId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseListKafkaSchemaSubjectsResponse(rsp)
 }
 
+// DeleteKafkaSchemaSubjectWithResponse request returning *DeleteKafkaSchemaSubjectResponse
+func (c *ClientWithResponses) DeleteKafkaSchemaSubjectWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, params *DeleteKafkaSchemaSubjectParams, reqEditors ...RequestEditorFn) (*DeleteKafkaSchemaSubjectResponse, error) {
+	rsp, err := c.DeleteKafkaSchemaSubject(ctx, orgIdentifier, kafkaId, subject, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteKafkaSchemaSubjectResponse(rsp)
+}
+
+// CheckKafkaSchemaCompatibilityWithBodyWithResponse request with arbitrary body returning *CheckKafkaSchemaCompatibilityResponse
+func (c *ClientWithResponses) CheckKafkaSchemaCompatibilityWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CheckKafkaSchemaCompatibilityResponse, error) {
+	rsp, err := c.CheckKafkaSchemaCompatibilityWithBody(ctx, orgIdentifier, kafkaId, subject, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCheckKafkaSchemaCompatibilityResponse(rsp)
+}
+
+func (c *ClientWithResponses) CheckKafkaSchemaCompatibilityWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body CheckKafkaSchemaCompatibilityJSONRequestBody, reqEditors ...RequestEditorFn) (*CheckKafkaSchemaCompatibilityResponse, error) {
+	rsp, err := c.CheckKafkaSchemaCompatibility(ctx, orgIdentifier, kafkaId, subject, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCheckKafkaSchemaCompatibilityResponse(rsp)
+}
+
+// ClearKafkaSchemaSubjectCompatibilityWithResponse request returning *ClearKafkaSchemaSubjectCompatibilityResponse
+func (c *ClientWithResponses) ClearKafkaSchemaSubjectCompatibilityWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*ClearKafkaSchemaSubjectCompatibilityResponse, error) {
+	rsp, err := c.ClearKafkaSchemaSubjectCompatibility(ctx, orgIdentifier, kafkaId, subject, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseClearKafkaSchemaSubjectCompatibilityResponse(rsp)
+}
+
+// GetKafkaSchemaSubjectCompatibilityWithResponse request returning *GetKafkaSchemaSubjectCompatibilityResponse
+func (c *ClientWithResponses) GetKafkaSchemaSubjectCompatibilityWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*GetKafkaSchemaSubjectCompatibilityResponse, error) {
+	rsp, err := c.GetKafkaSchemaSubjectCompatibility(ctx, orgIdentifier, kafkaId, subject, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKafkaSchemaSubjectCompatibilityResponse(rsp)
+}
+
+// SetKafkaSchemaSubjectCompatibilityWithBodyWithResponse request with arbitrary body returning *SetKafkaSchemaSubjectCompatibilityResponse
+func (c *ClientWithResponses) SetKafkaSchemaSubjectCompatibilityWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetKafkaSchemaSubjectCompatibilityResponse, error) {
+	rsp, err := c.SetKafkaSchemaSubjectCompatibilityWithBody(ctx, orgIdentifier, kafkaId, subject, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetKafkaSchemaSubjectCompatibilityResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetKafkaSchemaSubjectCompatibilityWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body SetKafkaSchemaSubjectCompatibilityJSONRequestBody, reqEditors ...RequestEditorFn) (*SetKafkaSchemaSubjectCompatibilityResponse, error) {
+	rsp, err := c.SetKafkaSchemaSubjectCompatibility(ctx, orgIdentifier, kafkaId, subject, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetKafkaSchemaSubjectCompatibilityResponse(rsp)
+}
+
 // ListKafkaSchemaSubjectVersionsWithResponse request returning *ListKafkaSchemaSubjectVersionsResponse
-func (c *ClientWithResponses) ListKafkaSchemaSubjectVersionsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, reqEditors ...RequestEditorFn) (*ListKafkaSchemaSubjectVersionsResponse, error) {
-	rsp, err := c.ListKafkaSchemaSubjectVersions(ctx, orgIdentifier, kafkaId, subject, reqEditors...)
+func (c *ClientWithResponses) ListKafkaSchemaSubjectVersionsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, params *ListKafkaSchemaSubjectVersionsParams, reqEditors ...RequestEditorFn) (*ListKafkaSchemaSubjectVersionsResponse, error) {
+	rsp, err := c.ListKafkaSchemaSubjectVersions(ctx, orgIdentifier, kafkaId, subject, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseListKafkaSchemaSubjectVersionsResponse(rsp)
+}
+
+// RegisterKafkaSchemaWithBodyWithResponse request with arbitrary body returning *RegisterKafkaSchemaResponse
+func (c *ClientWithResponses) RegisterKafkaSchemaWithBodyWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RegisterKafkaSchemaResponse, error) {
+	rsp, err := c.RegisterKafkaSchemaWithBody(ctx, orgIdentifier, kafkaId, subject, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRegisterKafkaSchemaResponse(rsp)
+}
+
+func (c *ClientWithResponses) RegisterKafkaSchemaWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, body RegisterKafkaSchemaJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterKafkaSchemaResponse, error) {
+	rsp, err := c.RegisterKafkaSchema(ctx, orgIdentifier, kafkaId, subject, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRegisterKafkaSchemaResponse(rsp)
+}
+
+// DeleteKafkaSchemaSubjectVersionWithResponse request returning *DeleteKafkaSchemaSubjectVersionResponse
+func (c *ClientWithResponses) DeleteKafkaSchemaSubjectVersionWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, subject string, version string, params *DeleteKafkaSchemaSubjectVersionParams, reqEditors ...RequestEditorFn) (*DeleteKafkaSchemaSubjectVersionResponse, error) {
+	rsp, err := c.DeleteKafkaSchemaSubjectVersion(ctx, orgIdentifier, kafkaId, subject, version, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteKafkaSchemaSubjectVersionResponse(rsp)
 }
 
 // GetKafkaSchemaSubjectVersionWithResponse request returning *GetKafkaSchemaSubjectVersionResponse
@@ -77772,6 +80135,15 @@ func (c *ClientWithResponses) ListKafkaTopicMessagesWithResponse(ctx context.Con
 		return nil, err
 	}
 	return ParseListKafkaTopicMessagesResponse(rsp)
+}
+
+// ListKafkaTopicSchemaSubjectsWithResponse request returning *ListKafkaTopicSchemaSubjectsResponse
+func (c *ClientWithResponses) ListKafkaTopicSchemaSubjectsWithResponse(ctx context.Context, orgIdentifier string, kafkaId string, topic string, reqEditors ...RequestEditorFn) (*ListKafkaTopicSchemaSubjectsResponse, error) {
+	rsp, err := c.ListKafkaTopicSchemaSubjects(ctx, orgIdentifier, kafkaId, topic, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListKafkaTopicSchemaSubjectsResponse(rsp)
 }
 
 // OrganizationsKafkaUsageRetrieveWithResponse request returning *OrganizationsKafkaUsageRetrieveResponse
@@ -80436,6 +82808,46 @@ func ParseOrganizationsAlertsInvestigationPrepareRetrieveResponse(rsp *http.Resp
 	return response, nil
 }
 
+// ParseAlertInvestigationPrioritizeResponse parses an HTTP response from a AlertInvestigationPrioritizeWithResponse call
+func ParseAlertInvestigationPrioritizeResponse(rsp *http.Response) (*AlertInvestigationPrioritizeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AlertInvestigationPrioritizeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AssistantConversation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseAlertInvestigationReopenResponse parses an HTTP response from a AlertInvestigationReopenWithResponse call
 func ParseAlertInvestigationReopenResponse(rsp *http.Response) (*AlertInvestigationReopenResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -80932,6 +83344,79 @@ func ParseOrganizationsAssistantConversationsPartialUpdateResponse(rsp *http.Res
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAssistantConversationContextRetrieveResponse parses an HTTP response from a AssistantConversationContextRetrieveWithResponse call
+func ParseAssistantConversationContextRetrieveResponse(rsp *http.Response) (*AssistantConversationContextRetrieveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AssistantConversationContextRetrieveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AssistantConversationContext
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAssistantConversationContextCompactResponse parses an HTTP response from a AssistantConversationContextCompactWithResponse call
+func ParseAssistantConversationContextCompactResponse(rsp *http.Response) (*AssistantConversationContextCompactResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AssistantConversationContextCompactResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AssistantConversationCompactResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 
@@ -82951,6 +85436,32 @@ func ParseOrganizationsClickhousesFinalizeDestroyResponse(rsp *http.Response) (*
 			return nil, err
 		}
 		response.JSON202 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseClickhouseMetricsListResponse parses an HTTP response from a ClickhouseMetricsListWithResponse call
+func ParseClickhouseMetricsListResponse(rsp *http.Response) (*ClickhouseMetricsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ClickhouseMetricsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ClickHouseMetricsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	}
 
@@ -85380,6 +87891,32 @@ func ParseOrganizationsFleetKafkaKvcLogsRetrieveResponse(rsp *http.Response) (*O
 	response := &OrganizationsFleetKafkaKvcLogsRetrieveResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseVirtualKafkaClusterMetricsListResponse parses an HTTP response from a VirtualKafkaClusterMetricsListWithResponse call
+func ParseVirtualKafkaClusterMetricsListResponse(rsp *http.Response) (*VirtualKafkaClusterMetricsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VirtualKafkaClusterMetricsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VirtualKafkaClusterMetricsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	}
 
 	return response, nil
@@ -88030,11 +90567,18 @@ func ParseOrganizationsHelmRepositoriesSyncCreateResponse(rsp *http.Response) (*
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest HelmRepository
+		var dest PackageSyncStartedResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest PackageSyncInProgressResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
 
 	}
 
@@ -89105,6 +91649,32 @@ func ParseOrganizationsKafkaConnectInstalledComponentsTrackingRetrieveResponse(r
 	return response, nil
 }
 
+// ParseKafkaConnectMetricsListResponse parses an HTTP response from a KafkaConnectMetricsListWithResponse call
+func ParseKafkaConnectMetricsListResponse(rsp *http.Response) (*KafkaConnectMetricsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaConnectMetricsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaConnectMetricsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseOrganizationsKafkaConnectReconcileCreateResponse parses an HTTP response from a OrganizationsKafkaConnectReconcileCreateWithResponse call
 func ParseOrganizationsKafkaConnectReconcileCreateResponse(rsp *http.Response) (*OrganizationsKafkaConnectReconcileCreateResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -89552,6 +92122,32 @@ func ParseOrganizationsKafkaReplicatorInstalledComponentsTrackingRetrieveRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest InstalledComponentTracking
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaReplicatorMetricsListResponse parses an HTTP response from a KafkaReplicatorMetricsListWithResponse call
+func ParseKafkaReplicatorMetricsListResponse(rsp *http.Response) (*KafkaReplicatorMetricsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaReplicatorMetricsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaReplicatorMetricsResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -91451,6 +94047,32 @@ func ParseOrganizationsKafkaProviderRetrieveResponse(rsp *http.Response) (*Organ
 	return response, nil
 }
 
+// ParseGetKafkaSchemaRegistryResponse parses an HTTP response from a GetKafkaSchemaRegistryWithResponse call
+func ParseGetKafkaSchemaRegistryResponse(rsp *http.Response) (*GetKafkaSchemaRegistryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKafkaSchemaRegistryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaSchemaRegistryStatusResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListKafkaSchemaSubjectsResponse parses an HTTP response from a ListKafkaSchemaSubjectsWithResponse call
 func ParseListKafkaSchemaSubjectsResponse(rsp *http.Response) (*ListKafkaSchemaSubjectsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -91467,6 +94089,136 @@ func ParseListKafkaSchemaSubjectsResponse(rsp *http.Response) (*ListKafkaSchemaS
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest map[string]interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteKafkaSchemaSubjectResponse parses an HTTP response from a DeleteKafkaSchemaSubjectWithResponse call
+func ParseDeleteKafkaSchemaSubjectResponse(rsp *http.Response) (*DeleteKafkaSchemaSubjectResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteKafkaSchemaSubjectResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SubjectDeleteResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCheckKafkaSchemaCompatibilityResponse parses an HTTP response from a CheckKafkaSchemaCompatibilityWithResponse call
+func ParseCheckKafkaSchemaCompatibilityResponse(rsp *http.Response) (*CheckKafkaSchemaCompatibilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CheckKafkaSchemaCompatibilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SchemaCompatibilityResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseClearKafkaSchemaSubjectCompatibilityResponse parses an HTTP response from a ClearKafkaSchemaSubjectCompatibilityWithResponse call
+func ParseClearKafkaSchemaSubjectCompatibilityResponse(rsp *http.Response) (*ClearKafkaSchemaSubjectCompatibilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ClearKafkaSchemaSubjectCompatibilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SubjectCompatibility
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetKafkaSchemaSubjectCompatibilityResponse parses an HTTP response from a GetKafkaSchemaSubjectCompatibilityWithResponse call
+func ParseGetKafkaSchemaSubjectCompatibilityResponse(rsp *http.Response) (*GetKafkaSchemaSubjectCompatibilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKafkaSchemaSubjectCompatibilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SubjectCompatibility
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetKafkaSchemaSubjectCompatibilityResponse parses an HTTP response from a SetKafkaSchemaSubjectCompatibilityWithResponse call
+func ParseSetKafkaSchemaSubjectCompatibilityResponse(rsp *http.Response) (*SetKafkaSchemaSubjectCompatibilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetKafkaSchemaSubjectCompatibilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SubjectCompatibility
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -91503,6 +94255,58 @@ func ParseListKafkaSchemaSubjectVersionsResponse(rsp *http.Response) (*ListKafka
 	return response, nil
 }
 
+// ParseRegisterKafkaSchemaResponse parses an HTTP response from a RegisterKafkaSchemaWithResponse call
+func ParseRegisterKafkaSchemaResponse(rsp *http.Response) (*RegisterKafkaSchemaResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RegisterKafkaSchemaResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SchemaRegisterResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteKafkaSchemaSubjectVersionResponse parses an HTTP response from a DeleteKafkaSchemaSubjectVersionWithResponse call
+func ParseDeleteKafkaSchemaSubjectVersionResponse(rsp *http.Response) (*DeleteKafkaSchemaSubjectVersionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteKafkaSchemaSubjectVersionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SubjectVersionDeleteResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetKafkaSchemaSubjectVersionResponse parses an HTTP response from a GetKafkaSchemaSubjectVersionWithResponse call
 func ParseGetKafkaSchemaSubjectVersionResponse(rsp *http.Response) (*GetKafkaSchemaSubjectVersionResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -91518,7 +94322,7 @@ func ParseGetKafkaSchemaSubjectVersionResponse(rsp *http.Response) (*GetKafkaSch
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest map[string]interface{}
+		var dest SchemaVersion
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -91787,6 +94591,32 @@ func ParseListKafkaTopicMessagesResponse(rsp *http.Response) (*ListKafkaTopicMes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest map[string]interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListKafkaTopicSchemaSubjectsResponse parses an HTTP response from a ListKafkaTopicSchemaSubjectsWithResponse call
+func ParseListKafkaTopicSchemaSubjectsResponse(rsp *http.Response) (*ListKafkaTopicSchemaSubjectsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListKafkaTopicSchemaSubjectsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TopicSubjectsResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -92167,12 +94997,12 @@ func ParseOrganizationsNetworksCreateResponse(rsp *http.Response) (*Organization
 	}
 
 	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
 		var dest Network
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
-		response.JSON200 = &dest
+		response.JSON201 = &dest
 
 	}
 
@@ -93650,6 +96480,23 @@ func ParseOrganizationsSyncPackagesCreateResponse(rsp *http.Response) (*Organiza
 		HTTPResponse: rsp,
 	}
 
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PackageSyncStartedResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest PackageSyncInProgressResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
 	return response, nil
 }
 
@@ -94101,12 +96948,19 @@ func ParseOrganizationsTrackedRepositoriesSyncCreateResponse(rsp *http.Response)
 	}
 
 	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest TrackedRepository
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest PackageSyncStartedResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
-		response.JSON200 = &dest
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest PackageSyncInProgressResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
 
 	}
 

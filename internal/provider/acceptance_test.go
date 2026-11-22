@@ -339,6 +339,71 @@ resource "streamtime_kafka_topic" "t" {
 	})
 }
 
+// TestAcc_KafkaSchema: register with a compatibility level, empty plan, a changed
+// schema registers version 2 in place, import by <kafka>/<subject>, destroy with
+// hard_delete. Needs a running cluster with a schema registry and a recent Agent,
+// named by STREAMTIME_ACC_SCHEMA_KAFKA (disposable: the test registers and
+// permanently removes a tfacc subject on it).
+func TestAcc_KafkaSchema(t *testing.T) {
+	kafka := os.Getenv("STREAMTIME_ACC_SCHEMA_KAFKA")
+	if kafka == "" {
+		t.Skip("set STREAMTIME_ACC_SCHEMA_KAFKA to the identifier of a running Kafka cluster with a schema registry to run this test")
+	}
+	subject := "tfacc-" + strings.ToLower(acctest.RandStringFromCharSet(8, acctest.CharSetAlpha)) + "-value"
+	cfg := func(fields string) string {
+		return fmt.Sprintf(`
+provider "streamtime" {}
+
+resource "streamtime_kafka_schema" "t" {
+  kafka         = %[1]q
+  subject       = %[2]q
+  schema_type   = "avro"
+  compatibility = "BACKWARD"
+  hard_delete   = true
+  schema = jsonencode({
+    type   = "record"
+    name   = "Payment"
+    fields = [%[3]s]
+  })
+}
+`, kafka, subject, fields)
+	}
+	id := `{ name = "id", type = "string" }`
+	amount := `{ name = "amount", type = "double", default = 0 }`
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { preCheck(t) },
+		ProtoV6ProviderFactories: protoV6Factories,
+		CheckDestroy: func(*terraform.State) error {
+			code, err := apiStatus("kafka/" + kafka + "/schemas/subjects/" + subject + "/versions/?deleted=true")
+			if err == nil && code != http.StatusNotFound {
+				err = fmt.Errorf("subject %s still answers %d after a hard delete", subject, code)
+			}
+			return err
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: cfg(id),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("streamtime_kafka_schema.t", "id", kafka+"/"+subject),
+					resource.TestCheckResourceAttr("streamtime_kafka_schema.t", "version", "1"),
+				),
+			},
+			{
+				Config: cfg(id + ", " + amount),
+				Check:  resource.TestCheckResourceAttr("streamtime_kafka_schema.t", "version", "2"),
+			},
+			{
+				ResourceName:      "streamtime_kafka_schema.t",
+				ImportState:       true,
+				ImportStateVerify: true,
+				// The registry stores its own formatting of the schema, and hard_delete
+				// is a choice about destroy that only the configuration holds.
+				ImportStateVerifyIgnore: []string{"schema", "hard_delete"},
+			},
+		},
+	})
+}
+
 // TestAcc_FlinkProject: create with a token-authenticated store, empty plan, an
 // in-place change of the name and the store's address, import by identifier,
 // destroy. The CI key and the store token are never returned again, so the import

@@ -13,11 +13,13 @@ A Flink instance on a fleet: a single-job cluster that runs one application, or 
 ## Example Usage
 
 ```terraform
-# A single-job Flink cluster that runs a version of a Flink project.
+# A single-job Confluent Flink cluster that runs a version of a Flink project.
+# Apache Flink runs in a job workspace (mode = "session") and sizes itself from the Flink units.
 # Apply waits until it is ready, and until a change is running.
 resource "streamtime_flink" "etl" {
-  identifier  = "etl"
-  mode        = "application"
+  identifier     = "etl"
+  flink_provider = "cmf"
+  mode           = "application"
   fleet       = streamtime_fleet.byok.identifier
   flink_units = 2
 
@@ -26,7 +28,7 @@ resource "streamtime_flink" "etl" {
     version = "1.0.0"
   }
 
-  # Parallelism, resources and Flink settings.
+  # Confluent Flink only: parallelism, resources and Flink settings.
   advanced_configuration = jsonencode({
     parallelism = 2
   })
@@ -53,7 +55,7 @@ output "flink_ui" {
 
 ### Optional
 
-- `advanced_configuration` (String, Sensitive) Advanced settings, as a JSON object set with jsonencode(): the application, image, runtime of a job workspace (java or python), parallelism, resources and Flink settings. It may include a license key. Settings Streamtime fills in are not shown as changes.
+- `advanced_configuration` (String, Sensitive) Advanced settings, as a JSON object set with jsonencode(): the application, the runtime of a job workspace (java or python) and the upgrade mode. Streamtime sizes Apache Flink from the Flink units and chooses its state locations, so resources, parallelism and Flink settings are refused there; they apply to Confluent Flink only. It may include a license key. Settings Streamtime fills in are not shown as changes.
 - `description` (String) Free-text description.
 - `fleet` (String) Identifier of the fleet to deploy on. Leave it out to let Streamtime choose a fleet. Changing it creates a new instance.
 - `flink_provider` (String) Flink distribution: open-source (the default) or cmf (Confluent Manager for Apache Flink). Changing it creates a new instance.

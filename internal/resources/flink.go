@@ -117,9 +117,10 @@ func (r *flinkResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.Map{mapplanmodifier.UseStateForUnknown()},
 				Description:   "Tags on the instance, as key = value. Removing the attribute keeps the current tags; set tags = {} to clear them."},
 			"advanced_configuration": schema.StringAttribute{Optional: true, Computed: true, Sensitive: true, PlanModifiers: keepStr,
-				Description: "Advanced settings, as a JSON object set with jsonencode(): the application, image, runtime of a job " +
-					"workspace (java or python), parallelism, " +
-					"resources and Flink settings. It may include a license key. Settings Streamtime fills in are not shown as changes."},
+				Description: "Advanced settings, as a JSON object set with jsonencode(): the application, the runtime of a job " +
+					"workspace (java or python) and the upgrade mode. Streamtime sizes Apache Flink from the Flink units and " +
+					"chooses its state locations, so resources, parallelism and Flink settings are refused there; they apply to " +
+					"Confluent Flink only. It may include a license key. Settings Streamtime fills in are not shown as changes."},
 			"project_version": schema.SingleNestedAttribute{Optional: true,
 				Description: "Version of a Flink project to run, instead of an application location in advanced_configuration.",
 				Attributes: map[string]schema.Attribute{

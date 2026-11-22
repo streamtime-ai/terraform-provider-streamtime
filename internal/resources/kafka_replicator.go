@@ -54,9 +54,8 @@ type kafkaReplicatorModel struct {
 	Timeouts                     timeouts.Value `tfsdk:"timeouts"`
 }
 
-// kafkaReplicatorWire is the server's replicator. A request names the Kafka
-// clusters source_kafka_id / destination_kafka_id; the response, source_kafka /
-// destination_kafka.
+// kafkaReplicatorWire is the server's replicator. Requests and responses both
+// name the Kafka clusters source_kafka / destination_kafka.
 type kafkaReplicatorWire struct {
 	Identifier              string          `json:"identifier"`
 	Provider                string          `json:"provider"`
@@ -181,8 +180,7 @@ func (m kafkaReplicatorModel) body(create bool) (map[string]any, error) {
 	if create {
 		b["provider"] = m.ReplicatorProvider.ValueString()
 	}
-	// The API's request field for a Streamtime cluster is source_kafka / destination_kafka
-	// (its create schema says *_id, which it does not read).
+	// The API's request field for a Streamtime cluster is source_kafka / destination_kafka.
 	for k, v := range map[string]types.String{"source_kafka": m.SourceKafkaID, "destination_kafka": m.DestinationKafkaID,
 		"topic_whitelist": m.TopicWhitelist, "topic_blacklist": m.TopicBlacklist,
 		"groups_whitelist": m.GroupsWhitelist, "groups_blacklist": m.GroupsBlacklist, "link_mode": m.LinkMode} {

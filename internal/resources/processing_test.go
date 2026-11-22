@@ -62,7 +62,7 @@ func newClickHouseFake() *workloadFake {
 // serverDefaults fills in what the backend's schemas add on every write.
 func (f *workloadFake) serverDefaults(o map[string]any) {
 	if adv, ok := o["advanced_configuration"].(map[string]any); ok {
-		adv["parallelism"] = 1
+		adv["upgrade_mode"] = "stateless"
 	}
 	if f.collection == "clickhouses" {
 		for _, k := range []string{"cloud_provider", "tenancy_mode", "region"} {
